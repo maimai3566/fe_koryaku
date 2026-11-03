@@ -6,14 +6,11 @@
 let characters = [];
 let routeJoinedStatus = {};
 let currentRoute = "all";
+let currentViewMode = "char"; // "char" | "fame" | "support"
 let sortState = {
   key: null,
   order: null
 };
-
-// 抽出フィルター状態
-let currentFameFilter = "all";
-let currentSupportFilter = "all";
 
 const STORAGE_KEY_CHARS = "fe_chars_data_v6";
 const STORAGE_KEY_ROUTE_JOINED = "fe_route_joined_status_v6";
@@ -50,164 +47,123 @@ function init() {
     }
   }
 
-  renderTable();
+  renderApp();
 }
 
 // 初期データにリセット
 function resetToLatestData() {
-  if (confirm("最新のキャラクターリスト（全57名）に初期化しますか？\n※加入チェック状態は保持されます。")) {
+  if (confirm("最新のキャラクターリスト（全58名）に初期化しますか？\n※加入チェック状態は保持されます。")) {
     characters = [...DEFAULT_CHARACTERS];
     localStorage.setItem(STORAGE_KEY_CHARS, JSON.stringify(characters));
-    renderTable();
+    renderApp();
   }
 }
 
-// ルート別の加入トグル（セルタップ）
+// 表示モード（キャラ別 / 名声別 / 支援別）の切り替え
+function setViewMode(mode) {
+  currentViewMode = mode;
+  document.querySelectorAll(".mode-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-mode") === mode);
+  });
+
+  // キャラ別詳細モードのときだけルート切り替えタブを表示
+  const routeTabsEl = document.getElementById("routeTabs");
+  if (routeTabsEl) {
+    routeTabsEl.style.display = (mode === "char") ? "flex" : "none";
+  }
+
+  renderApp();
+}
+
+// ルート別の加入トグル（セルやチップのタップ）
 function toggleRouteJoined(charId, routeKey, event) {
   if (event) event.stopPropagation();
   const key = `${charId}_${routeKey}`;
   routeJoinedStatus[key] = !routeJoinedStatus[key];
   localStorage.setItem(STORAGE_KEY_ROUTE_JOINED, JSON.stringify(routeJoinedStatus));
-  renderTable();
+  renderApp();
 }
 
-// ソート用値の抽出
-function parseSortValue(char, key) {
-  if (key === "name") return char.name || "";
-  const [hero, field] = key.split(".");
-  const d = (char[hero] && typeof char[hero] === "object") ? char[hero] : {};
-  const val = (d[field] || "").trim();
-
-  if (field === "support") {
-    if (val === "初期") return 0;
-    const match = val.match(/(\d+)/);
-    if (match) return parseInt(match[1], 10);
-    if (val.includes("不可") || val === "-") return 999;
-    return 50;
-  }
-
-  if (field === "fame") {
-    if (val === "-" || !val) {
-      if (d.support === "初期" || d.cond?.includes("自動") || d.cond?.includes("初期")) return 0;
-      if (d.cond?.includes("3部")) return 300;
-      if (d.cond?.includes("不可")) return 999;
-      return 0;
-    }
-    const match = val.match(/(\d+)/);
-    if (match) return parseInt(match[1], 10);
-    return 50;
-  }
-
-  if (field === "limit") {
-    if (val === "自動") return 0;
-    const match = val.match(/(\d+)章/);
-    if (match) return parseInt(match[1], 10);
-    if (val.includes("3部")) return 30;
-    if (val.includes("不可")) return 999;
-    return 50;
-  }
-
-  return val;
-}
-
-// ソート切り替えハンドラ
-function handleSort(key) {
-  if (sortState.key === key) {
-    if (sortState.order === "asc") {
-      sortState.order = "desc";
-    } else if (sortState.order === "desc") {
-      sortState.key = null;
-      sortState.order = null;
-    }
-  } else {
-    sortState.key = key;
-    sortState.order = "asc";
-  }
-  updateSortIcons();
-  renderTable();
-}
-
-function updateSortIcons() {
-  const sortKeys = [
-    "name",
-    "kai.support", "kai.fame", "kai.limit",
-    "dietrich.support", "dietrich.fame", "dietrich.limit",
-    "theodora.support", "theodora.fame", "theodora.limit",
-    "leda.support", "leda.fame", "leda.limit"
-  ];
-
-  sortKeys.forEach(k => {
-    const elementId = "sort-icon-" + k.replace(".", "-");
-    const el = document.getElementById(elementId);
-    if (!el) return;
-    const parentTh = el.closest(".sortable");
-
-    if (sortState.key === k) {
-      if (parentTh) parentTh.classList.add("active-sort");
-      el.textContent = sortState.order === "asc" ? "▲" : "▼";
-    } else {
-      if (parentTh) parentTh.classList.remove("active-sort");
-      el.textContent = "⇅";
-    }
-  });
-}
-
-// 名声・支援フィルター判定
-function matchFameFilter(char, routeKey) {
-  if (currentFameFilter === "all") return true;
-
-  const checkRoute = (r) => {
-    const fameVal = (char[r]?.fame || "").trim();
-    const condVal = (char[r]?.cond || "");
-
-    if (currentFameFilter === "none") {
-      return fameVal === "-" || fameVal === "" || condVal.includes("初期") || condVal.includes("自動");
-    }
-    if (currentFameFilter === "3rd") {
-      return condVal.includes("3部");
-    }
-    // Lv.2 〜 Lv.9
-    const match = fameVal.match(/(\d+)/);
-    return match ? match[1] === currentFameFilter : false;
-  };
-
-  if (routeKey === "all") {
-    return ["kai", "dietrich", "theodora", "leda"].some(r => checkRoute(r));
-  } else {
-    return checkRoute(routeKey);
+// メイン描画ディスパッチャー
+function renderApp() {
+  if (currentViewMode === "char") {
+    renderCharDetailTable();
+  } else if (currentViewMode === "fame") {
+    renderFameMatrixTable();
+  } else if (currentViewMode === "support") {
+    renderSupportMatrixTable();
   }
 }
 
-function matchSupportFilter(char, routeKey) {
-  if (currentSupportFilter === "all") return true;
-
-  const checkRoute = (r) => {
-    const suppVal = (char[r]?.support || "").trim();
-    if (currentSupportFilter === "init") {
-      return suppVal === "初期";
-    }
-    const match = suppVal.match(/(\d+)/);
-    return match ? match[1] === currentSupportFilter : false;
-  };
-
-  if (routeKey === "all") {
-    return ["kai", "dietrich", "theodora", "leda"].some(r => checkRoute(r));
-  } else {
-    return checkRoute(routeKey);
-  }
-}
-
-// テーブル描画
-function renderTable() {
+// ========================================================
+// 1. キャラクター別 詳細マトリクス描画
+// ========================================================
+function renderCharDetailTable() {
+  const thead = document.getElementById("charTableHead");
   const tbody = document.getElementById("charTableBody");
-  tbody.innerHTML = "";
 
+  // ヘッダー生成
+  thead.innerHTML = `
+    <tr>
+      <th rowspan="2" class="col-char sortable" onclick="handleSort('name')" title="名前順で並べ替え">
+        キャラクター <span class="sort-icon" id="sort-icon-name">⇅</span>
+      </th>
+      <th colspan="4" class="th-hero th-kai col-hero-kai">カイ</th>
+      <th colspan="4" class="th-hero th-dietrich col-hero-dietrich">ディートリヒ</th>
+      <th colspan="4" class="th-hero th-theodora col-hero-theodora">セオドラ</th>
+      <th colspan="4" class="th-hero th-leda col-hero-leda">レダ</th>
+    </tr>
+    <tr>
+      <th class="th-sub col-hero-kai sortable" style="width: 55px;" onclick="handleSort('kai.support')" title="支援順でソート">
+        支援 <span class="sort-icon" id="sort-icon-kai-support">⇅</span>
+      </th>
+      <th class="th-sub col-hero-kai sortable" style="width: 55px;" onclick="handleSort('kai.fame')" title="名声順でソート">
+        名声 <span class="sort-icon" id="sort-icon-kai-fame">⇅</span>
+      </th>
+      <th class="th-sub col-hero-kai">加入条件</th>
+      <th class="th-sub col-hero-kai sortable" style="width: 70px;" onclick="handleSort('kai.limit')" title="期限順でソート">
+        期限 <span class="sort-icon" id="sort-icon-kai-limit">⇅</span>
+      </th>
+
+      <th class="th-sub col-hero-dietrich sortable" style="width: 55px;" onclick="handleSort('dietrich.support')" title="支援順でソート">
+        支援 <span class="sort-icon" id="sort-icon-dietrich-support">⇅</span>
+      </th>
+      <th class="th-sub col-hero-dietrich sortable" style="width: 55px;" onclick="handleSort('dietrich.fame')" title="名声順でソート">
+        名声 <span class="sort-icon" id="sort-icon-dietrich-fame">⇅</span>
+      </th>
+      <th class="th-sub col-hero-dietrich">加入条件</th>
+      <th class="th-sub col-hero-dietrich sortable" style="width: 70px;" onclick="handleSort('dietrich.limit')" title="期限順でソート">
+        期限 <span class="sort-icon" id="sort-icon-dietrich-limit">⇅</span>
+      </th>
+
+      <th class="th-sub col-hero-theodora sortable" style="width: 55px;" onclick="handleSort('theodora.support')" title="支援順でソート">
+        支援 <span class="sort-icon" id="sort-icon-theodora-support">⇅</span>
+      </th>
+      <th class="th-sub col-hero-theodora sortable" style="width: 55px;" onclick="handleSort('theodora.fame')" title="名声順でソート">
+        名声 <span class="sort-icon" id="sort-icon-theodora-fame">⇅</span>
+      </th>
+      <th class="th-sub col-hero-theodora">加入条件</th>
+      <th class="th-sub col-hero-theodora sortable" style="width: 70px;" onclick="handleSort('theodora.limit')" title="期限順でソート">
+        期限 <span class="sort-icon" id="sort-icon-theodora-limit">⇅</span>
+      </th>
+
+      <th class="th-sub col-hero-leda sortable" style="width: 55px;" onclick="handleSort('leda.support')" title="支援順でソート">
+        支援 <span class="sort-icon" id="sort-icon-leda-support">⇅</span>
+      </th>
+      <th class="th-sub col-hero-leda sortable" style="width: 55px;" onclick="handleSort('leda.fame')" title="名声順でソート">
+        名声 <span class="sort-icon" id="sort-icon-leda-fame">⇅</span>
+      </th>
+      <th class="th-sub col-hero-leda">加入条件</th>
+      <th class="th-sub col-hero-leda sortable" style="width: 70px;" onclick="handleSort('leda.limit')" title="期限順でソート">
+        期限 <span class="sort-icon" id="sort-icon-leda-limit">⇅</span>
+      </th>
+    </tr>
+  `;
+
+  tbody.innerHTML = "";
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
   const unjoinedOnly = document.getElementById("unjoinedOnly").checked;
-  currentFameFilter = document.getElementById("fameFilter").value;
-  currentSupportFilter = document.getElementById("supportFilter").value;
 
-  // ソート処理
   let listToRender = [...characters];
   if (sortState.key && sortState.order) {
     listToRender.sort((a, b) => {
@@ -226,7 +182,6 @@ function renderTable() {
   let displayedCount = 0;
 
   listToRender.forEach((char) => {
-    // 1. 未加入のみフィルター
     if (unjoinedOnly) {
       if (currentRoute === "all") {
         const allJoined = ["kai", "dietrich", "theodora", "leda"].every(r => !!routeJoinedStatus[`${char.id}_${r}`]);
@@ -236,13 +191,6 @@ function renderTable() {
       }
     }
 
-    // 2. 名声Lv抽出フィルター
-    if (!matchFameFilter(char, currentRoute)) return;
-
-    // 3. 支援Lv抽出フィルター
-    if (!matchSupportFilter(char, currentRoute)) return;
-
-    // 4. キーワード検索
     if (query) {
       const searchTarget = [
         char.name,
@@ -251,22 +199,18 @@ function renderTable() {
         char.theodora?.cond,
         char.leda?.cond
       ].join(" ").toLowerCase();
-
       if (!searchTarget.includes(query)) return;
     }
 
     displayedCount++;
 
     const tr = document.createElement("tr");
-
-    // キャラクター名セル（クリックで編集モーダル）
     const charTd = `
       <td class="col-char" onclick="openEditModal('${char.id}')" title="クリックして条件を編集">
         ${char.name}
       </td>
     `;
 
-    // 各主人公セル
     const makeCells = (routeKey, routeTitle) => {
       const isJoined = !!routeJoinedStatus[`${char.id}_${routeKey}`];
       const d = char[routeKey] || { support: "-", fame: "-", cond: "-", limit: "-" };
@@ -310,23 +254,320 @@ function renderTable() {
     tbody.appendChild(tr);
   });
 
-  // 件数表示
-  const countEl = document.getElementById("hitCount");
-  if (countEl) {
-    countEl.textContent = `${displayedCount} / ${characters.length} 件`;
-  }
-
+  updateHitCount(displayedCount);
   applyRouteVisibility();
+  updateSortIcons();
 }
 
-// ルート切り替え
+// ========================================================
+// 2. 名声別 早見マトリクス描画（縦: 名声Lv / 横: 4主人公）
+// ========================================================
+function renderFameMatrixTable() {
+  const thead = document.getElementById("charTableHead");
+  const tbody = document.getElementById("charTableBody");
+
+  thead.innerHTML = `
+    <tr>
+      <th class="th-category" style="width: 130px;">名声レベル</th>
+      <th class="th-hero th-kai">カイ</th>
+      <th class="th-hero th-dietrich">ディートリヒ</th>
+      <th class="th-hero th-theodora">セオドラ</th>
+      <th class="th-hero th-leda">レダ</th>
+    </tr>
+  `;
+
+  tbody.innerHTML = "";
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  const unjoinedOnly = document.getElementById("unjoinedOnly").checked;
+
+  // 名声の行定義
+  const FAME_ROWS = [
+    { label: "条件なし / 初期", key: "none" },
+    { label: "名声 Lv.2", key: "2" },
+    { label: "名声 Lv.3", key: "3" },
+    { label: "名声 Lv.4", key: "4" },
+    { label: "名声 Lv.5", key: "5" },
+    { label: "名声 Lv.6", key: "6" },
+    { label: "名声 Lv.7", key: "7" },
+    { label: "名声 Lv.8", key: "8" },
+    { label: "名声 Lv.9", key: "9" },
+    { label: "第3部加入（救世編）", key: "3rd" }
+  ];
+
+  const routes = [
+    { key: "kai", name: "カイ" },
+    { key: "dietrich", name: "ディートリヒ" },
+    { key: "theodora", name: "セオドラ" },
+    { key: "leda", name: "レダ" }
+  ];
+
+  let totalCharsRendered = 0;
+
+  FAME_ROWS.forEach(rowDef => {
+    const tr = document.createElement("tr");
+
+    // 左固定ヘッダーセル
+    let rowHtml = `<td class="th-category">${rowDef.label}</td>`;
+
+    // 4主人公の各セル
+    routes.forEach(r => {
+      // その主人公で該当するキャラを抽出
+      const matched = characters.filter(char => {
+        const d = char[r.key] || {};
+        const fame = (d.fame || "").trim();
+        const cond = (d.cond || "");
+
+        // 検索フィルター
+        if (query) {
+          const searchTarget = [char.name, cond].join(" ").toLowerCase();
+          if (!searchTarget.includes(query)) return false;
+        }
+
+        // 未加入のみフィルター
+        if (unjoinedOnly && routeJoinedStatus[`${char.id}_${r.key}`]) {
+          return false;
+        }
+
+        // 名声判定
+        if (rowDef.key === "none") {
+          return (fame === "-" || fame === "") && !cond.includes("3部") && (d.support === "初期" || cond.includes("自動") || cond.includes("初期"));
+        }
+        if (rowDef.key === "3rd") {
+          return cond.includes("3部");
+        }
+        const m = fame.match(/(\d+)/);
+        return m ? m[1] === rowDef.key : false;
+      });
+
+      let cellContent = "";
+      if (matched.length === 0) {
+        cellContent = `<span class="empty-cell-text">-</span>`;
+      } else {
+        totalCharsRendered += matched.length;
+        cellContent = `<div class="char-chip-list">` + matched.map(char => {
+          const isJoined = !!routeJoinedStatus[`${char.id}_${r.key}`];
+          const supp = char[r.key]?.support ? `(${char[r.key].support})` : "";
+          return `
+            <div class="char-chip ${isJoined ? 'joined' : ''}" 
+                 onclick="toggleRouteJoined('${char.id}', '${r.key}', event)"
+                 title="タップで${r.name}篇の加入状態を切替">
+              <span>${char.name}</span>
+              <span class="char-chip-sub">${supp}</span>
+            </div>
+          `;
+        }).join("") + `</div>`;
+      }
+
+      rowHtml += `<td class="matrix-cell">${cellContent}</td>`;
+    });
+
+    tr.innerHTML = rowHtml;
+    tbody.appendChild(tr);
+  });
+
+  updateHitCount(totalCharsRendered, "延べ");
+}
+
+// ========================================================
+// 3. 支援別 早見マトリクス描画（縦: 支援Lv / 横: 4主人公）
+// ========================================================
+function renderSupportMatrixTable() {
+  const thead = document.getElementById("charTableHead");
+  const tbody = document.getElementById("charTableBody");
+
+  thead.innerHTML = `
+    <tr>
+      <th class="th-category" style="width: 130px;">支援レベル</th>
+      <th class="th-hero th-kai">カイ</th>
+      <th class="th-hero th-dietrich">ディートリヒ</th>
+      <th class="th-hero th-theodora">セオドラ</th>
+      <th class="th-hero th-leda">レダ</th>
+    </tr>
+  `;
+
+  tbody.innerHTML = "";
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  const unjoinedOnly = document.getElementById("unjoinedOnly").checked;
+
+  // 支援の行定義
+  const SUPPORT_ROWS = [
+    { label: "初期加入（支援不要）", key: "init" },
+    { label: "支援 Lv.1", key: "1" },
+    { label: "支援 Lv.2", key: "2" },
+    { label: "支援 Lv.3", key: "3" },
+    { label: "第3部加入（救世編）", key: "3rd" }
+  ];
+
+  const routes = [
+    { key: "kai", name: "カイ" },
+    { key: "dietrich", name: "ディートリヒ" },
+    { key: "theodora", name: "セオドラ" },
+    { key: "leda", name: "レダ" }
+  ];
+
+  let totalCharsRendered = 0;
+
+  SUPPORT_ROWS.forEach(rowDef => {
+    const tr = document.createElement("tr");
+    let rowHtml = `<td class="th-category">${rowDef.label}</td>`;
+
+    routes.forEach(r => {
+      const matched = characters.filter(char => {
+        const d = char[r.key] || {};
+        const supp = (d.support || "").trim();
+        const cond = (d.cond || "");
+
+        // 検索フィルター
+        if (query) {
+          const searchTarget = [char.name, cond].join(" ").toLowerCase();
+          if (!searchTarget.includes(query)) return false;
+        }
+
+        // 未加入のみフィルター
+        if (unjoinedOnly && routeJoinedStatus[`${char.id}_${r.key}`]) {
+          return false;
+        }
+
+        // 支援判定
+        if (rowDef.key === "init") {
+          return supp === "初期";
+        }
+        if (rowDef.key === "3rd") {
+          return cond.includes("3部");
+        }
+        const m = supp.match(/(\d+)/);
+        return m ? m[1] === rowDef.key : false;
+      });
+
+      let cellContent = "";
+      if (matched.length === 0) {
+        cellContent = `<span class="empty-cell-text">-</span>`;
+      } else {
+        totalCharsRendered += matched.length;
+        cellContent = `<div class="char-chip-list">` + matched.map(char => {
+          const isJoined = !!routeJoinedStatus[`${char.id}_${r.key}`];
+          const fame = char[r.key]?.fame && char[r.key]?.fame !== "-" ? `(👑${char[r.key].fame})` : "";
+          return `
+            <div class="char-chip ${isJoined ? 'joined' : ''}" 
+                 onclick="toggleRouteJoined('${char.id}', '${r.key}', event)"
+                 title="タップで${r.name}篇の加入状態を切替">
+              <span>${char.name}</span>
+              <span class="char-chip-sub">${fame}</span>
+            </div>
+          `;
+        }).join("") + `</div>`;
+      }
+
+      rowHtml += `<td class="matrix-cell">${cellContent}</td>`;
+    });
+
+    tr.innerHTML = rowHtml;
+    tbody.appendChild(tr);
+  });
+
+  updateHitCount(totalCharsRendered, "延べ");
+}
+
+// 件数表示の更新
+function updateHitCount(count, prefix = "") {
+  const countEl = document.getElementById("hitCount");
+  if (countEl) {
+    if (prefix) {
+      countEl.textContent = `${prefix} ${count} 名表示中`;
+    } else {
+      countEl.textContent = `${count} / ${characters.length} 件`;
+    }
+  }
+}
+
+// ソート用値の抽出
+function parseSortValue(char, key) {
+  if (key === "name") return char.name || "";
+  const [hero, field] = key.split(".");
+  const d = (char[hero] && typeof char[hero] === "object") ? char[hero] : {};
+  const val = (d[field] || "").trim();
+
+  if (field === "support") {
+    if (val === "初期") return 0;
+    const match = val.match(/(\d+)/);
+    if (match) return parseInt(match[1], 10);
+    if (val.includes("不可") || val === "-") return 999;
+    return 50;
+  }
+
+  if (field === "fame") {
+    if (val === "-" || !val) {
+      if (d.support === "初期" || d.cond?.includes("自動") || d.cond?.includes("初期")) return 0;
+      if (d.cond?.includes("3部")) return 300;
+      if (d.cond?.includes("不可")) return 999;
+      return 0;
+    }
+    const match = val.match(/(\d+)/);
+    if (match) return parseInt(match[1], 10);
+    return 50;
+  }
+
+  if (field === "limit") {
+    if (val === "自動") return 0;
+    const match = val.match(/(\d+)章/);
+    if (match) return parseInt(match[1], 10);
+    if (val.includes("3部")) return 30;
+    if (val.includes("不可")) return 999;
+    return 50;
+  }
+
+  return val;
+}
+
+// ソートハンドラ
+function handleSort(key) {
+  if (sortState.key === key) {
+    if (sortState.order === "asc") {
+      sortState.order = "desc";
+    } else if (sortState.order === "desc") {
+      sortState.key = null;
+      sortState.order = null;
+    }
+  } else {
+    sortState.key = key;
+    sortState.order = "asc";
+  }
+  renderApp();
+}
+
+function updateSortIcons() {
+  const sortKeys = [
+    "name",
+    "kai.support", "kai.fame", "kai.limit",
+    "dietrich.support", "dietrich.fame", "dietrich.limit",
+    "theodora.support", "theodora.fame", "theodora.limit",
+    "leda.support", "leda.fame", "leda.limit"
+  ];
+
+  sortKeys.forEach(k => {
+    const elementId = "sort-icon-" + k.replace(".", "-");
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const parentTh = el.closest(".sortable");
+
+    if (sortState.key === k) {
+      if (parentTh) parentTh.classList.add("active-sort");
+      el.textContent = sortState.order === "asc" ? "▲" : "▼";
+    } else {
+      if (parentTh) parentTh.classList.remove("active-sort");
+      el.textContent = "⇅";
+    }
+  });
+}
+
+// ルート切り替え（キャラ別表用）
 function setRouteFilter(route) {
   currentRoute = route;
   document.querySelectorAll(".tab-btn").forEach(btn => {
     btn.classList.toggle("active", btn.getAttribute("data-route") === route);
   });
   applyRouteVisibility();
-  renderTable();
+  renderApp();
 }
 
 function applyRouteVisibility() {
@@ -344,7 +585,7 @@ function applyRouteVisibility() {
 }
 
 function filterTable() {
-  renderTable();
+  renderApp();
 }
 
 function toggleCompactMode() {
@@ -469,7 +710,7 @@ function saveCharacter() {
 
   localStorage.setItem(STORAGE_KEY_CHARS, JSON.stringify(characters));
   closeAddModal();
-  renderTable();
+  renderApp();
 }
 
 // バックアップ・復元
@@ -507,7 +748,7 @@ function importData() {
           routeJoinedStatus = imported.routeJoinedStatus;
           localStorage.setItem(STORAGE_KEY_ROUTE_JOINED, JSON.stringify(routeJoinedStatus));
         }
-        renderTable();
+        renderApp();
         alert("データを復元しました！");
       } catch (err) {
         alert("JSONの読み込みに失敗しました");
@@ -520,4 +761,3 @@ function importData() {
 
 // 実行開始
 init();
-

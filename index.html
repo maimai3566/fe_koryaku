@@ -14,15 +14,22 @@
     <div class="title-row">
       <div>
         <h1>⚔️ FE 万紫千紅 - 主人公別 スカウト・加入条件</h1>
-        <div class="subtitle">カイ / ディートリヒ / セオドラ / レダ の4主人公比較マトリクス表</div>
+        <div class="subtitle">カイ / ディートリヒ / セオドラ / レダ の4主人公比較マトリクス</div>
       </div>
       <div class="action-btns">
-        <span class="hit-count" id="hitCount">-- / -- 件</span>
+        <span class="hit-count" id="hitCount">-- 件</span>
         <button class="btn" onclick="resetToLatestData()" title="初期データに更新">🔄 リセット</button>
         <button class="btn" onclick="exportData()">💾 バックアップ</button>
         <button class="btn" onclick="importData()">📂 復元</button>
         <button class="btn btn-primary" onclick="openAddModal()">＋ キャラ追加</button>
       </div>
+    </div>
+
+    <!-- 表示モード切替（メインタブ） -->
+    <div class="view-mode-tabs">
+      <button class="mode-btn active" data-mode="char" onclick="setViewMode('char')">📋 キャラ別 詳細表</button>
+      <button class="mode-btn" data-mode="fame" onclick="setViewMode('fame')">👑 名声別 早見一覧</button>
+      <button class="mode-btn" data-mode="support" onclick="setViewMode('support')">💖 支援別 早見一覧</button>
     </div>
 
     <!-- コントロールバー -->
@@ -32,8 +39,8 @@
         <input type="text" id="searchInput" placeholder="キャラ名・条件で検索..." oninput="filterTable()">
       </div>
 
-      <!-- ルート表示切替タブ -->
-      <div class="route-tabs">
+      <!-- ルート表示切替タブ（キャラ別詳細表でのみ表示） -->
+      <div class="route-tabs" id="routeTabs">
         <button class="tab-btn active" data-route="all" onclick="setRouteFilter('all')">全主人公 比較</button>
         <button class="tab-btn" data-route="kai" onclick="setRouteFilter('kai')">カイ篇</button>
         <button class="tab-btn" data-route="dietrich" onclick="setRouteFilter('dietrich')">ディートリヒ篇</button>
@@ -41,41 +48,11 @@
         <button class="tab-btn" data-route="leda" onclick="setRouteFilter('leda')">レダ篇</button>
       </div>
 
-      <!-- 👑 名声Lv 抽出フィルター -->
-      <div class="filter-select-group">
-        <label for="fameFilter">👑 名声:</label>
-        <select id="fameFilter" onchange="filterTable()">
-          <option value="all">すべて</option>
-          <option value="none">名声不要 / 初期</option>
-          <option value="2">Lv.2</option>
-          <option value="3">Lv.3</option>
-          <option value="4">Lv.4</option>
-          <option value="5">Lv.5</option>
-          <option value="6">Lv.6</option>
-          <option value="7">Lv.7</option>
-          <option value="8">Lv.8</option>
-          <option value="9">Lv.9</option>
-          <option value="3rd">3部加入</option>
-        </select>
-      </div>
-
-      <!-- 💖 支援Lv 抽出フィルター -->
-      <div class="filter-select-group">
-        <label for="supportFilter">💖 支援:</label>
-        <select id="supportFilter" onchange="filterTable()">
-          <option value="all">すべて</option>
-          <option value="init">初期</option>
-          <option value="1">Lv.1</option>
-          <option value="2">Lv.2</option>
-          <option value="3">Lv.3</option>
-        </select>
-      </div>
-
       <!-- 未加入フィルター & スリム化 -->
       <div class="filter-options">
         <label>
           <input type="checkbox" id="unjoinedOnly" onchange="filterTable()">
-          未加入のみ
+          未加入のみ表示
         </label>
         <label>
           <input type="checkbox" id="compactMode" onchange="toggleCompactMode()">
@@ -88,64 +65,8 @@
   <!-- テーブルエリア -->
   <div class="table-container">
     <table id="charTable">
-      <thead>
-        <!-- 1行目: 主人公大見出し -->
-        <tr>
-          <th rowspan="2" class="col-char sortable" onclick="handleSort('name')" title="名前順で並べ替え">
-            キャラクター <span class="sort-icon" id="sort-icon-name">⇅</span>
-          </th>
-          <th colspan="4" class="th-hero th-kai col-hero-kai">カイ</th>
-          <th colspan="4" class="th-hero th-dietrich col-hero-dietrich">ディートリヒ</th>
-          <th colspan="4" class="th-hero th-theodora col-hero-theodora">セオドラ</th>
-          <th colspan="4" class="th-hero th-leda col-hero-leda">レダ</th>
-        </tr>
-        <!-- 2行目: 支援、名声、加入条件、期限 -->
-        <tr>
-          <!-- カイ -->
-          <th class="th-sub col-hero-kai sortable" style="width: 55px;" onclick="handleSort('kai.support')" title="カイ篇の支援順でソート">
-            支援 <span class="sort-icon" id="sort-icon-kai-support">⇅</span>
-          </th>
-          <th class="th-sub col-hero-kai sortable" style="width: 55px;" onclick="handleSort('kai.fame')" title="カイ篇の名声順でソート">
-            名声 <span class="sort-icon" id="sort-icon-kai-fame">⇅</span>
-          </th>
-          <th class="th-sub col-hero-kai">加入条件</th>
-          <th class="th-sub col-hero-kai sortable" style="width: 70px;" onclick="handleSort('kai.limit')" title="カイ篇の期限順でソート">
-            期限 <span class="sort-icon" id="sort-icon-kai-limit">⇅</span>
-          </th>
-          <!-- ディートリヒ -->
-          <th class="th-sub col-hero-dietrich sortable" style="width: 55px;" onclick="handleSort('dietrich.support')" title="ディートリヒ篇の支援順でソート">
-            支援 <span class="sort-icon" id="sort-icon-dietrich-support">⇅</span>
-          </th>
-          <th class="th-sub col-hero-dietrich sortable" style="width: 55px;" onclick="handleSort('dietrich.fame')" title="ディートリヒ篇の名声順でソート">
-            名声 <span class="sort-icon" id="sort-icon-dietrich-fame">⇅</span>
-          </th>
-          <th class="th-sub col-hero-dietrich">加入条件</th>
-          <th class="th-sub col-hero-dietrich sortable" style="width: 70px;" onclick="handleSort('dietrich.limit')" title="ディートリヒ篇の期限順でソート">
-            期限 <span class="sort-icon" id="sort-icon-dietrich-limit">⇅</span>
-          </th>
-          <!-- セオドラ -->
-          <th class="th-sub col-hero-theodora sortable" style="width: 55px;" onclick="handleSort('theodora.support')" title="セオドラ篇の支援順でソート">
-            支援 <span class="sort-icon" id="sort-icon-theodora-support">⇅</span>
-          </th>
-          <th class="th-sub col-hero-theodora sortable" style="width: 55px;" onclick="handleSort('theodora.fame')" title="セオドラ篇の名声順でソート">
-            名声 <span class="sort-icon" id="sort-icon-theodora-fame">⇅</span>
-          </th>
-          <th class="th-sub col-hero-theodora">加入条件</th>
-          <th class="th-sub col-hero-theodora sortable" style="width: 70px;" onclick="handleSort('theodora.limit')" title="セオドラ篇の期限順でソート">
-            期限 <span class="sort-icon" id="sort-icon-theodora-limit">⇅</span>
-          </th>
-          <!-- レダ -->
-          <th class="th-sub col-hero-leda sortable" style="width: 55px;" onclick="handleSort('leda.support')" title="レダ篇の支援順でソート">
-            支援 <span class="sort-icon" id="sort-icon-leda-support">⇅</span>
-          </th>
-          <th class="th-sub col-hero-leda sortable" style="width: 55px;" onclick="handleSort('leda.fame')" title="レダ篇の名声順でソート">
-            名声 <span class="sort-icon" id="sort-icon-leda-fame">⇅</span>
-          </th>
-          <th class="th-sub col-hero-leda">加入条件</th>
-          <th class="th-sub col-hero-leda sortable" style="width: 70px;" onclick="handleSort('leda.limit')" title="レダ篇の期限順でソート">
-            期限 <span class="sort-icon" id="sort-icon-leda-limit">⇅</span>
-          </th>
-        </tr>
+      <thead id="charTableHead">
+        <!-- JSで動的レンダリング -->
       </thead>
       <tbody id="charTableBody">
         <!-- JSで動的レンダリング -->
@@ -154,7 +75,7 @@
   </div>
 
   <div class="footer-note">
-    💡 <strong>Tips:</strong> 各主人公のマスをタップすると、<strong>そのルートの加入状態（加入済・未加入）を個別に切り替え</strong>られます！キャラ名をタップすると条件を自由に編集できます。
+    💡 <strong>Tips:</strong> 「👑 名声別 早見一覧」「💖 支援別 早見一覧」では、縦軸にレベル・横軸に4人の主人公が並び、該当キャラが一覧表示されます！キャラ名をタップするとそのルートの加入状態（加入済✔ / 未加入）を切り替えられます。
   </div>
 </div>
 
