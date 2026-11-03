@@ -422,19 +422,79 @@ table.single-route-view td.val-limit {
 }
 
 /* --- 名声別 / 支援別 早見表 専用スタイル --- */
+
+/* 1. 早見表 全主人公表示時（従来の900pxから620pxにスリム化して横長感を解消） */
+table.all-route-matrix {
+  min-width: 600px !important;
+  width: 100% !important;
+  max-width: 800px !important;
+  table-layout: fixed !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+table.all-route-matrix .th-category {
+  width: 95px !important;
+  min-width: 95px !important;
+  max-width: 95px !important;
+  font-size: 0.82rem;
+  padding: 8px 4px;
+}
+
+table.all-route-matrix .matrix-cell {
+  width: calc((100% - 95px) / 4) !important;
+  padding: 6px 6px;
+  vertical-align: top;
+}
+
+/* 2. 早見表 単一ルート表示時（スマホ1画面ジャストフィット・横スクロールゼロ！） */
+table.single-route-matrix {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 480px !important;
+  table-layout: fixed !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+table.single-route-matrix .th-category {
+  width: 100px !important;
+  min-width: 100px !important;
+  max-width: 100px !important;
+  font-size: 0.85rem;
+  padding: 10px 6px;
+}
+
+table.single-route-matrix .matrix-cell {
+  width: auto !important;
+  padding: 8px 10px;
+  vertical-align: top;
+}
+
+table.single-route-matrix .char-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 6px;
+}
+
+table.single-route-matrix .char-chip {
+  padding: 5px 9px;
+  font-size: 0.86rem;
+}
+
+/* 共通カテゴリー見出し（レベル列） */
 .th-category {
   position: sticky;
   left: 0;
   z-index: 10;
   background-color: var(--table-sticky-bg);
-  min-width: 110px;
-  max-width: 130px;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.35);
   font-weight: 700;
-  font-size: 0.92rem;
   color: var(--accent-gold);
   text-align: center;
   vertical-align: middle;
+  word-break: break-word;
 }
 
 th.th-category {
@@ -446,9 +506,7 @@ th.th-category {
 /* 早見表の各セル（キャラ名リスト） */
 .matrix-cell {
   vertical-align: top;
-  padding: 8px 10px;
   background-color: var(--bg-card);
-  width: 22%;
 }
 
 .char-chip-list {
@@ -461,13 +519,13 @@ th.th-category {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 6px;
-  padding: 4px 8px;
+  gap: 5px;
+  padding: 3px 6px;
   border-radius: 6px;
   background: #111823;
   border: 1px solid var(--border);
   color: var(--text-main);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
@@ -496,10 +554,11 @@ th.th-category {
 }
 
 .char-chip-sub {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  font-weight: normal;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 500;
   text-decoration: none !important;
+  white-space: nowrap;
 }
 
 .empty-cell-text {

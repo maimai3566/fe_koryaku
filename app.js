@@ -83,9 +83,10 @@ function setViewMode(mode) {
     btn.classList.toggle("active", btn.getAttribute("data-mode") === mode);
   });
 
+  // 全モードでルート切り替えタブを表示可能にする（スマホでの横スクロール負担軽減！）
   const routeTabsEl = document.getElementById("routeTabs");
   if (routeTabsEl) {
-    routeTabsEl.style.display = (mode === "char") ? "flex" : "none";
+    routeTabsEl.style.display = "flex";
   }
 
   renderApp();
@@ -324,24 +325,48 @@ function renderCharDetailTable() {
 }
 
 // ========================================================
-// 2. 名声別 早見マトリクス描画（縦: 名声Lv / 横: 4主人公）
+// 2. 名声別 早見マトリクス描画（縦: 名声Lv / 横: 主人公）
 // ========================================================
 function renderFameMatrixTable() {
   const table = document.getElementById("charTable");
   const thead = document.getElementById("charTableHead");
   const tbody = document.getElementById("charTableBody");
 
-  table.classList.remove("single-route-view");
+  const isSingle = (currentRoute !== "all");
+  const allRoutes = [
+    { key: "kai", name: "カイ" },
+    { key: "dietrich", name: "ディートリヒ" },
+    { key: "theodora", name: "セオドラ" },
+    { key: "leda", name: "レダ" }
+  ];
+  const routes = isSingle 
+    ? allRoutes.filter(r => r.key === currentRoute) 
+    : allRoutes;
 
-  thead.innerHTML = `
-    <tr>
-      <th class="th-category" style="width: 120px;">名声レベル</th>
-      <th class="th-hero th-kai">カイ</th>
-      <th class="th-hero th-dietrich">ディートリヒ</th>
-      <th class="th-hero th-theodora">セオドラ</th>
-      <th class="th-hero th-leda">レダ</th>
-    </tr>
-  `;
+  table.classList.remove("single-route-view");
+  if (isSingle) {
+    table.classList.add("single-route-matrix");
+    table.classList.remove("all-route-matrix");
+    const r = routes[0];
+    thead.innerHTML = `
+      <tr>
+        <th class="th-category" style="width: 100px;">名声レベル</th>
+        <th class="th-hero th-${r.key}">${r.name}篇</th>
+      </tr>
+    `;
+  } else {
+    table.classList.add("all-route-matrix");
+    table.classList.remove("single-route-matrix");
+    thead.innerHTML = `
+      <tr>
+        <th class="th-category" style="width: 95px;">名声レベル</th>
+        <th class="th-hero th-kai">カイ</th>
+        <th class="th-hero th-dietrich">ディートリヒ</th>
+        <th class="th-hero th-theodora">セオドラ</th>
+        <th class="th-hero th-leda">レダ</th>
+      </tr>
+    `;
+  }
 
   tbody.innerHTML = "";
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
@@ -358,13 +383,6 @@ function renderFameMatrixTable() {
     { label: "名声 Lv.8", key: "8" },
     { label: "名声 Lv.9", key: "9" },
     { label: "第3部加入（救世編）", key: "3rd" }
-  ];
-
-  const routes = [
-    { key: "kai", name: "カイ" },
-    { key: "dietrich", name: "ディートリヒ" },
-    { key: "theodora", name: "セオドラ" },
-    { key: "leda", name: "レダ" }
   ];
 
   let totalCharsRendered = 0;
@@ -405,12 +423,16 @@ function renderFameMatrixTable() {
         totalCharsRendered += matched.length;
         cellContent = `<div class="char-chip-list">` + matched.map(char => {
           const isJoined = !!routeJoinedStatus[`${char.id}_${r.key}`];
-          const supp = char[r.key]?.support ? `(${char[r.key].support})` : "";
+          let supp = "";
+          const suppVal = (char[r.key]?.support || "").trim();
+          if (suppVal && suppVal !== "-") {
+            supp = `(💖${suppVal})`;
+          }
           return `
             <div class="char-chip ${isJoined ? 'joined' : ''}" 
                  onclick="toggleRouteJoined('${char.id}', '${r.key}', event)"
                  title="タップで${r.name}篇の加入状態を切替">
-              <span>${char.name}</span>
+              <span class="char-chip-name">${char.name}</span>
               <span class="char-chip-sub">${supp}</span>
             </div>
           `;
@@ -428,24 +450,48 @@ function renderFameMatrixTable() {
 }
 
 // ========================================================
-// 3. 支援別 早見マトリクス描画（縦: 支援Lv / 横: 4主人公）
+// 3. 支援別 早見マトリクス描画（縦: 支援Lv / 横: 主人公）
 // ========================================================
 function renderSupportMatrixTable() {
   const table = document.getElementById("charTable");
   const thead = document.getElementById("charTableHead");
   const tbody = document.getElementById("charTableBody");
 
-  table.classList.remove("single-route-view");
+  const isSingle = (currentRoute !== "all");
+  const allRoutes = [
+    { key: "kai", name: "カイ" },
+    { key: "dietrich", name: "ディートリヒ" },
+    { key: "theodora", name: "セオドラ" },
+    { key: "leda", name: "レダ" }
+  ];
+  const routes = isSingle 
+    ? allRoutes.filter(r => r.key === currentRoute) 
+    : allRoutes;
 
-  thead.innerHTML = `
-    <tr>
-      <th class="th-category" style="width: 120px;">支援レベル</th>
-      <th class="th-hero th-kai">カイ</th>
-      <th class="th-hero th-dietrich">ディートリヒ</th>
-      <th class="th-hero th-theodora">セオドラ</th>
-      <th class="th-hero th-leda">レダ</th>
-    </tr>
-  `;
+  table.classList.remove("single-route-view");
+  if (isSingle) {
+    table.classList.add("single-route-matrix");
+    table.classList.remove("all-route-matrix");
+    const r = routes[0];
+    thead.innerHTML = `
+      <tr>
+        <th class="th-category" style="width: 100px;">支援レベル</th>
+        <th class="th-hero th-${r.key}">${r.name}篇</th>
+      </tr>
+    `;
+  } else {
+    table.classList.add("all-route-matrix");
+    table.classList.remove("single-route-matrix");
+    thead.innerHTML = `
+      <tr>
+        <th class="th-category" style="width: 95px;">支援レベル</th>
+        <th class="th-hero th-kai">カイ</th>
+        <th class="th-hero th-dietrich">ディートリヒ</th>
+        <th class="th-hero th-theodora">セオドラ</th>
+        <th class="th-hero th-leda">レダ</th>
+      </tr>
+    `;
+  }
 
   tbody.innerHTML = "";
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
@@ -457,13 +503,6 @@ function renderSupportMatrixTable() {
     { label: "支援 Lv.2", key: "2" },
     { label: "支援 Lv.3", key: "3" },
     { label: "第3部加入（救世編）", key: "3rd" }
-  ];
-
-  const routes = [
-    { key: "kai", name: "カイ" },
-    { key: "dietrich", name: "ディートリヒ" },
-    { key: "theodora", name: "セオドラ" },
-    { key: "leda", name: "レダ" }
   ];
 
   let totalCharsRendered = 0;
@@ -504,12 +543,16 @@ function renderSupportMatrixTable() {
         totalCharsRendered += matched.length;
         cellContent = `<div class="char-chip-list">` + matched.map(char => {
           const isJoined = !!routeJoinedStatus[`${char.id}_${r.key}`];
-          const fame = char[r.key]?.fame && char[r.key]?.fame !== "-" ? `(👑${char[r.key].fame})` : "";
+          let fame = "";
+          const fameVal = (char[r.key]?.fame || "").trim();
+          if (fameVal && fameVal !== "-") {
+            fame = `(👑${fameVal})`;
+          }
           return `
             <div class="char-chip ${isJoined ? 'joined' : ''}" 
                  onclick="toggleRouteJoined('${char.id}', '${r.key}', event)"
                  title="タップで${r.name}篇の加入状態を切替">
-              <span>${char.name}</span>
+              <span class="char-chip-name">${char.name}</span>
               <span class="char-chip-sub">${fame}</span>
             </div>
           `;
