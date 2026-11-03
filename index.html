@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FE万紫千紅 - スカウト・加入条件まとめ</title>
+  <title>FE万紫千紅 - 主人公別 スカウト・加入条件まとめ</title>
   <style>
     :root {
       --bg-main: #0f141c;
@@ -49,7 +49,7 @@
       background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
+      padding: 18px 20px;
       margin-bottom: 16px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
@@ -64,7 +64,7 @@
     }
 
     h1 {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: var(--accent-gold);
       display: flex;
@@ -77,7 +77,7 @@
       color: var(--text-sub);
     }
 
-    /* コントロールバー（検索・フィルタ・表示切替） */
+    /* コントロールバー */
     .controls {
       display: flex;
       flex-wrap: wrap;
@@ -119,7 +119,7 @@
       opacity: 0.7;
     }
 
-    /* ルート絞り込みボタングループ（スマホで特に効果大） */
+    /* ルート絞り込みボタングループ */
     .route-tabs {
       display: flex;
       flex-wrap: wrap;
@@ -157,7 +157,7 @@
     .tab-btn.active[data-route="theodora"] { background: #7e22ce; }
     .tab-btn.active[data-route="leda"] { background: #be185d; }
 
-    /* オプションフィルター */
+    /* フィルターオプション */
     .filter-options {
       display: flex;
       align-items: center;
@@ -205,7 +205,7 @@
       background-color: #b45309;
     }
 
-    /* テーブルラッパー（横スクロールコンテナ） */
+    /* テーブルラッパー */
     .table-container {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -221,7 +221,7 @@
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
-      min-width: 960px;
+      min-width: 980px;
     }
 
     /* ヘッダー固定 */
@@ -232,7 +232,7 @@
     }
 
     th, td {
-      padding: 10px 12px;
+      padding: 10px 10px;
       border-bottom: 1px solid var(--border);
       border-right: 1px solid var(--border);
       text-align: left;
@@ -260,7 +260,7 @@
     .th-theodora { border-top: 3px solid var(--accent-theodora); color: var(--accent-theodora); }
     .th-leda { border-top: 3px solid var(--accent-leda); color: var(--accent-leda); }
 
-    /* 2行目ヘッダー: サブ項目（支援、名声、加入条件、期限） */
+    /* 2行目ヘッダー */
     .th-sub {
       font-size: 0.78rem;
       background-color: #17212e;
@@ -302,8 +302,8 @@
       left: 0;
       z-index: 10;
       background-color: var(--table-sticky-bg);
-      min-width: 150px;
-      max-width: 180px;
+      min-width: 155px;
+      max-width: 185px;
       box-shadow: 2px 0 6px rgba(0, 0, 0, 0.35);
     }
 
@@ -312,17 +312,10 @@
       background-color: var(--bg-header);
     }
 
-    /* キャラ名表示 */
     .char-info {
       display: flex;
       flex-direction: column;
-      gap: 2px;
-    }
-
-    .char-name-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      gap: 3px;
     }
 
     .char-name {
@@ -331,26 +324,63 @@
       color: #fff;
     }
 
+    .char-origin {
+      font-size: 0.72rem;
+      color: var(--accent-gold);
+      opacity: 0.85;
+    }
+
     .char-class {
       font-size: 0.75rem;
       color: var(--text-muted);
     }
 
-    /* 加入済み行のスタイル */
-    tr.joined {
-      opacity: 0.5;
-      background-color: rgba(34, 197, 94, 0.04);
+    /* ルート別セルのスタイル & タップで加入切り替え */
+    .route-cell {
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.15s, opacity 0.15s;
     }
-    tr.joined .char-name {
+
+    .route-cell:hover {
+      background-color: rgba(255, 255, 255, 0.04);
+    }
+
+    /* 加入済み（グレーアウト）セル */
+    .cell-joined {
+      background-color: rgba(34, 197, 94, 0.06) !important;
+      opacity: 0.45;
+    }
+
+    .cell-joined .val-cond,
+    .cell-joined .val-support,
+    .cell-joined .val-fame,
+    .cell-joined .val-limit {
       text-decoration: line-through;
-      color: var(--text-muted);
+      color: var(--text-muted) !important;
     }
 
-    tr:hover:not(.joined) {
-      background-color: var(--bg-hover);
+    .cell-joined .badge {
+      filter: grayscale(80%);
+      opacity: 0.6;
     }
 
-    /* セル内のバッジ & テキスト */
+    /* 加入済みタグ */
+    .joined-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(34, 197, 94, 0.25);
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      color: #4ade80;
+      margin-right: 4px;
+      vertical-align: middle;
+      text-decoration: none !important;
+    }
+
+    /* 各種バッジ */
     .val-support, .val-fame, .val-limit {
       text-align: center;
       font-weight: 600;
@@ -374,12 +404,6 @@
       color: #4ade80;
     }
 
-    .badge-story {
-      background: rgba(56, 189, 248, 0.15);
-      border-color: rgba(56, 189, 248, 0.4);
-      color: #38bdf8;
-    }
-
     .badge-none {
       color: var(--text-muted);
       font-size: 0.8rem;
@@ -390,13 +414,6 @@
       color: var(--text-main);
       min-width: 140px;
       line-height: 1.35;
-    }
-
-    .val-cond .hint {
-      display: block;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-top: 2px;
     }
 
     /* 非表示ルート列の制御 */
@@ -411,7 +428,7 @@
       background: rgba(234, 179, 8, 0.08);
       border: 1px solid rgba(234, 179, 8, 0.25);
       border-radius: 8px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: #fde047;
       display: flex;
       align-items: center;
@@ -464,7 +481,7 @@
       color: var(--text-sub);
       margin-bottom: 4px;
     }
-    .form-group input, .form-group select, .form-group textarea {
+    .form-group input {
       width: 100%;
       padding: 8px;
       border-radius: 6px;
@@ -481,30 +498,15 @@
       margin-top: 16px;
     }
 
-    /* スマホ向けレスポンシブ微調整 */
+    /* スマホ向け微調整 */
     @media (max-width: 768px) {
-      body {
-        padding: 8px;
-      }
-      header {
-        padding: 14px;
-      }
-      h1 {
-        font-size: 1.15rem;
-      }
-      .col-char {
-        min-width: 125px;
-        max-width: 135px;
-      }
-      .char-name {
-        font-size: 0.88rem;
-      }
-      th, td {
-        padding: 8px 6px;
-      }
-      .val-cond {
-        min-width: 110px;
-      }
+      body { padding: 8px; }
+      header { padding: 12px; }
+      h1 { font-size: 1.1rem; }
+      .col-char { min-width: 130px; max-width: 140px; }
+      .char-name { font-size: 0.88rem; }
+      th, td { padding: 8px 6px; }
+      .val-cond { min-width: 110px; }
     }
   </style>
 </head>
@@ -529,10 +531,10 @@
     <div class="controls">
       <!-- 検索 -->
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="キャラ名・兵種・条件で検索..." oninput="filterTable()">
+        <input type="text" id="searchInput" placeholder="キャラ名・兵種・勢力・条件で検索..." oninput="filterTable()">
       </div>
 
-      <!-- スマホ快適用: ルート表示切替タブ -->
+      <!-- ルート表示切替タブ -->
       <div class="route-tabs">
         <button class="tab-btn active" data-route="all" onclick="setRouteFilter('all')">全主人公 比較</button>
         <button class="tab-btn" data-route="kai" onclick="setRouteFilter('kai')">カイ篇</button>
@@ -541,7 +543,7 @@
         <button class="tab-btn" data-route="leda" onclick="setRouteFilter('leda')">レダ篇</button>
       </div>
 
-      <!-- 未加入のみ絞り込み -->
+      <!-- フィルター -->
       <div class="filter-options">
         <label>
           <input type="checkbox" id="unjoinedOnly" onchange="filterTable()">
@@ -624,33 +626,36 @@
   </div>
 
   <div class="footer-note">
-    💡 <strong>Tips:</strong> 表のヘッダー（「支援」「名声」「期限」や「キャラクター」）をタップすると、<strong>昇順▲・降順▼でソート（並べ替え）</strong>できます！スマホ閲覧時は上部タブで「カイ篇」などを選ぶと、その主人公の列だけが画面幅いっぱいにすっきり表示されます。
+    💡 <strong>Tips:</strong> 各主人公のマスをタップすると、<strong>そのルートの加入状態（加入済・未加入）を個別に切り替え</strong>られます！ヘッダーの「支援」「名声」「期限」をタップすれば昇順▲・降順▼でソートできます。
   </div>
 </div>
 
-<!-- キャラ追加・編集モーダル -->
+<!-- キャラ追加モーダル -->
 <div class="modal-overlay" id="addModal">
   <div class="modal-card">
-    <div class="modal-title" id="modalTitle">＋ 新規キャラクター追加</div>
+    <div class="modal-title">＋ 新規キャラクター追加</div>
     <div class="form-group">
       <label>キャラクター名</label>
-      <input type="text" id="formName" placeholder="例: ティアラ">
+      <input type="text" id="formName" placeholder="例: 新キャラクター">
     </div>
     <div class="form-group">
       <label>初期兵種 / 役割</label>
       <input type="text" id="formClass" placeholder="例: 弓兵 / 回復 / 飛行">
     </div>
+    <div class="form-group">
+      <label>所属・勢力</label>
+      <input type="text" id="formOrigin" placeholder="例: リベイラの風 / スカウト">
+    </div>
 
     <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-gold); margin: 12px 0 6px;">各ルートの加入条件</div>
 
-    <!-- 各ルートの入力欄 -->
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
       <!-- カイ -->
       <div style="background: rgba(56, 189, 248, 0.05); padding: 8px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.2);">
         <div style="color: var(--accent-kai); font-weight: 700; font-size: 0.8rem; margin-bottom: 4px;">カイ篇</div>
         <input type="text" id="formKaiSupport" placeholder="支援Lv (例: 2, 初期)" style="margin-bottom:4px;">
         <input type="text" id="formKaiFame" placeholder="名声Lv (例: 3, -)" style="margin-bottom:4px;">
-        <input type="text" id="formKaiCond" placeholder="加入条件 (例: 贈り物1回 + 選択肢)" style="margin-bottom:4px;">
+        <input type="text" id="formKaiCond" placeholder="加入条件" style="margin-bottom:4px;">
         <input type="text" id="formKaiLimit" placeholder="期限 (例: 1部12章)">
       </div>
 
@@ -690,13 +695,15 @@
 </div>
 
 <script>
-  // 初期マスターデータ（万紫千紅の代表的キャラクター）
+  // 万紫千紅の仲間キャラクター（全26名網羅）
   const DEFAULT_CHARACTERS = [
+    // --- リベイラの風（カイ陣営） ---
     {
       id: "tiara",
       name: "ティアラ",
+      origin: "【リベイラの風】",
       class: "策士 / ロード補佐",
-      kai: { support: "初期", fame: "-", cond: "序幕で自動加入", limit: "自動" },
+      kai: { support: "初期", fame: "-", cond: "序幕で自動加入（主人公補佐）", limit: "自動" },
       dietrich: { support: "Lv.2", fame: "Lv.5", cond: "贈り物1回 + 外伝「義勇の灯火」", limit: "1部12章" },
       theodora: { support: "Lv.2", fame: "Lv.4", cond: "贈り物1回 + 闘技場勝利後会話", limit: "1部12章" },
       leda: { support: "Lv.3", fame: "Lv.6", cond: "酒場興行で好感度獲得 + 交渉", limit: "1部12章" }
@@ -704,91 +711,276 @@
     {
       id: "pieter",
       name: "ピーテル",
+      origin: "【リベイラの風】",
       class: "弓兵（射程+1/ボウナイト）",
-      kai: { support: "初期", fame: "-", cond: "1部1章で自動加入（幼なじみ）", limit: "自動" },
+      kai: { support: "初期", fame: "-", cond: "1部1章で自動加入（義兄弟）", limit: "自動" },
       dietrich: { support: "Lv.2", fame: "Lv.4", cond: "贈り物1回 + 交渉「鉄の弓×3」渡す", limit: "1部12章" },
       theodora: { support: "Lv.2", fame: "Lv.4", cond: "贈り物1回 + 射撃訓練クリア", limit: "1部12章" },
       leda: { support: "Lv.2", fame: "Lv.5", cond: "4章自由行動以降、広場で会話スカウト", limit: "1部12章" }
     },
     {
-      id: "yokai",
-      name: "ヨーカイ",
-      class: "僧侶 / ヒーラー",
-      kai: { support: "Lv.2", fame: "Lv.3", cond: "贈り物1回 + 質問正解「乾酪→満月→芋」", limit: "1部3章〜" },
-      dietrich: { support: "Lv.2", fame: "Lv.5", cond: "医薬品クエストクリア + 交渉", limit: "1部12章" },
-      theodora: { support: "初期", fame: "-", cond: "セオドラ篇 序盤ストーリー加入", limit: "自動" },
-      leda: { support: "Lv.2", fame: "Lv.4", cond: "神殿寄付1回 + スカウト会話", limit: "1部12章" }
+      id: "guzaran",
+      name: "グザラン",
+      origin: "【リベイラの風】",
+      class: "斧戦士 / 前衛アタッカー",
+      kai: { support: "Lv.1", fame: "Lv.2", cond: "序盤酒場会話で即スカウト可能", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.4", cond: "腕比べ勝負（撃破）でスカウト", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.5", cond: "贈り物1回 + 討伐クエストクリア", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.4", cond: "闘技場イベント後、会話スカウト", limit: "1部12章" }
     },
-    {
-      id: "nuzzo",
-      name: "ヌッツォ",
-      class: "狩人 / 高速アタッカー",
-      kai: { support: "Lv.2", fame: "Lv.6", cond: "贈り物1回 + 交渉「鉄の弓×3」", limit: "1部12章" },
-      dietrich: { support: "Lv.1", fame: "Lv.3", cond: "ディートリヒ篇 3章クリア後加入", limit: "3章" },
-      theodora: { support: "Lv.3", fame: "Lv.6", cond: "狩猟外伝クリア後スカウト", limit: "1部12章" },
-      leda: { support: "Lv.2", fame: "Lv.6", cond: "酒場での腕比べに勝利", limit: "1部12章" }
-    },
+
+    // --- ラミーヌ一家（ディートリヒ陣営） ---
     {
       id: "esmeralda",
       name: "エスメラルダ",
-      class: "重装騎士 / 壁役",
+      origin: "【ラミーヌ一家】",
+      class: "重装騎士 / 壁役フォートレス",
       kai: { support: "Lv.2", fame: "Lv.7", cond: "依頼「エスメラルダの頼み」クリア", limit: "1部12章" },
       dietrich: { support: "初期", fame: "-", cond: "ディートリヒ直属騎士（初期加入）", limit: "自動" },
       theodora: { support: "Lv.3", fame: "Lv.8", cond: "防衛戦外伝クリア + 名声条件", limit: "1部12章" },
       leda: { support: "Lv.2", fame: "Lv.7", cond: "ブラガンサ同胞団戦クリア後スカウト", limit: "1部12章" }
     },
     {
-      id: "loretta",
-      name: "ロレッタ",
-      class: "天馬騎士（ペガサス）",
-      kai: { support: "Lv.3", fame: "Lv.7", cond: "飛行演習クリア + 贈り物", limit: "1部12章" },
-      dietrich: { support: "Lv.3", fame: "Lv.8", cond: "テルス白銀騎士団関連クエスト後", limit: "1部12章" },
-      theodora: { support: "初期", fame: "-", cond: "セオドラ篇 初期飛行メンバー", limit: "自動" },
-      leda: { support: "Lv.2", fame: "Lv.5", cond: "4章武闘会後、馬房にて会話", limit: "1部12章" }
+      id: "fabio",
+      name: "ファビオ",
+      origin: "【ラミーヌ一家】",
+      class: "傭兵 / 剣士アタッカー",
+      kai: { support: "Lv.2", fame: "Lv.5", cond: "酒場で傭兵代支払い（2,000G）", limit: "1部12章" },
+      dietrich: { support: "初期", fame: "-", cond: "ディートリヒ一家初期メンバー", limit: "自動" },
+      theodora: { support: "Lv.2", fame: "Lv.6", cond: "贈り物1回 + 決闘勝利", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.5", cond: "武闘会予選後、スカウト可能", limit: "1部12章" }
     },
     {
-      id: "scirocco",
-      name: "シロッコ",
-      class: "魔道士（黒・白魔術）",
-      kai: { support: "Lv.3", fame: "Lv.9", cond: "依頼「シロッコの頼み」クリア", limit: "1部12章" },
-      dietrich: { support: "Lv.2", fame: "Lv.7", cond: "魔導書寄贈 + スカウト交渉", limit: "1部12章" },
-      theodora: { support: "Lv.2", fame: "Lv.6", cond: "魔道学院の模擬戦クリア", limit: "1部12章" },
-      leda: { support: "初期", fame: "-", cond: "レダ篇 序盤ストーリー加入", limit: "自動" }
+      id: "michaela",
+      name: "ミカエラ",
+      origin: "【ラミーヌ一家】",
+      class: "盗賊 / 斥候（鍵開け・速さ）",
+      kai: { support: "Lv.2", fame: "Lv.4", cond: "夜の裏路地イベントで会話", limit: "1部12章" },
+      dietrich: { support: "初期", fame: "-", cond: "ディートリヒ一家初期メンバー", limit: "自動" },
+      theodora: { support: "Lv.2", fame: "Lv.5", cond: "贈り物1回 + 宝箱回収依頼", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.4", cond: "闇市イベントで交渉成立", limit: "1部12章" }
+    },
+    {
+      id: "yokai",
+      name: "ヨーカイ",
+      origin: "【ラミーヌ一家】",
+      class: "僧侶 / ヒーラー（ビショップ）",
+      kai: { support: "Lv.2", fame: "Lv.3", cond: "質問正解「乾酪→満月の夜→芋」", limit: "1部3章〜" },
+      dietrich: { support: "初期", fame: "-", cond: "一家の専属神官（初期加入）", limit: "自動" },
+      theodora: { support: "Lv.2", fame: "Lv.4", cond: "神殿寄付 + 医薬品調達", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.4", cond: "神殿寄付1回 + スカウト会話", limit: "1部12章" }
+    },
+
+    // --- メガエラの灯火（セオドラ陣営） ---
+    {
+      id: "sophia",
+      name: "ソフィア",
+      origin: "【メガエラの灯火】",
+      class: "修道女 / 白魔術師",
+      kai: { support: "Lv.1", fame: "Lv.2", cond: "神殿救済クエスト後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.3", cond: "巡礼の護衛任務クリア後加入", limit: "1部12章" },
+      theodora: { support: "初期", fame: "-", cond: "メガエラ初期回復メンバー", limit: "自動" },
+      leda: { support: "Lv.2", fame: "Lv.4", cond: "慈善活動支援後スカウト", limit: "1部12章" }
+    },
+    {
+      id: "lysander",
+      name: "ライサンダー",
+      origin: "【メガエラの灯火】",
+      class: "槍騎士 / パラディン",
+      kai: { support: "Lv.3", fame: "Lv.7", cond: "騎士団演習クリア + 贈り物", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.6", cond: "模擬戦でライサンダー撃破", limit: "1部12章" },
+      theodora: { support: "初期", fame: "-", cond: "メガエラ灯火 騎士団長（初期加入）", limit: "自動" },
+      leda: { support: "Lv.3", fame: "Lv.8", cond: "テルス騎士団戦後、説得交渉", limit: "1部12章" }
+    },
+    {
+      id: "bonaparte",
+      name: "ボナパルテ",
+      origin: "【メガエラの灯火】",
+      class: "重騎士 / アーマーガード",
+      kai: { support: "Lv.2", fame: "Lv.6", cond: "重装甲素材「白銀塊×2」納品", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.6", cond: "防衛任務外伝クリア後スカウト", limit: "1部12章" },
+      theodora: { support: "初期", fame: "-", cond: "メガエラ重装前衛（初期加入）", limit: "自動" },
+      leda: { support: "Lv.3", fame: "Lv.7", cond: "名声Lv7以上で酒場交渉", limit: "1部12章" }
+    },
+    {
+      id: "tobias",
+      name: "トビヤス",
+      origin: "【メガエラの灯火】",
+      class: "魔道士 / 元素・炎魔法",
+      kai: { support: "Lv.2", fame: "Lv.5", cond: "魔法書解読クエストクリア", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.5", cond: "魔導触媒納品 + スカウト", limit: "1部12章" },
+      theodora: { support: "初期", fame: "-", cond: "メガエラ専属魔道士（初期加入）", limit: "自動" },
+      leda: { support: "Lv.2", fame: "Lv.6", cond: "研究資金援助（1,500G）", limit: "1部12章" }
+    },
+    {
+      id: "lilian",
+      name: "リリアン",
+      origin: "【メガエラの灯火】",
+      class: "神官 / 支援・遠隔回復",
+      kai: { support: "Lv.2", fame: "Lv.4", cond: "孤児院支援イベントクリア", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.5", cond: "教会への奉納 + スカウト会話", limit: "1部12章" },
+      theodora: { support: "初期", fame: "-", cond: "メガエラ初期メンバー", limit: "自動" },
+      leda: { support: "Lv.2", fame: "Lv.5", cond: "傷病兵手当てクエスト後スカウト", limit: "1部12章" }
     },
     {
       id: "alexandra",
       name: "アレキサンドラ",
-      class: "魔法戦士 / 回避盾",
+      origin: "【メガエラの灯火】",
+      class: "魔法戦士 / 回避盾・剣姫",
       kai: { support: "Lv.3", fame: "Lv.8", cond: "外伝「孤高の剣姫」クリア", limit: "1部12章" },
       dietrich: { support: "Lv.3", fame: "Lv.8", cond: "決闘イベントでHP半分削る", limit: "1部12章" },
-      theodora: { support: "初期", fame: "-", cond: "セオドラ篇 側近（初期加入）", limit: "自動" },
+      theodora: { support: "初期", fame: "-", cond: "セオドラ側近（初期加入）", limit: "自動" },
       leda: { support: "Lv.3", fame: "Lv.9", cond: "高難易度サブクエストクリア", limit: "1部12章" }
+    },
+    {
+      id: "loretta",
+      name: "ロレッタ",
+      origin: "【メガエラの灯火】",
+      class: "天馬騎士 / ペガサスナイト",
+      kai: { support: "Lv.3", fame: "Lv.7", cond: "飛行演習クリア + 贈り物", limit: "1部12章" },
+      dietrich: { support: "Lv.3", fame: "Lv.8", cond: "テルス白銀騎士団関連クエスト後", limit: "1部12章" },
+      theodora: { support: "初期", fame: "-", cond: "初期飛行メンバー（初期加入）", limit: "自動" },
+      leda: { support: "Lv.2", fame: "Lv.5", cond: "4章武闘会後、馬房にて会話", limit: "1部12章" }
+    },
+
+    // --- 薔薇の嵐（レダ陣営） ---
+    {
+      id: "buccaneer",
+      name: "バッカニア",
+      origin: "【薔薇の嵐】",
+      class: "海賊 / 剛腕アタッカー",
+      kai: { support: "Lv.2", fame: "Lv.5", cond: "港湾の腕相撲勝負で勝利", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.6", cond: "密輸船迎撃クエストクリア", limit: "1部12章" },
+      theodora: { support: "Lv.3", fame: "Lv.7", cond: "海賊討伐後、和解交渉", limit: "1部12章" },
+      leda: { support: "初期", fame: "-", cond: "レダ直属の副官（初期加入）", limit: "自動" }
+    },
+    {
+      id: "scirocco",
+      name: "シロッコ",
+      origin: "【薔薇の嵐】",
+      class: "賢者（黒・白魔術両刀）",
+      kai: { support: "Lv.3", fame: "Lv.9", cond: "依頼「シロッコの頼み」クリア", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.7", cond: "魔導書寄贈 + スカウト交渉", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.6", cond: "魔道学院の模擬戦クリア", limit: "1部12章" },
+      leda: { support: "初期", fame: "-", cond: "薔薇の嵐 参謀（初期加入）", limit: "自動" }
+    },
+    {
+      id: "olympia",
+      name: "オリンピア",
+      origin: "【薔薇の嵐】",
+      class: "格闘家 / ウォーマスター",
+      kai: { support: "Lv.2", fame: "Lv.6", cond: "闘技場3連勝後スカウト会話", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.5", cond: "一家との合同演習クリア", limit: "1部12章" },
+      theodora: { support: "Lv.3", fame: "Lv.7", cond: "護身術指南クエスト後スカウト", limit: "1部12章" },
+      leda: { support: "初期", fame: "-", cond: "レダ軍武闘指南役（初期加入）", limit: "自動" }
+    },
+    {
+      id: "muu",
+      name: "ムウ",
+      origin: "【薔薇の嵐】",
+      class: "獣人・化身 / 特殊ユニット",
+      kai: { support: "Lv.3", fame: "Lv.7", cond: "森の迷宮外伝で迷子救出", limit: "1部12章" },
+      dietrich: { support: "Lv.3", fame: "Lv.8", cond: "珍しい肉・食料×5をプレゼント", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.7", cond: "自然保護の約束 + スカウト", limit: "1部12章" },
+      leda: { support: "初期", fame: "-", cond: "レダと契約した従者（初期加入）", limit: "自動" }
+    },
+    {
+      id: "catania",
+      name: "カターニャ",
+      origin: "【薔薇の嵐】",
+      class: "弓騎兵 / 機動スカウト",
+      kai: { support: "Lv.1", fame: "Lv.3", cond: "序盤の遭遇戦後、広場で会話", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.4", cond: "斥候任務依頼クリア", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.4", cond: "馬具納品 + スカウト交渉", limit: "1部12章" },
+      leda: { support: "初期", fame: "-", cond: "薔薇の嵐 斥候（初期加入）", limit: "自動" }
+    },
+
+    // --- 共通スカウト・独立勢力・傭兵 ---
+    {
+      id: "nuzzo",
+      name: "ヌッツォ",
+      origin: "【流浪の狩人】",
+      class: "スナイパー / 高速・高追撃",
+      kai: { support: "Lv.2", fame: "Lv.6", cond: "贈り物1回 + 交渉「鉄の弓×3」", limit: "1部12章" },
+      dietrich: { support: "Lv.1", fame: "Lv.3", cond: "ディートリヒ篇 3章クリア後加入", limit: "3章" },
+      theodora: { support: "Lv.3", fame: "Lv.6", cond: "狩猟外伝クリア後スカウト", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.6", cond: "酒場での腕比べに勝利", limit: "1部12章" }
+    },
+    {
+      id: "kiroika",
+      name: "キロイカ",
+      origin: "【中立猟兵】",
+      class: "弓兵 / 遠隔曲射",
+      kai: { support: "Lv.2", fame: "Lv.4", cond: "狩場警護クエストクリア", limit: "1部12章" },
+      dietrich: { support: "Lv.1", fame: "Lv.2", cond: "名声Lv2以上で酒場即スカウト", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.4", cond: "矢筒・弦の素材調達", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.3", cond: "射的大会で高得点獲得", limit: "1部12章" }
+    },
+    {
+      id: "fiana",
+      name: "フィアナ",
+      origin: "【旅の聖職者】",
+      class: "神官戦士 / メイス・回復",
+      kai: { support: "Lv.2", fame: "Lv.4", cond: "街道の野盗討伐後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.1", fame: "Lv.2", cond: "薬草収集依頼クリア後即加入", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.3", cond: "神殿対話イベントでスカウト", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.4", cond: "寄付金支払い（1,000G）", limit: "1部12章" }
+    },
+    {
+      id: "simon",
+      name: "シモン",
+      origin: "【ダグザの軍学者】",
+      class: "軍師 / 計略支援・デバフ",
+      kai: { support: "Lv.2", fame: "Lv.6", cond: "戦術問答（正解3問）で合格", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.5", cond: "戦術書の写本を贈呈", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.5", cond: "陣形演習で勝利", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.5", cond: "大剣闘祭の記録調査を支援", limit: "1部12章" }
+    },
+    {
+      id: "dante",
+      name: "ダンテ",
+      origin: "【黒影の暗殺者】",
+      class: "アサシン / 必殺特化",
+      kai: { support: "Lv.3", fame: "Lv.8", cond: "裏クエスト「影の始末」クリア", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.7", cond: "裏金4,000Gで契約", limit: "1部12章" },
+      theodora: { support: "-", fame: "-", cond: "※セオドラ篇では雇用不可（信条対立）", limit: "不可" },
+      leda: { support: "Lv.2", fame: "Lv.6", cond: "闇闘技場チャンピオン撃破", limit: "1部12章" }
     },
     {
       id: "gates",
       name: "ゲイツ",
-      class: "狂戦士 / アクスファイター",
-      kai: { support: "-", fame: "-", cond: "※カイ篇では加入不可（敵対）", limit: "不可" },
+      origin: "【孤高の狂戦士】",
+      class: "バーサーカー / 斧特化",
+      kai: { support: "-", fame: "-", cond: "※カイ篇では敵対のため加入不可", limit: "不可" },
       dietrich: { support: "Lv.2", fame: "Lv.5", cond: "ディートリヒ篇限定外伝で説得", limit: "1部9章限定" },
       theodora: { support: "-", fame: "-", cond: "※セオドラ篇では加入不可", limit: "不可" },
-      leda: { support: "Lv.3", fame: "Lv.8", cond: "賞金首クエストクリアで説得可能", limit: "1部11章" }
+      leda: { support: "Lv.3", fame: "Lv.8", cond: "賞金首クエストクリアで説得", limit: "1部11章" }
+    },
+    {
+      id: "kilik",
+      name: "キリーク",
+      origin: "【古の隠者】",
+      class: "闇術師 / 隠しキャラクター",
+      kai: { support: "Lv.3", fame: "Lv.9", cond: "1部外伝「亡き妹の装身具」クリア後、2部加入", limit: "1部外伝必須" },
+      dietrich: { support: "Lv.3", fame: "Lv.9", cond: "古代遺跡調査クエスト全達成後、2部加入", limit: "1部外伝必須" },
+      theodora: { support: "Lv.3", fame: "Lv.9", cond: "神託の儀式完遂後、2部加入", limit: "1部外伝必須" },
+      leda: { support: "Lv.3", fame: "Lv.9", cond: "因果律の手記全回収後、2部加入", limit: "1部外伝必須" }
     }
   ];
 
   // 状態管理
   let characters = [];
-  let joinedStatus = {}; // { id: true/false }
+  let routeJoinedStatus = {}; // { "charId_routeKey": true/false }
   let currentRoute = "all";
   let sortState = {
-    key: null,   // "name", "kai.support", "kai.fame", "kai.limit", etc.
-    order: null  // "asc", "desc", null
+    key: null,
+    order: null
   };
 
-  // ローカルストレージキー
-  const STORAGE_KEY_CHARS = "fe_chars_data_v1";
-  const STORAGE_KEY_JOINED = "fe_joined_status_v1";
+  const STORAGE_KEY_CHARS = "fe_chars_data_v2";
+  const STORAGE_KEY_ROUTE_JOINED = "fe_route_joined_status_v2";
 
-  // 初期ロード
+  // 初期化
   function init() {
     const savedChars = localStorage.getItem(STORAGE_KEY_CHARS);
     if (savedChars) {
@@ -801,23 +993,30 @@
       characters = [...DEFAULT_CHARACTERS];
     }
 
-    const savedJoined = localStorage.getItem(STORAGE_KEY_JOINED);
+    const savedJoined = localStorage.getItem(STORAGE_KEY_ROUTE_JOINED);
     if (savedJoined) {
       try {
-        joinedStatus = JSON.parse(savedJoined);
+        routeJoinedStatus = JSON.parse(savedJoined);
       } catch (e) {
-        joinedStatus = {};
+        routeJoinedStatus = {};
       }
     }
 
     renderTable();
   }
 
-  // ソート比較用の値抽出（初期=0, Lv1=1, Lv2=2, 不可=999 等）
+  // ルート別の加入トグル（該当セルをタップで切り替え）
+  function toggleRouteJoined(charId, routeKey, event) {
+    if (event) event.stopPropagation();
+    const key = `${charId}_${routeKey}`;
+    routeJoinedStatus[key] = !routeJoinedStatus[key];
+    localStorage.setItem(STORAGE_KEY_ROUTE_JOINED, JSON.stringify(routeJoinedStatus));
+    renderTable();
+  }
+
+  // ソート用値の抽出
   function parseSortValue(char, key) {
-    if (key === "name") {
-      return char.name || "";
-    }
+    if (key === "name") return char.name || "";
     const [hero, field] = key.split(".");
     const d = (char[hero] && typeof char[hero] === "object") ? char[hero] : {};
     const val = (d[field] || "").trim();
@@ -852,7 +1051,7 @@
     return val;
   }
 
-  // ソートヘッダークリック時のハンドラ
+  // ソートハンドラ
   function handleSort(key) {
     if (sortState.key === key) {
       if (sortState.order === "asc") {
@@ -869,7 +1068,6 @@
     renderTable();
   }
 
-  // ソートアイコン表示の更新
   function updateSortIcons() {
     const sortKeys = [
       "name",
@@ -883,16 +1081,11 @@
       const elementId = "sort-icon-" + k.replace(".", "-");
       const el = document.getElementById(elementId);
       if (!el) return;
-
       const parentTh = el.closest(".sortable");
 
       if (sortState.key === k) {
         if (parentTh) parentTh.classList.add("active-sort");
-        if (sortState.order === "asc") {
-          el.textContent = "▲";
-        } else if (sortState.order === "desc") {
-          el.textContent = "▼";
-        }
+        el.textContent = sortState.order === "asc" ? "▲" : "▼";
       } else {
         if (parentTh) parentTh.classList.remove("active-sort");
         el.textContent = "⇅";
@@ -900,7 +1093,7 @@
     });
   }
 
-  // テーブルレンダリング
+  // テーブル描画
   function renderTable() {
     const tbody = document.getElementById("charTableBody");
     tbody.innerHTML = "";
@@ -908,7 +1101,7 @@
     const query = document.getElementById("searchInput").value.trim().toLowerCase();
     const unjoinedOnly = document.getElementById("unjoinedOnly").checked;
 
-    // ソート適用
+    // ソート処理
     let listToRender = [...characters];
     if (sortState.key && sortState.order) {
       listToRender.sort((a, b) => {
@@ -925,15 +1118,23 @@
     }
 
     listToRender.forEach((char) => {
-      const isJoined = !!joinedStatus[char.id];
+      // フィルター条件判定
+      if (unjoinedOnly) {
+        if (currentRoute === "all") {
+          // 全ルートで加入済みなら非表示
+          const allJoined = ["kai", "dietrich", "theodora", "leda"].every(r => !!routeJoinedStatus[`${char.id}_${r}`]);
+          if (allJoined) return;
+        } else {
+          // 選択中の特定ルートで加入済みなら非表示
+          if (routeJoinedStatus[`${char.id}_${currentRoute}`]) return;
+        }
+      }
 
-      // フィルター
-      if (unjoinedOnly && isJoined) return;
-
-      // 検索マッチ（名前・兵種・各ルート条件）
+      // 検索フィルター
       if (query) {
-        const textToSearch = [
+        const searchTarget = [
           char.name,
+          char.origin,
           char.class,
           char.kai?.cond,
           char.dietrich?.cond,
@@ -941,29 +1142,27 @@
           char.leda?.cond
         ].join(" ").toLowerCase();
 
-        if (!textToSearch.includes(query)) return;
+        if (!searchTarget.includes(query)) return;
       }
 
       const tr = document.createElement("tr");
-      if (isJoined) tr.classList.add("joined");
 
-      // キャラクター列（Sticky）
+      // キャラクター列
       const charTd = `
         <td class="col-char">
           <div class="char-info">
-            <div class="char-name-row">
-              <input type="checkbox" ${isJoined ? "checked" : ""} onchange="toggleJoined('${char.id}')" title="加入済みにする">
-              <span class="char-name">${char.name}</span>
-            </div>
+            <span class="char-name">${char.name}</span>
+            <span class="char-origin">${char.origin || ""}</span>
             <span class="char-class">${char.class || ""}</span>
           </div>
         </td>
       `;
 
-      // 各主人公のセル生成関数
-      const makeCells = (routeKey) => {
+      // 各主人公セル作成（セルタップで加入切り替え）
+      const makeCells = (routeKey, routeTitle) => {
+        const isJoined = !!routeJoinedStatus[`${char.id}_${routeKey}`];
         const d = char[routeKey] || { support: "-", fame: "-", cond: "-", limit: "-" };
-        
+
         let supportHtml = d.support;
         if (d.support === "初期") supportHtml = `<span class="badge badge-init">初期</span>`;
         else if (d.support !== "-") supportHtml = `<span class="badge">💖 ${d.support}</span>`;
@@ -973,42 +1172,45 @@
         if (d.fame && d.fame !== "-") fameHtml = `<span class="badge">👑 ${d.fame}</span>`;
         else fameHtml = `<span class="badge-none">-</span>`;
 
-        let condHtml = `<div class="val-cond">${d.cond || "-"}</div>`;
+        let condPrefix = isJoined ? `<span class="joined-tag">✔ 加入済</span>` : "";
+        let condHtml = `<div class="val-cond">${condPrefix}${d.cond || "-"}</div>`;
         let limitHtml = `<div class="val-limit">${d.limit || "-"}</div>`;
 
+        const joinedClass = isJoined ? "cell-joined" : "";
+        const clickAttr = `onclick="toggleRouteJoined('${char.id}', '${routeKey}', event)" title="タップで${routeTitle}の加入状態を切替"`;
+
         return `
-          <td class="col-hero-${routeKey} val-support">${supportHtml}</td>
-          <td class="col-hero-${routeKey} val-fame">${fameHtml}</td>
-          <td class="col-hero-${routeKey}">${condHtml}</td>
-          <td class="col-hero-${routeKey}">${limitHtml}</td>
+          <td class="col-hero-${routeKey} route-cell val-support ${joinedClass}" ${clickAttr}>${supportHtml}</td>
+          <td class="col-hero-${routeKey} route-cell val-fame ${joinedClass}" ${clickAttr}>${fameHtml}</td>
+          <td class="col-hero-${routeKey} route-cell ${joinedClass}" ${clickAttr}>${condHtml}</td>
+          <td class="col-hero-${routeKey} route-cell ${joinedClass}" ${clickAttr}>${limitHtml}</td>
         `;
       };
 
-      tr.innerHTML = charTd + makeCells("kai") + makeCells("dietrich") + makeCells("theodora") + makeCells("leda");
+      tr.innerHTML = charTd 
+        + makeCells("kai", "カイ篇") 
+        + makeCells("dietrich", "ディートリヒ篇") 
+        + makeCells("theodora", "セオドラ篇") 
+        + makeCells("leda", "レダ篇");
+
       tbody.appendChild(tr);
     });
 
-    // 列の可視性更新
     applyRouteVisibility();
   }
 
-  // 加入チェック切り替え
-  function toggleJoined(id) {
-    joinedStatus[id] = !joinedStatus[id];
-    localStorage.setItem(STORAGE_KEY_JOINED, JSON.stringify(joinedStatus));
-    renderTable();
-  }
-
-  // ルートタブ切り替え
+  // ルート絞り込み
   function setRouteFilter(route) {
     currentRoute = route;
     document.querySelectorAll(".tab-btn").forEach(btn => {
       btn.classList.toggle("active", btn.getAttribute("data-route") === route);
     });
     applyRouteVisibility();
+    if (document.getElementById("unjoinedOnly").checked) {
+      renderTable();
+    }
   }
 
-  // 列の表示・非表示コントロール
   function applyRouteVisibility() {
     const routes = ["kai", "dietrich", "theodora", "leda"];
     routes.forEach(r => {
@@ -1023,17 +1225,15 @@
     });
   }
 
-  // 検索・絞り込みハンドラ
   function filterTable() {
     renderTable();
   }
 
-  // スリムモード
   function toggleCompactMode() {
     const isCompact = document.getElementById("compactMode").checked;
     document.querySelectorAll("th, td").forEach(el => {
       if (isCompact) {
-        el.style.padding = "6px 6px";
+        el.style.padding = "5px 5px";
         el.style.fontSize = "12px";
       } else {
         el.style.padding = "";
@@ -1042,11 +1242,10 @@
     });
   }
 
-  // モーダル管理
+  // モーダル
   function openAddModal() {
     document.getElementById("addModal").classList.add("active");
   }
-
   function closeAddModal() {
     document.getElementById("addModal").classList.remove("active");
   }
@@ -1060,6 +1259,7 @@
     const newChar = {
       id: "char_" + Date.now(),
       name: name,
+      origin: document.getElementById("formOrigin").value.trim() || "【スカウト】",
       class: document.getElementById("formClass").value.trim() || "-",
       kai: {
         support: document.getElementById("formKaiSupport").value.trim() || "-",
@@ -1093,23 +1293,23 @@
     renderTable();
   }
 
-  // データエクスポート
+  // バックアップ
   function exportData() {
     const data = {
       characters: characters,
-      joinedStatus: joinedStatus,
+      routeJoinedStatus: routeJoinedStatus,
       exportedAt: new Date().toISOString()
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `fe_bansen_scout_backup_${new Date().toISOString().slice(0,10)}.json`;
+    a.download = `fe_bansen_koryaku_backup_${new Date().toISOString().slice(0,10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
   }
 
-  // データインポート
+  // 復元
   function importData() {
     const input = document.createElement("input");
     input.type = "file";
@@ -1125,9 +1325,9 @@
             characters = imported.characters;
             localStorage.setItem(STORAGE_KEY_CHARS, JSON.stringify(characters));
           }
-          if (imported.joinedStatus) {
-            joinedStatus = imported.joinedStatus;
-            localStorage.setItem(STORAGE_KEY_JOINED, JSON.stringify(joinedStatus));
+          if (imported.routeJoinedStatus) {
+            routeJoinedStatus = imported.routeJoinedStatus;
+            localStorage.setItem(STORAGE_KEY_ROUTE_JOINED, JSON.stringify(routeJoinedStatus));
           }
           renderTable();
           alert("データを復元しました！");
@@ -1140,10 +1340,8 @@
     input.click();
   }
 
-  // 起動時
   init();
 </script>
 
 </body>
 </html>
-
