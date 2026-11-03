@@ -12,28 +12,45 @@ let sortState = {
   order: null
 };
 
-const STORAGE_KEY_CHARS = "fe_chars_data_v6";
-const STORAGE_KEY_ROUTE_JOINED = "fe_route_joined_status_v6";
+const STORAGE_KEY_CHARS = "fe_chars_data_v7";
+const STORAGE_KEY_ROUTE_JOINED = "fe_route_joined_status_v7";
 
 // 初期化
 function init() {
+  // 1. マスターデータ安全確認
+  const masterList = (typeof DEFAULT_CHARACTERS !== "undefined" && Array.isArray(DEFAULT_CHARACTERS)) 
+    ? DEFAULT_CHARACTERS 
+    : [];
+
+  // 2. キャラクターデータのロード（空データガード付き）
   const savedChars = localStorage.getItem(STORAGE_KEY_CHARS);
   if (savedChars) {
     try {
-      characters = JSON.parse(savedChars);
+      const parsed = JSON.parse(savedChars);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        characters = parsed;
+      } else {
+        characters = [...masterList];
+      }
     } catch (e) {
-      characters = [...DEFAULT_CHARACTERS];
+      characters = [...masterList];
     }
   } else {
-    characters = [...DEFAULT_CHARACTERS];
+    characters = [...masterList];
   }
 
-  // 以前のバージョンからの加入チェック状態を自動引継ぎ
+  // 万一それでも空ならマスターを強制適用
+  if (characters.length === 0 && masterList.length > 0) {
+    characters = [...masterList];
+    localStorage.setItem(STORAGE_KEY_CHARS, JSON.stringify(characters));
+  }
+
+  // 3. 加入チェック状態の復元（過去キーからの自動引き継ぎ）
   let savedJoined = localStorage.getItem(STORAGE_KEY_ROUTE_JOINED);
   if (!savedJoined) {
-    savedJoined = localStorage.getItem("fe_route_joined_status_v5") 
-               || localStorage.getItem("fe_route_joined_status_v4")
-               || localStorage.getItem("fe_route_joined_status_v3");
+    savedJoined = localStorage.getItem("fe_route_joined_status_v6") 
+               || localStorage.getItem("fe_route_joined_status_v5") 
+               || localStorage.getItem("fe_route_joined_status_v4");
     if (savedJoined) {
       localStorage.setItem(STORAGE_KEY_ROUTE_JOINED, savedJoined);
     }
@@ -50,7 +67,7 @@ function init() {
   renderApp();
 }
 
-// 初期データにリセット
+// 初期データに強制リセット
 function resetToLatestData() {
   if (confirm("最新のキャラクターリスト（全58名）に初期化しますか？\n※加入チェック状態は保持されます。")) {
     characters = [...DEFAULT_CHARACTERS];
@@ -66,7 +83,6 @@ function setViewMode(mode) {
     btn.classList.toggle("active", btn.getAttribute("data-mode") === mode);
   });
 
-  // キャラ別詳細モードのときだけルート切り替えタブを表示
   const routeTabsEl = document.getElementById("routeTabs");
   if (routeTabsEl) {
     routeTabsEl.style.display = (mode === "char") ? "flex" : "none";
@@ -99,66 +115,95 @@ function renderApp() {
 // 1. キャラクター別 詳細マトリクス描画
 // ========================================================
 function renderCharDetailTable() {
+  const table = document.getElementById("charTable");
   const thead = document.getElementById("charTableHead");
   const tbody = document.getElementById("charTableBody");
 
-  // ヘッダー生成
-  thead.innerHTML = `
-    <tr>
-      <th rowspan="2" class="col-char sortable" onclick="handleSort('name')" title="名前順で並べ替え">
-        キャラクター <span class="sort-icon" id="sort-icon-name">⇅</span>
-      </th>
-      <th colspan="4" class="th-hero th-kai col-hero-kai">カイ</th>
-      <th colspan="4" class="th-hero th-dietrich col-hero-dietrich">ディートリヒ</th>
-      <th colspan="4" class="th-hero th-theodora col-hero-theodora">セオドラ</th>
-      <th colspan="4" class="th-hero th-leda col-hero-leda">レダ</th>
-    </tr>
-    <tr>
-      <th class="th-sub col-hero-kai sortable" style="width: 55px;" onclick="handleSort('kai.support')" title="支援順でソート">
-        支援 <span class="sort-icon" id="sort-icon-kai-support">⇅</span>
-      </th>
-      <th class="th-sub col-hero-kai sortable" style="width: 55px;" onclick="handleSort('kai.fame')" title="名声順でソート">
-        名声 <span class="sort-icon" id="sort-icon-kai-fame">⇅</span>
-      </th>
-      <th class="th-sub col-hero-kai">加入条件</th>
-      <th class="th-sub col-hero-kai sortable" style="width: 70px;" onclick="handleSort('kai.limit')" title="期限順でソート">
-        期限 <span class="sort-icon" id="sort-icon-kai-limit">⇅</span>
-      </th>
+  const isSingle = (currentRoute !== "all");
 
-      <th class="th-sub col-hero-dietrich sortable" style="width: 55px;" onclick="handleSort('dietrich.support')" title="支援順でソート">
-        支援 <span class="sort-icon" id="sort-icon-dietrich-support">⇅</span>
-      </th>
-      <th class="th-sub col-hero-dietrich sortable" style="width: 55px;" onclick="handleSort('dietrich.fame')" title="名声順でソート">
-        名声 <span class="sort-icon" id="sort-icon-dietrich-fame">⇅</span>
-      </th>
-      <th class="th-sub col-hero-dietrich">加入条件</th>
-      <th class="th-sub col-hero-dietrich sortable" style="width: 70px;" onclick="handleSort('dietrich.limit')" title="期限順でソート">
-        期限 <span class="sort-icon" id="sort-icon-dietrich-limit">⇅</span>
-      </th>
+  if (isSingle) {
+    // 【単一ルート表示モード】
+    // 5列（キャラ・支援・名声・条件・期限）のみをピュアに生成し、colspanやhiddenセルによる間延びを完全排除！
+    table.classList.add("single-route-view");
+    const routeTitles = { kai: "カイ篇", dietrich: "ディートリヒ篇", theodora: "セオドラ篇", leda: "レダ篇" };
 
-      <th class="th-sub col-hero-theodora sortable" style="width: 55px;" onclick="handleSort('theodora.support')" title="支援順でソート">
-        支援 <span class="sort-icon" id="sort-icon-theodora-support">⇅</span>
-      </th>
-      <th class="th-sub col-hero-theodora sortable" style="width: 55px;" onclick="handleSort('theodora.fame')" title="名声順でソート">
-        名声 <span class="sort-icon" id="sort-icon-theodora-fame">⇅</span>
-      </th>
-      <th class="th-sub col-hero-theodora">加入条件</th>
-      <th class="th-sub col-hero-theodora sortable" style="width: 70px;" onclick="handleSort('theodora.limit')" title="期限順でソート">
-        期限 <span class="sort-icon" id="sort-icon-theodora-limit">⇅</span>
-      </th>
+    thead.innerHTML = `
+      <tr>
+        <th class="col-char sortable" style="width: 95px;" onclick="handleSort('name')" title="名前順でソート">
+          キャラクター <span class="sort-icon" id="sort-icon-name">⇅</span>
+        </th>
+        <th class="th-sub val-support sortable" style="width: 45px;" onclick="handleSort('${currentRoute}.support')" title="支援順でソート">
+          支援 <span class="sort-icon" id="sort-icon-${currentRoute}-support">⇅</span>
+        </th>
+        <th class="th-sub val-fame sortable" style="width: 45px;" onclick="handleSort('${currentRoute}.fame')" title="名声順でソート">
+          名声 <span class="sort-icon" id="sort-icon-${currentRoute}-fame">⇅</span>
+        </th>
+        <th class="th-sub th-cond-head">加入条件（${routeTitles[currentRoute]}）</th>
+        <th class="th-sub val-limit sortable" style="width: 60px;" onclick="handleSort('${currentRoute}.limit')" title="期限順でソート">
+          期限 <span class="sort-icon" id="sort-icon-${currentRoute}-limit">⇅</span>
+        </th>
+      </tr>
+    `;
+  } else {
+    // 【全主人公 比較モード】（17列テーブル）
+    table.classList.remove("single-route-view");
+    thead.innerHTML = `
+      <tr>
+        <th rowspan="2" class="col-char sortable" onclick="handleSort('name')" title="名前順で並べ替え">
+          キャラクター <span class="sort-icon" id="sort-icon-name">⇅</span>
+        </th>
+        <th colspan="4" class="th-hero th-kai">カイ</th>
+        <th colspan="4" class="th-hero th-dietrich">ディートリヒ</th>
+        <th colspan="4" class="th-hero th-theodora">セオドラ</th>
+        <th colspan="4" class="th-hero th-leda">レダ</th>
+      </tr>
+      <tr>
+        <th class="th-sub sortable" style="width: 55px;" onclick="handleSort('kai.support')" title="支援順でソート">
+          支援 <span class="sort-icon" id="sort-icon-kai-support">⇅</span>
+        </th>
+        <th class="th-sub sortable" style="width: 55px;" onclick="handleSort('kai.fame')" title="名声順でソート">
+          名声 <span class="sort-icon" id="sort-icon-kai-fame">⇅</span>
+        </th>
+        <th class="th-sub">加入条件</th>
+        <th class="th-sub sortable" style="width: 70px;" onclick="handleSort('kai.limit')" title="期限順でソート">
+          期限 <span class="sort-icon" id="sort-icon-kai-limit">⇅</span>
+        </th>
 
-      <th class="th-sub col-hero-leda sortable" style="width: 55px;" onclick="handleSort('leda.support')" title="支援順でソート">
-        支援 <span class="sort-icon" id="sort-icon-leda-support">⇅</span>
-      </th>
-      <th class="th-sub col-hero-leda sortable" style="width: 55px;" onclick="handleSort('leda.fame')" title="名声順でソート">
-        名声 <span class="sort-icon" id="sort-icon-leda-fame">⇅</span>
-      </th>
-      <th class="th-sub col-hero-leda">加入条件</th>
-      <th class="th-sub col-hero-leda sortable" style="width: 70px;" onclick="handleSort('leda.limit')" title="期限順でソート">
-        期限 <span class="sort-icon" id="sort-icon-leda-limit">⇅</span>
-      </th>
-    </tr>
-  `;
+        <th class="th-sub sortable" style="width: 55px;" onclick="handleSort('dietrich.support')" title="支援順でソート">
+          支援 <span class="sort-icon" id="sort-icon-dietrich-support">⇅</span>
+        </th>
+        <th class="th-sub sortable" style="width: 55px;" onclick="handleSort('dietrich.fame')" title="名声順でソート">
+          名声 <span class="sort-icon" id="sort-icon-dietrich-fame">⇅</span>
+        </th>
+        <th class="th-sub">加入条件</th>
+        <th class="th-sub sortable" style="width: 70px;" onclick="handleSort('dietrich.limit')" title="期限順でソート">
+          期限 <span class="sort-icon" id="sort-icon-dietrich-limit">⇅</span>
+        </th>
+
+        <th class="th-sub sortable" style="width: 55px;" onclick="handleSort('theodora.support')" title="支援順でソート">
+          支援 <span class="sort-icon" id="sort-icon-theodora-support">⇅</span>
+        </th>
+        <th class="th-sub sortable" style="width: 55px;" onclick="handleSort('theodora.fame')" title="名声順でソート">
+          名声 <span class="sort-icon" id="sort-icon-theodora-fame">⇅</span>
+        </th>
+        <th class="th-sub">加入条件</th>
+        <th class="th-sub sortable" style="width: 70px;" onclick="handleSort('theodora.limit')" title="期限順でソート">
+          期限 <span class="sort-icon" id="sort-icon-theodora-limit">⇅</span>
+        </th>
+
+        <th class="th-sub sortable" style="width: 55px;" onclick="handleSort('leda.support')" title="支援順でソート">
+          支援 <span class="sort-icon" id="sort-icon-leda-support">⇅</span>
+        </th>
+        <th class="th-sub sortable" style="width: 55px;" onclick="handleSort('leda.fame')" title="名声順でソート">
+          名声 <span class="sort-icon" id="sort-icon-leda-fame">⇅</span>
+        </th>
+        <th class="th-sub">加入条件</th>
+        <th class="th-sub sortable" style="width: 70px;" onclick="handleSort('leda.limit')" title="期限順でソート">
+          期限 <span class="sort-icon" id="sort-icon-leda-limit">⇅</span>
+        </th>
+      </tr>
+    `;
+  }
 
   tbody.innerHTML = "";
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
@@ -182,6 +227,7 @@ function renderCharDetailTable() {
   let displayedCount = 0;
 
   listToRender.forEach((char) => {
+    // フィルター判定
     if (unjoinedOnly) {
       if (currentRoute === "all") {
         const allJoined = ["kai", "dietrich", "theodora", "leda"].every(r => !!routeJoinedStatus[`${char.id}_${r}`]);
@@ -211,7 +257,7 @@ function renderCharDetailTable() {
       </td>
     `;
 
-    const makeCells = (routeKey, routeTitle) => {
+    const makeSingleCellGroup = (routeKey, routeTitle) => {
       const isJoined = !!routeJoinedStatus[`${char.id}_${routeKey}`];
       const d = char[routeKey] || { support: "-", fame: "-", cond: "-", limit: "-" };
 
@@ -240,22 +286,40 @@ function renderCharDetailTable() {
       return `
         <td class="col-hero-${routeKey} route-cell val-support ${joinedClass}" ${clickAttr}>${supportHtml}</td>
         <td class="col-hero-${routeKey} route-cell val-fame ${joinedClass}" ${clickAttr}>${fameHtml}</td>
-        <td class="col-hero-${routeKey} route-cell ${joinedClass}" ${clickAttr}>${condHtml}</td>
-        <td class="col-hero-${routeKey} route-cell ${joinedClass}" ${clickAttr}>${limitHtml}</td>
+        <td class="col-hero-${routeKey} route-cell col-cond-cell ${joinedClass}" ${clickAttr}>${condHtml}</td>
+        <td class="col-hero-${routeKey} route-cell val-limit ${joinedClass}" ${clickAttr}>${limitHtml}</td>
       `;
     };
 
-    tr.innerHTML = charTd 
-      + makeCells("kai", "カイ篇") 
-      + makeCells("dietrich", "ディートリヒ篇") 
-      + makeCells("theodora", "セオドラ篇") 
-      + makeCells("leda", "レダ篇");
+    if (isSingle) {
+      // 単一ルート時は該当ルートの4セルだけを出力
+      tr.innerHTML = charTd + makeSingleCellGroup(currentRoute, currentRoute);
+    } else {
+      // 全主人公表示時
+      tr.innerHTML = charTd 
+        + makeSingleCellGroup("kai", "カイ篇") 
+        + makeSingleCellGroup("dietrich", "ディートリヒ篇") 
+        + makeSingleCellGroup("theodora", "セオドラ篇") 
+        + makeSingleCellGroup("leda", "レダ篇");
+    }
 
     tbody.appendChild(tr);
   });
 
+  if (displayedCount === 0) {
+    const colSpanNum = isSingle ? 5 : 17;
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="${colSpanNum}" style="text-align: center; padding: 32px 16px; color: var(--text-sub);">
+          <div style="font-size: 1.1rem; margin-bottom: 8px;">キャラクターが見つかりません</div>
+          <div style="font-size: 0.85rem; margin-bottom: 16px;">検索条件に一致するデータがないか、ブラウザのキャッシュが古い可能性があります。</div>
+          <button class="btn btn-primary" onclick="resetToLatestData()" style="padding: 8px 16px;">🔄 全58名の最新データを読み込む</button>
+        </td>
+      </tr>
+    `;
+  }
+
   updateHitCount(displayedCount);
-  applyRouteVisibility();
   updateSortIcons();
 }
 
@@ -263,12 +327,15 @@ function renderCharDetailTable() {
 // 2. 名声別 早見マトリクス描画（縦: 名声Lv / 横: 4主人公）
 // ========================================================
 function renderFameMatrixTable() {
+  const table = document.getElementById("charTable");
   const thead = document.getElementById("charTableHead");
   const tbody = document.getElementById("charTableBody");
 
+  table.classList.remove("single-route-view");
+
   thead.innerHTML = `
     <tr>
-      <th class="th-category" style="width: 130px;">名声レベル</th>
+      <th class="th-category" style="width: 120px;">名声レベル</th>
       <th class="th-hero th-kai">カイ</th>
       <th class="th-hero th-dietrich">ディートリヒ</th>
       <th class="th-hero th-theodora">セオドラ</th>
@@ -280,7 +347,6 @@ function renderFameMatrixTable() {
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
   const unjoinedOnly = document.getElementById("unjoinedOnly").checked;
 
-  // 名声の行定義
   const FAME_ROWS = [
     { label: "条件なし / 初期", key: "none" },
     { label: "名声 Lv.2", key: "2" },
@@ -305,30 +371,23 @@ function renderFameMatrixTable() {
 
   FAME_ROWS.forEach(rowDef => {
     const tr = document.createElement("tr");
-
-    // 左固定ヘッダーセル
     let rowHtml = `<td class="th-category">${rowDef.label}</td>`;
 
-    // 4主人公の各セル
     routes.forEach(r => {
-      // その主人公で該当するキャラを抽出
       const matched = characters.filter(char => {
         const d = char[r.key] || {};
         const fame = (d.fame || "").trim();
         const cond = (d.cond || "");
 
-        // 検索フィルター
         if (query) {
           const searchTarget = [char.name, cond].join(" ").toLowerCase();
           if (!searchTarget.includes(query)) return false;
         }
 
-        // 未加入のみフィルター
         if (unjoinedOnly && routeJoinedStatus[`${char.id}_${r.key}`]) {
           return false;
         }
 
-        // 名声判定
         if (rowDef.key === "none") {
           return (fame === "-" || fame === "") && !cond.includes("3部") && (d.support === "初期" || cond.includes("自動") || cond.includes("初期"));
         }
@@ -372,12 +431,15 @@ function renderFameMatrixTable() {
 // 3. 支援別 早見マトリクス描画（縦: 支援Lv / 横: 4主人公）
 // ========================================================
 function renderSupportMatrixTable() {
+  const table = document.getElementById("charTable");
   const thead = document.getElementById("charTableHead");
   const tbody = document.getElementById("charTableBody");
 
+  table.classList.remove("single-route-view");
+
   thead.innerHTML = `
     <tr>
-      <th class="th-category" style="width: 130px;">支援レベル</th>
+      <th class="th-category" style="width: 120px;">支援レベル</th>
       <th class="th-hero th-kai">カイ</th>
       <th class="th-hero th-dietrich">ディートリヒ</th>
       <th class="th-hero th-theodora">セオドラ</th>
@@ -389,7 +451,6 @@ function renderSupportMatrixTable() {
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
   const unjoinedOnly = document.getElementById("unjoinedOnly").checked;
 
-  // 支援の行定義
   const SUPPORT_ROWS = [
     { label: "初期加入（支援不要）", key: "init" },
     { label: "支援 Lv.1", key: "1" },
@@ -417,18 +478,15 @@ function renderSupportMatrixTable() {
         const supp = (d.support || "").trim();
         const cond = (d.cond || "");
 
-        // 検索フィルター
         if (query) {
           const searchTarget = [char.name, cond].join(" ").toLowerCase();
           if (!searchTarget.includes(query)) return false;
         }
 
-        // 未加入のみフィルター
         if (unjoinedOnly && routeJoinedStatus[`${char.id}_${r.key}`]) {
           return false;
         }
 
-        // 支援判定
         if (rowDef.key === "init") {
           return supp === "初期";
         }
@@ -468,12 +526,11 @@ function renderSupportMatrixTable() {
   updateHitCount(totalCharsRendered, "延べ");
 }
 
-// 件数表示の更新
 function updateHitCount(count, prefix = "") {
   const countEl = document.getElementById("hitCount");
   if (countEl) {
     if (prefix) {
-      countEl.textContent = `${prefix} ${count} 名表示中`;
+      countEl.textContent = `${prefix} ${count} 名表示`;
     } else {
       countEl.textContent = `${count} / ${characters.length} 件`;
     }
@@ -566,31 +623,7 @@ function setRouteFilter(route) {
   document.querySelectorAll(".tab-btn").forEach(btn => {
     btn.classList.toggle("active", btn.getAttribute("data-route") === route);
   });
-  applyRouteVisibility();
   renderApp();
-}
-
-function applyRouteVisibility() {
-  const routes = ["kai", "dietrich", "theodora", "leda"];
-  const tableEl = document.getElementById("charTable");
-
-  // 単一ルート絞り込み時は専用クラスを付与してテーブル幅とキャラ列を完全固定化
-  if (currentViewMode === "char" && currentRoute !== "all") {
-    if (tableEl) tableEl.classList.add("single-route-view");
-  } else {
-    if (tableEl) tableEl.classList.remove("single-route-view");
-  }
-
-  routes.forEach(r => {
-    const shouldShow = (currentRoute === "all" || currentRoute === r);
-    document.querySelectorAll(`.col-hero-${r}`).forEach(el => {
-      if (shouldShow) {
-        el.classList.remove("hidden-col");
-      } else {
-        el.classList.add("hidden-col");
-      }
-    });
-  });
 }
 
 function filterTable() {
@@ -601,7 +634,7 @@ function toggleCompactMode() {
   const isCompact = document.getElementById("compactMode").checked;
   document.querySelectorAll("th, td").forEach(el => {
     if (isCompact) {
-      el.style.padding = "4px 4px";
+      el.style.padding = "4px 3px";
       el.style.fontSize = "11px";
     } else {
       el.style.padding = "";

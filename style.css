@@ -369,37 +369,47 @@ table.single-route-view {
   table-layout: fixed !important;
 }
 
-table.single-route-view .col-char {
-  width: 100px !important;
-  min-width: 100px !important;
-  max-width: 100px !important;
+table.single-route-view th.col-char,
+table.single-route-view td.col-char {
+  width: 95px !important;
+  min-width: 95px !important;
+  max-width: 95px !important;
+  box-sizing: border-box;
 }
 
-table.single-route-view .val-support {
-  width: 48px !important;
-  min-width: 48px !important;
-  max-width: 48px !important;
-  padding: 8px 2px !important;
+table.single-route-view th.val-support,
+table.single-route-view td.val-support {
+  width: 45px !important;
+  min-width: 45px !important;
+  max-width: 45px !important;
+  padding: 8px 1px !important;
+  text-align: center;
 }
 
-table.single-route-view .val-fame {
-  width: 48px !important;
-  min-width: 48px !important;
-  max-width: 48px !important;
-  padding: 8px 2px !important;
+table.single-route-view th.val-fame,
+table.single-route-view td.val-fame {
+  width: 45px !important;
+  min-width: 45px !important;
+  max-width: 45px !important;
+  padding: 8px 1px !important;
+  text-align: center;
 }
 
-table.single-route-view .val-limit {
-  width: 62px !important;
-  min-width: 62px !important;
-  max-width: 62px !important;
+table.single-route-view th.val-limit,
+table.single-route-view td.val-limit {
+  width: 60px !important;
+  min-width: 60px !important;
+  max-width: 60px !important;
   padding: 8px 2px !important;
+  text-align: center;
 }
 
 /* 加入条件列が残りの幅をすべて埋めて広がる */
-table.single-route-view td:not(.col-char):not(.val-support):not(.val-fame):not(.val-limit) {
+table.single-route-view .col-cond-cell,
+table.single-route-view .th-cond-head {
   width: auto !important;
   min-width: 110px !important;
+  word-break: break-word;
 }
 
 /* --- 名声別 / 支援別 早見表 専用スタイル --- */
