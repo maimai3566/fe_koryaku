@@ -572,6 +572,15 @@ function setRouteFilter(route) {
 
 function applyRouteVisibility() {
   const routes = ["kai", "dietrich", "theodora", "leda"];
+  const tableEl = document.getElementById("charTable");
+
+  // 単一ルート絞り込み時は専用クラスを付与してテーブル幅とキャラ列を完全固定化
+  if (currentViewMode === "char" && currentRoute !== "all") {
+    if (tableEl) tableEl.classList.add("single-route-view");
+  } else {
+    if (tableEl) tableEl.classList.remove("single-route-view");
+  }
+
   routes.forEach(r => {
     const shouldShow = (currentRoute === "all" || currentRoute === r);
     document.querySelectorAll(`.col-hero-${r}`).forEach(el => {

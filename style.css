@@ -334,19 +334,23 @@ th {
   font-weight: bold;
 }
 
-/* キャラクター列（左固定 Sticky Column） */
+/* キャラクター列（左固定 Sticky Column） - 幅完全固定で間延び防止 */
 .col-char {
   position: sticky;
   left: 0;
   z-index: 10;
   background-color: var(--table-sticky-bg);
-  min-width: 110px;
-  max-width: 130px;
+  width: 105px !important;
+  min-width: 105px !important;
+  max-width: 105px !important;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.35);
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: #fff;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .col-char:hover {
@@ -356,6 +360,46 @@ th {
 th.col-char {
   z-index: 30;
   background-color: var(--bg-header);
+}
+
+/* 単一ルート絞り込み時のスタイル（間延び完全防止 & スマホ幅ジャストフィット） */
+table.single-route-view {
+  min-width: 0 !important;
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+
+table.single-route-view .col-char {
+  width: 100px !important;
+  min-width: 100px !important;
+  max-width: 100px !important;
+}
+
+table.single-route-view .val-support {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  padding: 8px 2px !important;
+}
+
+table.single-route-view .val-fame {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  padding: 8px 2px !important;
+}
+
+table.single-route-view .val-limit {
+  width: 62px !important;
+  min-width: 62px !important;
+  max-width: 62px !important;
+  padding: 8px 2px !important;
+}
+
+/* 加入条件列が残りの幅をすべて埋めて広がる */
+table.single-route-view td:not(.col-char):not(.val-support):not(.val-fame):not(.val-limit) {
+  width: auto !important;
+  min-width: 110px !important;
 }
 
 /* --- 名声別 / 支援別 早見表 専用スタイル --- */
