@@ -268,6 +268,34 @@
       text-align: center;
     }
 
+    /* ソート可能ヘッダー */
+    .sortable {
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .sortable:hover {
+      background-color: var(--bg-hover) !important;
+      color: #fff !important;
+    }
+    .sort-icon {
+      display: inline-block;
+      margin-left: 2px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      opacity: 0.6;
+      vertical-align: middle;
+    }
+    .sortable.active-sort {
+      color: var(--accent-gold) !important;
+      background-color: rgba(234, 179, 8, 0.12) !important;
+    }
+    .sortable.active-sort .sort-icon {
+      color: var(--accent-gold);
+      opacity: 1;
+      font-weight: bold;
+    }
+
     /* キャラクター列（左固定 Sticky Column） */
     .col-char {
       position: sticky;
@@ -533,7 +561,9 @@
       <thead>
         <!-- 1行目: 主人公大見出し -->
         <tr>
-          <th rowspan="2" class="col-char">キャラクター</th>
+          <th rowspan="2" class="col-char sortable" onclick="handleSort('name')" title="名前順で並べ替え">
+            キャラクター <span class="sort-icon" id="sort-icon-name">⇅</span>
+          </th>
           <th colspan="4" class="th-hero th-kai col-hero-kai">カイ</th>
           <th colspan="4" class="th-hero th-dietrich col-hero-dietrich">ディートリヒ</th>
           <th colspan="4" class="th-hero th-theodora col-hero-theodora">セオドラ</th>
@@ -542,25 +572,49 @@
         <!-- 2行目: 支援、名声、加入条件、期限 -->
         <tr>
           <!-- カイ -->
-          <th class="th-sub col-hero-kai" style="width: 50px;">支援</th>
-          <th class="th-sub col-hero-kai" style="width: 50px;">名声</th>
+          <th class="th-sub col-hero-kai sortable" style="width: 55px;" onclick="handleSort('kai.support')" title="カイ篇の支援順でソート">
+            支援 <span class="sort-icon" id="sort-icon-kai-support">⇅</span>
+          </th>
+          <th class="th-sub col-hero-kai sortable" style="width: 55px;" onclick="handleSort('kai.fame')" title="カイ篇の名声順でソート">
+            名声 <span class="sort-icon" id="sort-icon-kai-fame">⇅</span>
+          </th>
           <th class="th-sub col-hero-kai">加入条件</th>
-          <th class="th-sub col-hero-kai" style="width: 70px;">期限</th>
+          <th class="th-sub col-hero-kai sortable" style="width: 70px;" onclick="handleSort('kai.limit')" title="カイ篇の期限順でソート">
+            期限 <span class="sort-icon" id="sort-icon-kai-limit">⇅</span>
+          </th>
           <!-- ディートリヒ -->
-          <th class="th-sub col-hero-dietrich" style="width: 50px;">支援</th>
-          <th class="th-sub col-hero-dietrich" style="width: 50px;">名声</th>
+          <th class="th-sub col-hero-dietrich sortable" style="width: 55px;" onclick="handleSort('dietrich.support')" title="ディートリヒ篇の支援順でソート">
+            支援 <span class="sort-icon" id="sort-icon-dietrich-support">⇅</span>
+          </th>
+          <th class="th-sub col-hero-dietrich sortable" style="width: 55px;" onclick="handleSort('dietrich.fame')" title="ディートリヒ篇の名声順でソート">
+            名声 <span class="sort-icon" id="sort-icon-dietrich-fame">⇅</span>
+          </th>
           <th class="th-sub col-hero-dietrich">加入条件</th>
-          <th class="th-sub col-hero-dietrich" style="width: 70px;">期限</th>
+          <th class="th-sub col-hero-dietrich sortable" style="width: 70px;" onclick="handleSort('dietrich.limit')" title="ディートリヒ篇の期限順でソート">
+            期限 <span class="sort-icon" id="sort-icon-dietrich-limit">⇅</span>
+          </th>
           <!-- セオドラ -->
-          <th class="th-sub col-hero-theodora" style="width: 50px;">支援</th>
-          <th class="th-sub col-hero-theodora" style="width: 50px;">名声</th>
+          <th class="th-sub col-hero-theodora sortable" style="width: 55px;" onclick="handleSort('theodora.support')" title="セオドラ篇の支援順でソート">
+            支援 <span class="sort-icon" id="sort-icon-theodora-support">⇅</span>
+          </th>
+          <th class="th-sub col-hero-theodora sortable" style="width: 55px;" onclick="handleSort('theodora.fame')" title="セオドラ篇の名声順でソート">
+            名声 <span class="sort-icon" id="sort-icon-theodora-fame">⇅</span>
+          </th>
           <th class="th-sub col-hero-theodora">加入条件</th>
-          <th class="th-sub col-hero-theodora" style="width: 70px;">期限</th>
+          <th class="th-sub col-hero-theodora sortable" style="width: 70px;" onclick="handleSort('theodora.limit')" title="セオドラ篇の期限順でソート">
+            期限 <span class="sort-icon" id="sort-icon-theodora-limit">⇅</span>
+          </th>
           <!-- レダ -->
-          <th class="th-sub col-hero-leda" style="width: 50px;">支援</th>
-          <th class="th-sub col-hero-leda" style="width: 50px;">名声</th>
+          <th class="th-sub col-hero-leda sortable" style="width: 55px;" onclick="handleSort('leda.support')" title="レダ篇の支援順でソート">
+            支援 <span class="sort-icon" id="sort-icon-leda-support">⇅</span>
+          </th>
+          <th class="th-sub col-hero-leda sortable" style="width: 55px;" onclick="handleSort('leda.fame')" title="レダ篇の名声順でソート">
+            名声 <span class="sort-icon" id="sort-icon-leda-fame">⇅</span>
+          </th>
           <th class="th-sub col-hero-leda">加入条件</th>
-          <th class="th-sub col-hero-leda" style="width: 70px;">期限</th>
+          <th class="th-sub col-hero-leda sortable" style="width: 70px;" onclick="handleSort('leda.limit')" title="レダ篇の期限順でソート">
+            期限 <span class="sort-icon" id="sort-icon-leda-limit">⇅</span>
+          </th>
         </tr>
       </thead>
       <tbody id="charTableBody">
@@ -570,7 +624,7 @@
   </div>
 
   <div class="footer-note">
-    💡 <strong>Tips:</strong> キャラ名左のチェックボックスを入れると「加入済み」として保存されます。スマホ閲覧時は上部タブで「カイ篇」などを選ぶと、その主人公の列だけが画面幅いっぱいにすっきり表示されます！
+    💡 <strong>Tips:</strong> 表のヘッダー（「支援」「名声」「期限」や「キャラクター」）をタップすると、<strong>昇順▲・降順▼でソート（並べ替え）</strong>できます！スマホ閲覧時は上部タブで「カイ篇」などを選ぶと、その主人公の列だけが画面幅いっぱいにすっきり表示されます。
   </div>
 </div>
 
@@ -725,6 +779,10 @@
   let characters = [];
   let joinedStatus = {}; // { id: true/false }
   let currentRoute = "all";
+  let sortState = {
+    key: null,   // "name", "kai.support", "kai.fame", "kai.limit", etc.
+    order: null  // "asc", "desc", null
+  };
 
   // ローカルストレージキー
   const STORAGE_KEY_CHARS = "fe_chars_data_v1";
@@ -755,6 +813,93 @@
     renderTable();
   }
 
+  // ソート比較用の値抽出（初期=0, Lv1=1, Lv2=2, 不可=999 等）
+  function parseSortValue(char, key) {
+    if (key === "name") {
+      return char.name || "";
+    }
+    const [hero, field] = key.split(".");
+    const d = (char[hero] && typeof char[hero] === "object") ? char[hero] : {};
+    const val = (d[field] || "").trim();
+
+    if (field === "support") {
+      if (val === "初期") return 0;
+      const match = val.match(/(\d+)/);
+      if (match) return parseInt(match[1], 10);
+      if (val.includes("不可") || val === "-") return 999;
+      return 50;
+    }
+
+    if (field === "fame") {
+      if (val === "-" || !val) {
+        if (d.support === "初期" || d.cond?.includes("自動") || d.cond?.includes("初期")) return 0;
+        if (d.cond?.includes("不可")) return 999;
+        return 0;
+      }
+      const match = val.match(/(\d+)/);
+      if (match) return parseInt(match[1], 10);
+      return 50;
+    }
+
+    if (field === "limit") {
+      if (val === "自動") return 0;
+      const match = val.match(/(\d+)章/);
+      if (match) return parseInt(match[1], 10);
+      if (val.includes("不可")) return 999;
+      return 50;
+    }
+
+    return val;
+  }
+
+  // ソートヘッダークリック時のハンドラ
+  function handleSort(key) {
+    if (sortState.key === key) {
+      if (sortState.order === "asc") {
+        sortState.order = "desc";
+      } else if (sortState.order === "desc") {
+        sortState.key = null;
+        sortState.order = null;
+      }
+    } else {
+      sortState.key = key;
+      sortState.order = "asc";
+    }
+    updateSortIcons();
+    renderTable();
+  }
+
+  // ソートアイコン表示の更新
+  function updateSortIcons() {
+    const sortKeys = [
+      "name",
+      "kai.support", "kai.fame", "kai.limit",
+      "dietrich.support", "dietrich.fame", "dietrich.limit",
+      "theodora.support", "theodora.fame", "theodora.limit",
+      "leda.support", "leda.fame", "leda.limit"
+    ];
+
+    sortKeys.forEach(k => {
+      const elementId = "sort-icon-" + k.replace(".", "-");
+      const el = document.getElementById(elementId);
+      if (!el) return;
+
+      const parentTh = el.closest(".sortable");
+
+      if (sortState.key === k) {
+        if (parentTh) parentTh.classList.add("active-sort");
+        if (sortState.order === "asc") {
+          el.textContent = "▲";
+        } else if (sortState.order === "desc") {
+          el.textContent = "▼";
+        }
+      } else {
+        if (parentTh) parentTh.classList.remove("active-sort");
+        el.textContent = "⇅";
+      }
+    });
+  }
+
   // テーブルレンダリング
   function renderTable() {
     const tbody = document.getElementById("charTableBody");
@@ -763,7 +908,23 @@
     const query = document.getElementById("searchInput").value.trim().toLowerCase();
     const unjoinedOnly = document.getElementById("unjoinedOnly").checked;
 
-    characters.forEach((char) => {
+    // ソート適用
+    let listToRender = [...characters];
+    if (sortState.key && sortState.order) {
+      listToRender.sort((a, b) => {
+        const valA = parseSortValue(a, sortState.key);
+        const valB = parseSortValue(b, sortState.key);
+        let cmp = 0;
+        if (typeof valA === "number" && typeof valB === "number") {
+          cmp = valA - valB;
+        } else {
+          cmp = String(valA).localeCompare(String(valB), "ja");
+        }
+        return sortState.order === "asc" ? cmp : -cmp;
+      });
+    }
+
+    listToRender.forEach((char) => {
       const isJoined = !!joinedStatus[char.id];
 
       // フィルター
