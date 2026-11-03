@@ -221,7 +221,7 @@
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
-      min-width: 980px;
+      min-width: 960px;
     }
 
     /* ヘッダー固定 */
@@ -296,43 +296,23 @@
       font-weight: bold;
     }
 
-    /* キャラクター列（左固定 Sticky Column） */
+    /* キャラクター列（左固定 Sticky Column） - 名前だけをスッキリ表示 */
     .col-char {
       position: sticky;
       left: 0;
       z-index: 10;
       background-color: var(--table-sticky-bg);
-      min-width: 155px;
-      max-width: 185px;
+      min-width: 120px;
+      max-width: 140px;
       box-shadow: 2px 0 6px rgba(0, 0, 0, 0.35);
-    }
-
-    th.col-char {
-      z-index: 30;
-      background-color: var(--bg-header);
-    }
-
-    .char-info {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .char-name {
       font-weight: 700;
       font-size: 0.95rem;
       color: #fff;
     }
 
-    .char-origin {
-      font-size: 0.72rem;
-      color: var(--accent-gold);
-      opacity: 0.85;
-    }
-
-    .char-class {
-      font-size: 0.75rem;
-      color: var(--text-muted);
+    th.col-char {
+      z-index: 30;
+      background-color: var(--bg-header);
     }
 
     /* ルート別セルのスタイル & タップで加入切り替え */
@@ -343,13 +323,13 @@
     }
 
     .route-cell:hover {
-      background-color: rgba(255, 255, 255, 0.04);
+      background-color: rgba(255, 255, 255, 0.05);
     }
 
     /* 加入済み（グレーアウト）セル */
     .cell-joined {
-      background-color: rgba(34, 197, 94, 0.06) !important;
-      opacity: 0.45;
+      background-color: rgba(34, 197, 94, 0.07) !important;
+      opacity: 0.42;
     }
 
     .cell-joined .val-cond,
@@ -402,6 +382,12 @@
       background: rgba(34, 197, 94, 0.15);
       border-color: rgba(34, 197, 94, 0.4);
       color: #4ade80;
+    }
+
+    .badge-story3 {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: rgba(168, 85, 247, 0.4);
+      color: #c084fc;
     }
 
     .badge-none {
@@ -503,8 +489,7 @@
       body { padding: 8px; }
       header { padding: 12px; }
       h1 { font-size: 1.1rem; }
-      .col-char { min-width: 130px; max-width: 140px; }
-      .char-name { font-size: 0.88rem; }
+      .col-char { min-width: 100px; max-width: 110px; font-size: 0.88rem; }
       th, td { padding: 8px 6px; }
       .val-cond { min-width: 110px; }
     }
@@ -521,6 +506,7 @@
         <div class="subtitle">カイ / ディートリヒ / セオドラ / レダ の4主人公比較マトリクス表</div>
       </div>
       <div class="action-btns">
+        <button class="btn" onclick="resetToLatestData()" title="初期データにリセット">🔄 リセット</button>
         <button class="btn" onclick="exportData()">💾 バックアップ</button>
         <button class="btn" onclick="importData()">📂 復元</button>
         <button class="btn btn-primary" onclick="openAddModal()">＋ キャラ追加</button>
@@ -531,7 +517,7 @@
     <div class="controls">
       <!-- 検索 -->
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="キャラ名・兵種・勢力・条件で検索..." oninput="filterTable()">
+        <input type="text" id="searchInput" placeholder="キャラ名・条件で検索..." oninput="filterTable()">
       </div>
 
       <!-- ルート表示切替タブ -->
@@ -638,14 +624,6 @@
       <label>キャラクター名</label>
       <input type="text" id="formName" placeholder="例: 新キャラクター">
     </div>
-    <div class="form-group">
-      <label>初期兵種 / 役割</label>
-      <input type="text" id="formClass" placeholder="例: 弓兵 / 回復 / 飛行">
-    </div>
-    <div class="form-group">
-      <label>所属・勢力</label>
-      <input type="text" id="formOrigin" placeholder="例: リベイラの風 / スカウト">
-    </div>
 
     <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-gold); margin: 12px 0 6px;">各ルートの加入条件</div>
 
@@ -695,14 +673,12 @@
 </div>
 
 <script>
-  // 万紫千紅の仲間キャラクター（全26名網羅）
+  // 万紫千紅の全キャラクター一覧（第1部〜第3部救世編）
   const DEFAULT_CHARACTERS = [
-    // --- リベイラの風（カイ陣営） ---
+    // 1部〜2部主要メンバー
     {
       id: "tiara",
       name: "ティアラ",
-      origin: "【リベイラの風】",
-      class: "策士 / ロード補佐",
       kai: { support: "初期", fame: "-", cond: "序幕で自動加入（主人公補佐）", limit: "自動" },
       dietrich: { support: "Lv.2", fame: "Lv.5", cond: "贈り物1回 + 外伝「義勇の灯火」", limit: "1部12章" },
       theodora: { support: "Lv.2", fame: "Lv.4", cond: "贈り物1回 + 闘技場勝利後会話", limit: "1部12章" },
@@ -711,8 +687,6 @@
     {
       id: "pieter",
       name: "ピーテル",
-      origin: "【リベイラの風】",
-      class: "弓兵（射程+1/ボウナイト）",
       kai: { support: "初期", fame: "-", cond: "1部1章で自動加入（義兄弟）", limit: "自動" },
       dietrich: { support: "Lv.2", fame: "Lv.4", cond: "贈り物1回 + 交渉「鉄の弓×3」渡す", limit: "1部12章" },
       theodora: { support: "Lv.2", fame: "Lv.4", cond: "贈り物1回 + 射撃訓練クリア", limit: "1部12章" },
@@ -721,20 +695,14 @@
     {
       id: "guzaran",
       name: "グザラン",
-      origin: "【リベイラの風】",
-      class: "斧戦士 / 前衛アタッカー",
       kai: { support: "Lv.1", fame: "Lv.2", cond: "序盤酒場会話で即スカウト可能", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.4", cond: "腕比べ勝負（撃破）でスカウト", limit: "1部12章" },
       theodora: { support: "Lv.2", fame: "Lv.5", cond: "贈り物1回 + 討伐クエストクリア", limit: "1部12章" },
       leda: { support: "Lv.2", fame: "Lv.4", cond: "闘技場イベント後、会話スカウト", limit: "1部12章" }
     },
-
-    // --- ラミーヌ一家（ディートリヒ陣営） ---
     {
       id: "esmeralda",
       name: "エスメラルダ",
-      origin: "【ラミーヌ一家】",
-      class: "重装騎士 / 壁役フォートレス",
       kai: { support: "Lv.2", fame: "Lv.7", cond: "依頼「エスメラルダの頼み」クリア", limit: "1部12章" },
       dietrich: { support: "初期", fame: "-", cond: "ディートリヒ直属騎士（初期加入）", limit: "自動" },
       theodora: { support: "Lv.3", fame: "Lv.8", cond: "防衛戦外伝クリア + 名声条件", limit: "1部12章" },
@@ -743,8 +711,6 @@
     {
       id: "fabio",
       name: "ファビオ",
-      origin: "【ラミーヌ一家】",
-      class: "傭兵 / 剣士アタッカー",
       kai: { support: "Lv.2", fame: "Lv.5", cond: "酒場で傭兵代支払い（2,000G）", limit: "1部12章" },
       dietrich: { support: "初期", fame: "-", cond: "ディートリヒ一家初期メンバー", limit: "自動" },
       theodora: { support: "Lv.2", fame: "Lv.6", cond: "贈り物1回 + 決闘勝利", limit: "1部12章" },
@@ -753,8 +719,6 @@
     {
       id: "michaela",
       name: "ミカエラ",
-      origin: "【ラミーヌ一家】",
-      class: "盗賊 / 斥候（鍵開け・速さ）",
       kai: { support: "Lv.2", fame: "Lv.4", cond: "夜の裏路地イベントで会話", limit: "1部12章" },
       dietrich: { support: "初期", fame: "-", cond: "ディートリヒ一家初期メンバー", limit: "自動" },
       theodora: { support: "Lv.2", fame: "Lv.5", cond: "贈り物1回 + 宝箱回収依頼", limit: "1部12章" },
@@ -763,20 +727,14 @@
     {
       id: "yokai",
       name: "ヨーカイ",
-      origin: "【ラミーヌ一家】",
-      class: "僧侶 / ヒーラー（ビショップ）",
       kai: { support: "Lv.2", fame: "Lv.3", cond: "質問正解「乾酪→満月の夜→芋」", limit: "1部3章〜" },
       dietrich: { support: "初期", fame: "-", cond: "一家の専属神官（初期加入）", limit: "自動" },
       theodora: { support: "Lv.2", fame: "Lv.4", cond: "神殿寄付 + 医薬品調達", limit: "1部12章" },
       leda: { support: "Lv.2", fame: "Lv.4", cond: "神殿寄付1回 + スカウト会話", limit: "1部12章" }
     },
-
-    // --- メガエラの灯火（セオドラ陣営） ---
     {
       id: "sophia",
       name: "ソフィア",
-      origin: "【メガエラの灯火】",
-      class: "修道女 / 白魔術師",
       kai: { support: "Lv.1", fame: "Lv.2", cond: "神殿救済クエスト後スカウト", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.3", cond: "巡礼の護衛任務クリア後加入", limit: "1部12章" },
       theodora: { support: "初期", fame: "-", cond: "メガエラ初期回復メンバー", limit: "自動" },
@@ -785,8 +743,6 @@
     {
       id: "lysander",
       name: "ライサンダー",
-      origin: "【メガエラの灯火】",
-      class: "槍騎士 / パラディン",
       kai: { support: "Lv.3", fame: "Lv.7", cond: "騎士団演習クリア + 贈り物", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.6", cond: "模擬戦でライサンダー撃破", limit: "1部12章" },
       theodora: { support: "初期", fame: "-", cond: "メガエラ灯火 騎士団長（初期加入）", limit: "自動" },
@@ -795,8 +751,6 @@
     {
       id: "bonaparte",
       name: "ボナパルテ",
-      origin: "【メガエラの灯火】",
-      class: "重騎士 / アーマーガード",
       kai: { support: "Lv.2", fame: "Lv.6", cond: "重装甲素材「白銀塊×2」納品", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.6", cond: "防衛任務外伝クリア後スカウト", limit: "1部12章" },
       theodora: { support: "初期", fame: "-", cond: "メガエラ重装前衛（初期加入）", limit: "自動" },
@@ -805,8 +759,6 @@
     {
       id: "tobias",
       name: "トビヤス",
-      origin: "【メガエラの灯火】",
-      class: "魔道士 / 元素・炎魔法",
       kai: { support: "Lv.2", fame: "Lv.5", cond: "魔法書解読クエストクリア", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.5", cond: "魔導触媒納品 + スカウト", limit: "1部12章" },
       theodora: { support: "初期", fame: "-", cond: "メガエラ専属魔道士（初期加入）", limit: "自動" },
@@ -815,8 +767,6 @@
     {
       id: "lilian",
       name: "リリアン",
-      origin: "【メガエラの灯火】",
-      class: "神官 / 支援・遠隔回復",
       kai: { support: "Lv.2", fame: "Lv.4", cond: "孤児院支援イベントクリア", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.5", cond: "教会への奉納 + スカウト会話", limit: "1部12章" },
       theodora: { support: "初期", fame: "-", cond: "メガエラ初期メンバー", limit: "自動" },
@@ -825,8 +775,6 @@
     {
       id: "alexandra",
       name: "アレキサンドラ",
-      origin: "【メガエラの灯火】",
-      class: "魔法戦士 / 回避盾・剣姫",
       kai: { support: "Lv.3", fame: "Lv.8", cond: "外伝「孤高の剣姫」クリア", limit: "1部12章" },
       dietrich: { support: "Lv.3", fame: "Lv.8", cond: "決闘イベントでHP半分削る", limit: "1部12章" },
       theodora: { support: "初期", fame: "-", cond: "セオドラ側近（初期加入）", limit: "自動" },
@@ -835,20 +783,14 @@
     {
       id: "loretta",
       name: "ロレッタ",
-      origin: "【メガエラの灯火】",
-      class: "天馬騎士 / ペガサスナイト",
       kai: { support: "Lv.3", fame: "Lv.7", cond: "飛行演習クリア + 贈り物", limit: "1部12章" },
       dietrich: { support: "Lv.3", fame: "Lv.8", cond: "テルス白銀騎士団関連クエスト後", limit: "1部12章" },
       theodora: { support: "初期", fame: "-", cond: "初期飛行メンバー（初期加入）", limit: "自動" },
       leda: { support: "Lv.2", fame: "Lv.5", cond: "4章武闘会後、馬房にて会話", limit: "1部12章" }
     },
-
-    // --- 薔薇の嵐（レダ陣営） ---
     {
       id: "buccaneer",
       name: "バッカニア",
-      origin: "【薔薇の嵐】",
-      class: "海賊 / 剛腕アタッカー",
       kai: { support: "Lv.2", fame: "Lv.5", cond: "港湾の腕相撲勝負で勝利", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.6", cond: "密輸船迎撃クエストクリア", limit: "1部12章" },
       theodora: { support: "Lv.3", fame: "Lv.7", cond: "海賊討伐後、和解交渉", limit: "1部12章" },
@@ -857,8 +799,6 @@
     {
       id: "scirocco",
       name: "シロッコ",
-      origin: "【薔薇の嵐】",
-      class: "賢者（黒・白魔術両刀）",
       kai: { support: "Lv.3", fame: "Lv.9", cond: "依頼「シロッコの頼み」クリア", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.7", cond: "魔導書寄贈 + スカウト交渉", limit: "1部12章" },
       theodora: { support: "Lv.2", fame: "Lv.6", cond: "魔道学院の模擬戦クリア", limit: "1部12章" },
@@ -867,8 +807,6 @@
     {
       id: "olympia",
       name: "オリンピア",
-      origin: "【薔薇の嵐】",
-      class: "格闘家 / ウォーマスター",
       kai: { support: "Lv.2", fame: "Lv.6", cond: "闘技場3連勝後スカウト会話", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.5", cond: "一家との合同演習クリア", limit: "1部12章" },
       theodora: { support: "Lv.3", fame: "Lv.7", cond: "護身術指南クエスト後スカウト", limit: "1部12章" },
@@ -877,8 +815,6 @@
     {
       id: "muu",
       name: "ムウ",
-      origin: "【薔薇の嵐】",
-      class: "獣人・化身 / 特殊ユニット",
       kai: { support: "Lv.3", fame: "Lv.7", cond: "森の迷宮外伝で迷子救出", limit: "1部12章" },
       dietrich: { support: "Lv.3", fame: "Lv.8", cond: "珍しい肉・食料×5をプレゼント", limit: "1部12章" },
       theodora: { support: "Lv.2", fame: "Lv.7", cond: "自然保護の約束 + スカウト", limit: "1部12章" },
@@ -887,20 +823,14 @@
     {
       id: "catania",
       name: "カターニャ",
-      origin: "【薔薇の嵐】",
-      class: "弓騎兵 / 機動スカウト",
       kai: { support: "Lv.1", fame: "Lv.3", cond: "序盤の遭遇戦後、広場で会話", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.4", cond: "斥候任務依頼クリア", limit: "1部12章" },
       theodora: { support: "Lv.2", fame: "Lv.4", cond: "馬具納品 + スカウト交渉", limit: "1部12章" },
       leda: { support: "初期", fame: "-", cond: "薔薇の嵐 斥候（初期加入）", limit: "自動" }
     },
-
-    // --- 共通スカウト・独立勢力・傭兵 ---
     {
       id: "nuzzo",
       name: "ヌッツォ",
-      origin: "【流浪の狩人】",
-      class: "スナイパー / 高速・高追撃",
       kai: { support: "Lv.2", fame: "Lv.6", cond: "贈り物1回 + 交渉「鉄の弓×3」", limit: "1部12章" },
       dietrich: { support: "Lv.1", fame: "Lv.3", cond: "ディートリヒ篇 3章クリア後加入", limit: "3章" },
       theodora: { support: "Lv.3", fame: "Lv.6", cond: "狩猟外伝クリア後スカウト", limit: "1部12章" },
@@ -909,8 +839,6 @@
     {
       id: "kiroika",
       name: "キロイカ",
-      origin: "【中立猟兵】",
-      class: "弓兵 / 遠隔曲射",
       kai: { support: "Lv.2", fame: "Lv.4", cond: "狩場警護クエストクリア", limit: "1部12章" },
       dietrich: { support: "Lv.1", fame: "Lv.2", cond: "名声Lv2以上で酒場即スカウト", limit: "1部12章" },
       theodora: { support: "Lv.2", fame: "Lv.4", cond: "矢筒・弦の素材調達", limit: "1部12章" },
@@ -919,8 +847,6 @@
     {
       id: "fiana",
       name: "フィアナ",
-      origin: "【旅の聖職者】",
-      class: "神官戦士 / メイス・回復",
       kai: { support: "Lv.2", fame: "Lv.4", cond: "街道の野盗討伐後スカウト", limit: "1部12章" },
       dietrich: { support: "Lv.1", fame: "Lv.2", cond: "薬草収集依頼クリア後即加入", limit: "1部12章" },
       theodora: { support: "Lv.2", fame: "Lv.3", cond: "神殿対話イベントでスカウト", limit: "1部12章" },
@@ -929,8 +855,6 @@
     {
       id: "simon",
       name: "シモン",
-      origin: "【ダグザの軍学者】",
-      class: "軍師 / 計略支援・デバフ",
       kai: { support: "Lv.2", fame: "Lv.6", cond: "戦術問答（正解3問）で合格", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.5", cond: "戦術書の写本を贈呈", limit: "1部12章" },
       theodora: { support: "Lv.2", fame: "Lv.5", cond: "陣形演習で勝利", limit: "1部12章" },
@@ -939,8 +863,6 @@
     {
       id: "dante",
       name: "ダンテ",
-      origin: "【黒影の暗殺者】",
-      class: "アサシン / 必殺特化",
       kai: { support: "Lv.3", fame: "Lv.8", cond: "裏クエスト「影の始末」クリア", limit: "1部12章" },
       dietrich: { support: "Lv.2", fame: "Lv.7", cond: "裏金4,000Gで契約", limit: "1部12章" },
       theodora: { support: "-", fame: "-", cond: "※セオドラ篇では雇用不可（信条対立）", limit: "不可" },
@@ -949,8 +871,6 @@
     {
       id: "gates",
       name: "ゲイツ",
-      origin: "【孤高の狂戦士】",
-      class: "バーサーカー / 斧特化",
       kai: { support: "-", fame: "-", cond: "※カイ篇では敵対のため加入不可", limit: "不可" },
       dietrich: { support: "Lv.2", fame: "Lv.5", cond: "ディートリヒ篇限定外伝で説得", limit: "1部9章限定" },
       theodora: { support: "-", fame: "-", cond: "※セオドラ篇では加入不可", limit: "不可" },
@@ -959,26 +879,82 @@
     {
       id: "kilik",
       name: "キリーク",
-      origin: "【古の隠者】",
-      class: "闇術師 / 隠しキャラクター",
       kai: { support: "Lv.3", fame: "Lv.9", cond: "1部外伝「亡き妹の装身具」クリア後、2部加入", limit: "1部外伝必須" },
       dietrich: { support: "Lv.3", fame: "Lv.9", cond: "古代遺跡調査クエスト全達成後、2部加入", limit: "1部外伝必須" },
       theodora: { support: "Lv.3", fame: "Lv.9", cond: "神託の儀式完遂後、2部加入", limit: "1部外伝必須" },
       leda: { support: "Lv.3", fame: "Lv.9", cond: "因果律の手記全回収後、2部加入", limit: "1部外伝必須" }
+    },
+
+    // --- 第3部（救世編）加入キャラクター ---
+    {
+      id: "bertrand",
+      name: "ベルトラン",
+      kai: { support: "-", fame: "-", cond: "第3部（救世編）で加入（外伝：ブリギット王の親善試合）", limit: "3部" },
+      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）で加入", limit: "3部" },
+      theodora: { support: "-", fame: "-", cond: "第3部（救世編）で加入", limit: "3部" },
+      leda: { support: "-", fame: "-", cond: "第3部（救世編）で加入", limit: "3部" }
+    },
+    {
+      id: "tarimoon",
+      name: "タリムーン",
+      kai: { support: "-", fame: "-", cond: "第3部（救世編）で加入（外伝：消えた馬車の秘密）", limit: "3部" },
+      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）で加入", limit: "3部" },
+      theodora: { support: "-", fame: "-", cond: "第3部（救世編）で加入", limit: "3部" },
+      leda: { support: "-", fame: "-", cond: "第3部（救世編）で加入", limit: "3部" }
+    },
+    {
+      id: "anatolia",
+      name: "アナトリア",
+      kai: { support: "-", fame: "-", cond: "第3部（救世編）で加入（白鴉の花嫁団）", limit: "3部" },
+      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）で加入", limit: "3部" },
+      theodora: { support: "-", fame: "-", cond: "第3部（救世編）で加入", limit: "3部" },
+      leda: { support: "-", fame: "-", cond: "第3部（救世編）で加入", limit: "3部" }
+    },
+    {
+      id: "kouka",
+      name: "コウカ",
+      kai: { support: "-", fame: "-", cond: "第3部（救世編）救世主軍初期メンバー", limit: "3部初期" },
+      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）救世主軍初期メンバー", limit: "3部初期" },
+      theodora: { support: "-", fame: "-", cond: "第3部（救世編）救世主軍初期メンバー", limit: "3部初期" },
+      leda: { support: "-", fame: "-", cond: "第3部（救世編）救世主軍初期メンバー", limit: "3部初期" }
+    },
+    {
+      id: "troia",
+      name: "トロイア",
+      kai: { support: "-", fame: "-", cond: "第3部（救世編）救世主軍初期メンバー", limit: "3部初期" },
+      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）救世主軍初期メンバー", limit: "3部初期" },
+      theodora: { support: "-", fame: "-", cond: "第3部（救世編）救世主軍初期メンバー", limit: "3部初期" },
+      leda: { support: "-", fame: "-", cond: "第3部（救世編）救世主軍初期メンバー", limit: "3部初期" }
+    },
+    {
+      id: "princess",
+      name: "姫様（金髪王女）",
+      kai: { support: "-", fame: "-", cond: "第3部（救世編）ストーリー進行で合流", limit: "3部" },
+      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）ストーリー進行で合流", limit: "3部" },
+      theodora: { support: "-", fame: "-", cond: "第3部（救世編）ストーリー進行で合流", limit: "3部" },
+      leda: { support: "-", fame: "-", cond: "第3部（救世編）ストーリー進行で合流", limit: "3部" }
+    },
+    {
+      id: "benditz",
+      name: "お付きの人（ベンディッツ）",
+      kai: { support: "-", fame: "-", cond: "第3部（救世編）姫様と共に合流・加入", limit: "3部" },
+      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）姫様と共に合流・加入", limit: "3部" },
+      theodora: { support: "-", fame: "-", cond: "第3部（救世編）姫様と共に合流・加入", limit: "3部" },
+      leda: { support: "-", fame: "-", cond: "第3部（救世編）姫様と共に合流・加入", limit: "3部" }
     }
   ];
 
   // 状態管理
   let characters = [];
-  let routeJoinedStatus = {}; // { "charId_routeKey": true/false }
+  let routeJoinedStatus = {};
   let currentRoute = "all";
   let sortState = {
     key: null,
     order: null
   };
 
-  const STORAGE_KEY_CHARS = "fe_chars_data_v2";
-  const STORAGE_KEY_ROUTE_JOINED = "fe_route_joined_status_v2";
+  const STORAGE_KEY_CHARS = "fe_chars_data_v3";
+  const STORAGE_KEY_ROUTE_JOINED = "fe_route_joined_status_v3";
 
   // 初期化
   function init() {
@@ -1003,6 +979,15 @@
     }
 
     renderTable();
+  }
+
+  // 最新マスターデータに強制リセット
+  function resetToLatestData() {
+    if (confirm("最新のキャラクターリスト（3部加入キャラ含む）に更新しますか？\n※加入チェック状態は保持されます。")) {
+      characters = [...DEFAULT_CHARACTERS];
+      localStorage.setItem(STORAGE_KEY_CHARS, JSON.stringify(characters));
+      renderTable();
+    }
   }
 
   // ルート別の加入トグル（該当セルをタップで切り替え）
@@ -1032,6 +1017,7 @@
     if (field === "fame") {
       if (val === "-" || !val) {
         if (d.support === "初期" || d.cond?.includes("自動") || d.cond?.includes("初期")) return 0;
+        if (d.cond?.includes("3部")) return 300;
         if (d.cond?.includes("不可")) return 999;
         return 0;
       }
@@ -1044,6 +1030,7 @@
       if (val === "自動") return 0;
       const match = val.match(/(\d+)章/);
       if (match) return parseInt(match[1], 10);
+      if (val.includes("3部")) return 30;
       if (val.includes("不可")) return 999;
       return 50;
     }
@@ -1121,11 +1108,9 @@
       // フィルター条件判定
       if (unjoinedOnly) {
         if (currentRoute === "all") {
-          // 全ルートで加入済みなら非表示
           const allJoined = ["kai", "dietrich", "theodora", "leda"].every(r => !!routeJoinedStatus[`${char.id}_${r}`]);
           if (allJoined) return;
         } else {
-          // 選択中の特定ルートで加入済みなら非表示
           if (routeJoinedStatus[`${char.id}_${currentRoute}`]) return;
         }
       }
@@ -1134,8 +1119,6 @@
       if (query) {
         const searchTarget = [
           char.name,
-          char.origin,
-          char.class,
           char.kai?.cond,
           char.dietrich?.cond,
           char.theodora?.cond,
@@ -1147,14 +1130,10 @@
 
       const tr = document.createElement("tr");
 
-      // キャラクター列
+      // キャラクター列 - 所属や兵種を排除し、名前だけをすっきり表示
       const charTd = `
         <td class="col-char">
-          <div class="char-info">
-            <span class="char-name">${char.name}</span>
-            <span class="char-origin">${char.origin || ""}</span>
-            <span class="char-class">${char.class || ""}</span>
-          </div>
+          ${char.name}
         </td>
       `;
 
@@ -1174,7 +1153,13 @@
 
         let condPrefix = isJoined ? `<span class="joined-tag">✔ 加入済</span>` : "";
         let condHtml = `<div class="val-cond">${condPrefix}${d.cond || "-"}</div>`;
-        let limitHtml = `<div class="val-limit">${d.limit || "-"}</div>`;
+        
+        let limitHtml = d.limit || "-";
+        if (limitHtml.includes("3部")) {
+          limitHtml = `<span class="badge badge-story3">${limitHtml}</span>`;
+        } else {
+          limitHtml = `<div class="val-limit">${limitHtml}</div>`;
+        }
 
         const joinedClass = isJoined ? "cell-joined" : "";
         const clickAttr = `onclick="toggleRouteJoined('${char.id}', '${routeKey}', event)" title="タップで${routeTitle}の加入状態を切替"`;
@@ -1259,8 +1244,6 @@
     const newChar = {
       id: "char_" + Date.now(),
       name: name,
-      origin: document.getElementById("formOrigin").value.trim() || "【スカウト】",
-      class: document.getElementById("formClass").value.trim() || "-",
       kai: {
         support: document.getElementById("formKaiSupport").value.trim() || "-",
         fame: document.getElementById("formKaiFame").value.trim() || "-",
