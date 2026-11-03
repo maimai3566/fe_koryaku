@@ -531,3 +531,4 @@ export const HERO_CONFIGS = {
     icon: "🌸"
   }
 };
+

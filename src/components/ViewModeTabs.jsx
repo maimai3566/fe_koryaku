@@ -31,3 +31,4 @@ export default function ViewModeTabs({ currentViewMode, setViewMode }) {
     </div>
   );
 }
+

@@ -1,51 +1,27 @@
+'use client';
+
 import React, { useState, useEffect, useMemo } from 'react';
-import Header from './components/Header';
-import ViewModeTabs from './components/ViewModeTabs';
-import RouteTabs from './components/RouteTabs';
-import CharDetailTable from './components/CharDetailTable';
-import FameMatrixTable from './components/FameMatrixTable';
-import SupportMatrixTable from './components/SupportMatrixTable';
-import EditModal from './components/EditModal';
-import { DEFAULT_CHARACTERS } from './data/characters';
+import Header from '../components/Header';
+import ViewModeTabs from '../components/ViewModeTabs';
+import RouteTabs from '../components/RouteTabs';
+import CharDetailTable from '../components/CharDetailTable';
+import FameMatrixTable from '../components/FameMatrixTable';
+import SupportMatrixTable from '../components/SupportMatrixTable';
+import EditModal from '../components/EditModal';
+import { DEFAULT_CHARACTERS } from '../data/characters';
 
-const STORAGE_KEY_CHARS = 'fe_react_chars_v1';
-const STORAGE_KEY_JOINED = 'fe_react_joined_v1';
+const STORAGE_KEY_CHARS = 'fe_next_chars_v1';
+const STORAGE_KEY_JOINED = 'fe_next_joined_v1';
 
-export default function App() {
+export default function Home() {
+  // SSR時のハイドレーション不整合を防ぐフラグ
+  const [isMounted, setIsMounted] = useState(false);
+
   // 1. キャラクターデータ
-  const [characters, setCharacters] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_CHARS);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-      // 過去キー（v7）からの引継ぎ試行
-      const oldSaved = localStorage.getItem('fe_chars_data_v7');
-      if (oldSaved) {
-        const oldParsed = JSON.parse(oldSaved);
-        if (Array.isArray(oldParsed) && oldParsed.length > 0) return oldParsed;
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    return DEFAULT_CHARACTERS;
-  });
+  const [characters, setCharacters] = useState(DEFAULT_CHARACTERS);
 
   // 2. 加入トグル状態
-  const [routeJoinedStatus, setRouteJoinedStatus] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_JOINED);
-      if (saved) return JSON.parse(saved);
-      // 過去キーからの引継ぎ
-      const oldSaved = localStorage.getItem('fe_route_joined_status_v7') 
-                    || localStorage.getItem('fe_route_joined_status_v6');
-      if (oldSaved) return JSON.parse(oldSaved);
-    } catch (e) {
-      console.error(e);
-    }
-    return {};
-  });
+  const [routeJoinedStatus, setRouteJoinedStatus] = useState({});
 
   // 3. UI表示状態
   const [viewMode, setViewMode] = useState('char'); // 'char' | 'fame' | 'support'
@@ -61,14 +37,43 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingChar, setEditingChar] = useState(null);
 
+  // マウント後にlocalStorageから復元
+  useEffect(() => {
+    setIsMounted(true);
+    try {
+      const savedChars = localStorage.getItem(STORAGE_KEY_CHARS) 
+                      || localStorage.getItem('fe_react_chars_v1') 
+                      || localStorage.getItem('fe_chars_data_v7');
+      if (savedChars) {
+        const parsed = JSON.parse(savedChars);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setCharacters(parsed);
+        }
+      }
+
+      const savedJoined = localStorage.getItem(STORAGE_KEY_JOINED)
+                       || localStorage.getItem('fe_react_joined_v1')
+                       || localStorage.getItem('fe_route_joined_status_v7');
+      if (savedJoined) {
+        setRouteJoinedStatus(JSON.parse(savedJoined));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
   // 保存同期
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_CHARS, JSON.stringify(characters));
-  }, [characters]);
+    if (isMounted) {
+      localStorage.setItem(STORAGE_KEY_CHARS, JSON.stringify(characters));
+    }
+  }, [characters, isMounted]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_JOINED, JSON.stringify(routeJoinedStatus));
-  }, [routeJoinedStatus]);
+    if (isMounted) {
+      localStorage.setItem(STORAGE_KEY_JOINED, JSON.stringify(routeJoinedStatus));
+    }
+  }, [routeJoinedStatus, isMounted]);
 
   // 加入トグル
   const handleToggleJoined = (charId, routeKey, event) => {
@@ -259,7 +264,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f17] text-slate-100 p-3 sm:p-6 md:p-8 max-w-[1440px] mx-auto font-sans antialiased">
+    <main className="p-3 sm:p-6 md:p-8 max-w-[1440px] mx-auto font-sans antialiased">
       {/* ヘッダー＆コントロール */}
       <Header
         searchQuery={searchQuery}
@@ -321,6 +326,7 @@ export default function App() {
         onSave={handleSaveCharacter}
         onDelete={handleDeleteCharacter}
       />
-    </div>
+    </main>
   );
 }
+
