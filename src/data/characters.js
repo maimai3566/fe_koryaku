@@ -1,7 +1,7 @@
 // ========================================================
-// ファイアーエムブレム 万紫千紅 - キャラクターマスターデータ
+// ファイアーエムブレム 万紫千紅 - キャラクターマスターデータ（全58名）
 // ========================================================
-const DEFAULT_CHARACTERS = [
+export const DEFAULT_CHARACTERS = [
   // --- 1部〜2部 主要キャラクター ---
   {
     id: "tiara",
@@ -473,3 +473,61 @@ const DEFAULT_CHARACTERS = [
   }
 ];
 
+export const HERO_CONFIGS = {
+  kai: {
+    key: "kai",
+    name: "カイ",
+    title: "カイ篇",
+    color: "#38bdf8", // Sky blue
+    badgeBg: "bg-sky-500/15",
+    badgeBorder: "border-sky-500/30",
+    badgeText: "text-sky-400",
+    headerBg: "bg-sky-950/40",
+    headerBorder: "border-sky-500",
+    tintBg: "bg-sky-950/20",
+    gradient: "from-sky-950/40 to-transparent",
+    icon: "⚔️"
+  },
+  dietrich: {
+    key: "dietrich",
+    name: "ディートリヒ",
+    title: "ディートリヒ篇",
+    color: "#f97316", // Amber/Orange
+    badgeBg: "bg-orange-500/15",
+    badgeBorder: "border-orange-500/30",
+    badgeText: "text-orange-400",
+    headerBg: "bg-orange-950/40",
+    headerBorder: "border-orange-500",
+    tintBg: "bg-orange-950/20",
+    gradient: "from-orange-950/40 to-transparent",
+    icon: "🛡️"
+  },
+  theodora: {
+    key: "theodora",
+    name: "セオドラ",
+    title: "セオドラ篇",
+    color: "#c084fc", // Purple/Violet
+    badgeBg: "bg-purple-500/15",
+    badgeBorder: "border-purple-500/30",
+    badgeText: "text-purple-400",
+    headerBg: "bg-purple-950/40",
+    headerBorder: "border-purple-500",
+    tintBg: "bg-purple-950/20",
+    gradient: "from-purple-950/40 to-transparent",
+    icon: "👑"
+  },
+  leda: {
+    key: "leda",
+    name: "レダ",
+    title: "レダ篇",
+    color: "#f43f5e", // Rose/Pink
+    badgeBg: "bg-rose-500/15",
+    badgeBorder: "border-rose-500/30",
+    badgeText: "text-rose-400",
+    headerBg: "bg-rose-950/40",
+    headerBorder: "border-rose-500",
+    tintBg: "bg-rose-950/20",
+    gradient: "from-rose-950/40 to-transparent",
+    icon: "🌸"
+  }
+};
