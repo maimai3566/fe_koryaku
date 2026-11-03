@@ -340,9 +340,9 @@ th {
   left: 0;
   z-index: 10;
   background-color: var(--table-sticky-bg);
-  width: 105px !important;
-  min-width: 105px !important;
-  max-width: 105px !important;
+  width: 120px !important;
+  min-width: 120px !important;
+  max-width: 120px !important;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.35);
   font-weight: 700;
   font-size: 0.9rem;
@@ -362,54 +362,63 @@ th.col-char {
   background-color: var(--bg-header);
 }
 
-/* 単一ルート絞り込み時のスタイル（間延び完全防止 & スマホ幅ジャストフィット） */
+/* 単一ルート絞り込み時のスタイル（左寄せ固定幅・間延び完全防止） */
 table.single-route-view {
-  min-width: 0 !important;
-  width: 100% !important;
+  width: 620px !important;
+  min-width: 620px !important;
+  max-width: 620px !important;
   table-layout: fixed !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
 }
 
 table.single-route-view th.col-char,
 table.single-route-view td.col-char {
-  width: 95px !important;
-  min-width: 95px !important;
-  max-width: 95px !important;
+  width: 120px !important;
+  min-width: 120px !important;
+  max-width: 120px !important;
   box-sizing: border-box;
 }
 
 table.single-route-view th.val-support,
 table.single-route-view td.val-support {
-  width: 45px !important;
-  min-width: 45px !important;
-  max-width: 45px !important;
-  padding: 8px 1px !important;
+  width: 65px !important;
+  min-width: 65px !important;
+  max-width: 65px !important;
+  padding: 8px 4px !important;
   text-align: center;
+  box-sizing: border-box;
 }
 
 table.single-route-view th.val-fame,
 table.single-route-view td.val-fame {
-  width: 45px !important;
-  min-width: 45px !important;
-  max-width: 45px !important;
-  padding: 8px 1px !important;
+  width: 65px !important;
+  min-width: 65px !important;
+  max-width: 65px !important;
+  padding: 8px 4px !important;
   text-align: center;
+  box-sizing: border-box;
+}
+
+table.single-route-view th.th-cond-head,
+table.single-route-view td.col-cond-cell {
+  width: 290px !important;
+  min-width: 290px !important;
+  max-width: 290px !important;
+  padding: 8px 10px !important;
+  word-break: break-word;
+  white-space: normal;
+  box-sizing: border-box;
 }
 
 table.single-route-view th.val-limit,
 table.single-route-view td.val-limit {
-  width: 60px !important;
-  min-width: 60px !important;
-  max-width: 60px !important;
-  padding: 8px 2px !important;
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+  padding: 8px 4px !important;
   text-align: center;
-}
-
-/* 加入条件列が残りの幅をすべて埋めて広がる */
-table.single-route-view .col-cond-cell,
-table.single-route-view .th-cond-head {
-  width: auto !important;
-  min-width: 110px !important;
-  word-break: break-word;
+  box-sizing: border-box;
 }
 
 /* --- 名声別 / 支援別 早見表 専用スタイル --- */

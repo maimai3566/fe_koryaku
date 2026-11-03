@@ -129,17 +129,17 @@ function renderCharDetailTable() {
 
     thead.innerHTML = `
       <tr>
-        <th class="col-char sortable" style="width: 95px;" onclick="handleSort('name')" title="名前順でソート">
+        <th class="col-char sortable" style="width: 120px;" onclick="handleSort('name')" title="名前順でソート">
           キャラクター <span class="sort-icon" id="sort-icon-name">⇅</span>
         </th>
-        <th class="th-sub val-support sortable" style="width: 45px;" onclick="handleSort('${currentRoute}.support')" title="支援順でソート">
+        <th class="th-sub val-support sortable" style="width: 65px;" onclick="handleSort('${currentRoute}.support')" title="支援順でソート">
           支援 <span class="sort-icon" id="sort-icon-${currentRoute}-support">⇅</span>
         </th>
-        <th class="th-sub val-fame sortable" style="width: 45px;" onclick="handleSort('${currentRoute}.fame')" title="名声順でソート">
+        <th class="th-sub val-fame sortable" style="width: 65px;" onclick="handleSort('${currentRoute}.fame')" title="名声順でソート">
           名声 <span class="sort-icon" id="sort-icon-${currentRoute}-fame">⇅</span>
         </th>
-        <th class="th-sub th-cond-head">加入条件（${routeTitles[currentRoute]}）</th>
-        <th class="th-sub val-limit sortable" style="width: 60px;" onclick="handleSort('${currentRoute}.limit')" title="期限順でソート">
+        <th class="th-sub th-cond-head" style="width: 290px;">加入条件（${routeTitles[currentRoute]}）</th>
+        <th class="th-sub val-limit sortable" style="width: 80px;" onclick="handleSort('${currentRoute}.limit')" title="期限順でソート">
           期限 <span class="sort-icon" id="sort-icon-${currentRoute}-limit">⇅</span>
         </th>
       </tr>
