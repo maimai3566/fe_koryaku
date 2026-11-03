@@ -88,7 +88,7 @@
 
     .search-box {
       flex: 1;
-      min-width: 220px;
+      min-width: 200px;
       position: relative;
     }
 
@@ -232,7 +232,7 @@
     }
 
     th, td {
-      padding: 10px 10px;
+      padding: 9px 9px;
       border-bottom: 1px solid var(--border);
       border-right: 1px solid var(--border);
       text-align: left;
@@ -296,18 +296,23 @@
       font-weight: bold;
     }
 
-    /* キャラクター列（左固定 Sticky Column） - 名前だけをスッキリ表示 */
+    /* キャラクター列（左固定 Sticky Column） - 名前だけをシンプルに表示 */
     .col-char {
       position: sticky;
       left: 0;
       z-index: 10;
       background-color: var(--table-sticky-bg);
-      min-width: 120px;
-      max-width: 140px;
+      min-width: 110px;
+      max-width: 130px;
       box-shadow: 2px 0 6px rgba(0, 0, 0, 0.35);
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: #fff;
+      cursor: pointer;
+    }
+
+    .col-char:hover {
+      color: var(--accent-gold);
     }
 
     th.col-char {
@@ -315,7 +320,7 @@
       background-color: var(--bg-header);
     }
 
-    /* ルート別セルのスタイル & タップで加入切り替え */
+    /* ルート別セル & タップで加入切り替え */
     .route-cell {
       cursor: pointer;
       user-select: none;
@@ -398,7 +403,7 @@
     .val-cond {
       font-size: 0.82rem;
       color: var(--text-main);
-      min-width: 140px;
+      min-width: 130px;
       line-height: 1.35;
     }
 
@@ -489,9 +494,9 @@
       body { padding: 8px; }
       header { padding: 12px; }
       h1 { font-size: 1.1rem; }
-      .col-char { min-width: 100px; max-width: 110px; font-size: 0.88rem; }
-      th, td { padding: 8px 6px; }
-      .val-cond { min-width: 110px; }
+      .col-char { min-width: 95px; max-width: 105px; font-size: 0.85rem; }
+      th, td { padding: 8px 5px; }
+      .val-cond { min-width: 105px; font-size: 0.78rem; }
     }
   </style>
 </head>
@@ -506,7 +511,7 @@
         <div class="subtitle">カイ / ディートリヒ / セオドラ / レダ の4主人公比較マトリクス表</div>
       </div>
       <div class="action-btns">
-        <button class="btn" onclick="resetToLatestData()" title="初期データにリセット">🔄 リセット</button>
+        <button class="btn" onclick="resetToLatestData()" title="初期データに更新">🔄 リセット</button>
         <button class="btn" onclick="exportData()">💾 バックアップ</button>
         <button class="btn" onclick="importData()">📂 復元</button>
         <button class="btn btn-primary" onclick="openAddModal()">＋ キャラ追加</button>
@@ -612,14 +617,15 @@
   </div>
 
   <div class="footer-note">
-    💡 <strong>Tips:</strong> 各主人公のマスをタップすると、<strong>そのルートの加入状態（加入済・未加入）を個別に切り替え</strong>られます！ヘッダーの「支援」「名声」「期限」をタップすれば昇順▲・降順▼でソートできます。
+    💡 <strong>Tips:</strong> 各主人公のマスをタップすると、<strong>そのルートの加入状態（加入済・未加入）を個別に切り替え</strong>られます！キャラ名をタップすると条件を編集できます。
   </div>
 </div>
 
-<!-- キャラ追加モーダル -->
+<!-- キャラ追加・編集モーダル -->
 <div class="modal-overlay" id="addModal">
   <div class="modal-card">
-    <div class="modal-title">＋ 新規キャラクター追加</div>
+    <div class="modal-title" id="modalTitle">＋ 新規キャラクター追加</div>
+    <input type="hidden" id="editCharId" value="">
     <div class="form-group">
       <label>キャラクター名</label>
       <input type="text" id="formName" placeholder="例: 新キャラクター">
@@ -673,9 +679,9 @@
 </div>
 
 <script>
-  // 万紫千紅の全キャラクター一覧（第1部〜第3部救世編）
+  // 万紫千紅 全キャラクター一覧（全57名網羅）
   const DEFAULT_CHARACTERS = [
-    // 1部〜2部主要メンバー
+    // --- 既存キャラクター ---
     {
       id: "tiara",
       name: "ティアラ",
@@ -884,8 +890,6 @@
       theodora: { support: "Lv.3", fame: "Lv.9", cond: "神託の儀式完遂後、2部加入", limit: "1部外伝必須" },
       leda: { support: "Lv.3", fame: "Lv.9", cond: "因果律の手記全回収後、2部加入", limit: "1部外伝必須" }
     },
-
-    // --- 第3部（救世編）加入キャラクター ---
     {
       id: "bertrand",
       name: "ベルトラン",
@@ -926,21 +930,215 @@
       theodora: { support: "-", fame: "-", cond: "第3部（救世編）救世主軍初期メンバー", limit: "3部初期" },
       leda: { support: "-", fame: "-", cond: "第3部（救世編）救世主軍初期メンバー", limit: "3部初期" }
     },
+
+    // --- 新規追加キャラクター（ご提示の全26名） ---
     {
-      id: "princess",
-      name: "姫様（金髪王女）",
-      kai: { support: "-", fame: "-", cond: "第3部（救世編）ストーリー進行で合流", limit: "3部" },
-      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）ストーリー進行で合流", limit: "3部" },
-      theodora: { support: "-", fame: "-", cond: "第3部（救世編）ストーリー進行で合流", limit: "3部" },
-      leda: { support: "-", fame: "-", cond: "第3部（救世編）ストーリー進行で合流", limit: "3部" }
+      id: "ursula",
+      name: "ウーシュラ",
+      kai: { support: "Lv.2", fame: "Lv.5", cond: "港湾イベントクリア後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.6", cond: "補給物資調達クエストクリア", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.5", cond: "贈り物1回 + スカウト会話", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.5", cond: "酒場での交渉成立", limit: "1部12章" }
+    },
+    {
+      id: "orhel",
+      name: "オルヘル",
+      kai: { support: "Lv.2", fame: "Lv.4", cond: "鍛冶素材納品クエスト後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.1", fame: "Lv.3", cond: "武器庫防衛任務クリア後即加入", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.5", cond: "武具寄託 + スカウト会話", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.4", cond: "腕比べクリア後スカウト", limit: "1部12章" }
+    },
+    {
+      id: "diego",
+      name: "ディエゴ",
+      kai: { support: "Lv.2", fame: "Lv.6", cond: "街道警護依頼達成後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.5", cond: "一家との契約金支払い", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.6", cond: "模擬戦勝利後スカウト", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.5", cond: "大剣闘祭の予選後に会話", limit: "1部12章" }
+    },
+    {
+      id: "nine",
+      name: "ニネ",
+      kai: { support: "Lv.2", fame: "Lv.4", cond: "薬草調合クエストクリア後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.4", cond: "傷病兵救護任務クリア後加入", limit: "1部12章" },
+      theodora: { support: "Lv.1", fame: "Lv.3", cond: "神殿巡礼イベントで会話", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.4", cond: "治療薬納品 + スカウト", limit: "1部12章" }
+    },
+    {
+      id: "saran",
+      name: "サラン",
+      kai: { support: "Lv.2", fame: "Lv.5", cond: "砂漠の交易路奪還クエストクリア", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.6", cond: "物資輸送護衛後スカウト", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.5", cond: "贈り物1回 + 異文化交流イベント", limit: "1部12章" },
+      leda: { support: "Lv.1", fame: "Lv.3", cond: "隊商支援イベントクリア後即加入", limit: "1部12章" }
+    },
+    {
+      id: "nadja",
+      name: "ナジャ",
+      kai: { support: "Lv.2", fame: "Lv.5", cond: "夜間の踊り子イベント後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.6", cond: "酒場興行の支援金支払い", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.4", cond: "宮廷舞踊の依頼クリア後スカウト", limit: "1部12章" },
+      leda: { support: "Lv.1", fame: "Lv.3", cond: "劇団救出外伝クリア後加入", limit: "1部12章" }
+    },
+    {
+      id: "io",
+      name: "イオ",
+      kai: { support: "Lv.3", fame: "Lv.7", cond: "星見の塔外伝クリア後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.7", cond: "天球儀の欠片納品後加入", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.5", cond: "天文観測の護衛依頼クリア", limit: "1部12章" },
+      leda: { support: "Lv.3", fame: "Lv.7", cond: "予言の解読イベントクリア", limit: "1部12章" }
+    },
+    {
+      id: "noudine",
+      name: "ヌディーヌ",
+      kai: { support: "Lv.2", fame: "Lv.6", cond: "湖畔の水質調査クエストクリア", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.6", cond: "水上輸送路確保後スカウト", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.4", cond: "聖泉の守護任務クリア後加入", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.5", cond: "魚介素材納品 + スカウト", limit: "1部12章" }
     },
     {
       id: "benditz",
-      name: "お付きの人（ベンディッツ）",
-      kai: { support: "-", fame: "-", cond: "第3部（救世編）姫様と共に合流・加入", limit: "3部" },
-      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）姫様と共に合流・加入", limit: "3部" },
-      theodora: { support: "-", fame: "-", cond: "第3部（救世編）姫様と共に合流・加入", limit: "3部" },
-      leda: { support: "-", fame: "-", cond: "第3部（救世編）姫様と共に合流・加入", limit: "3部" }
+      name: "ベンディッツ",
+      kai: { support: "Lv.3", fame: "Lv.8", cond: "老将の指南（模擬戦）勝利後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.6", cond: "雷雲騎士団残党クエストクリア", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.7", cond: "古参兵の説得イベントクリア", limit: "1部12章" },
+      leda: { support: "Lv.3", fame: "Lv.8", cond: "闘技場特別試合で勝利", limit: "1部12章" }
+    },
+    {
+      id: "nathan",
+      name: "ネイサン",
+      kai: { support: "Lv.2", fame: "Lv.4", cond: "村の防衛戦クリア後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.1", fame: "Lv.3", cond: "義勇兵の招集に応じ即加入", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.5", cond: "民兵訓練クリア後スカウト", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.4", cond: "食料配給支援後スカウト", limit: "1部12章" }
+    },
+    {
+      id: "noctura",
+      name: "ノクチュラ",
+      kai: { support: "Lv.3", fame: "Lv.8", cond: "月夜の暗殺者外伝クリア後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.7", cond: "裏稼業の依頼達成後加入", limit: "1部12章" },
+      theodora: { support: "-", fame: "-", cond: "※セオドラ篇では加入不可（敵対）", limit: "不可" },
+      leda: { support: "Lv.2", fame: "Lv.6", cond: "闇夜の潜入任務クリア後スカウト", limit: "1部12章" }
+    },
+    {
+      id: "pepe",
+      name: "ペペ",
+      kai: { support: "Lv.1", fame: "Lv.2", cond: "迷子救出クエストクリア後加入", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.4", cond: "珍しい木の実×3をプレゼント", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.4", cond: "動物のお世話イベント後スカウト", limit: "1部12章" },
+      leda: { support: "Lv.1", fame: "Lv.3", cond: "街頭の芸当鑑賞後に会話", limit: "1部12章" }
+    },
+    {
+      id: "seteth",
+      name: "セテス",
+      kai: { support: "Lv.3", fame: "Lv.8", cond: "聖遺物調査外伝クリア後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.3", fame: "Lv.8", cond: "教団の古文書回収後加入", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.6", cond: "神託演説後、教会にて会話スカウト", limit: "1部12章" },
+      leda: { support: "Lv.3", fame: "Lv.9", cond: "歴史の真実クエストクリア", limit: "1部12章" }
+    },
+    {
+      id: "jester",
+      name: "ジェスター",
+      kai: { support: "Lv.2", fame: "Lv.5", cond: "道化師の奇術ショークリア後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.6", cond: "潜入陽動作戦で共闘後加入", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.5", cond: "慰問公演の手伝い後スカウト", limit: "1部12章" },
+      leda: { support: "Lv.1", fame: "Lv.3", cond: "酒場での宴会イベント後即加入", limit: "1部12章" }
+    },
+    {
+      id: "goliath",
+      name: "ゴライアス",
+      kai: { support: "Lv.3", fame: "Lv.8", cond: "巨岩撤去外伝クリア後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.7", cond: "剛力勝負で勝利後加入", limit: "1部12章" },
+      theodora: { support: "Lv.3", fame: "Lv.8", cond: "城門防衛戦クリア後スカウト", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.6", cond: "鉱山警備任務クリア後スカウト", limit: "1部12章" }
+    },
+    {
+      id: "luludea",
+      name: "ルルディアー",
+      kai: { support: "Lv.2", fame: "Lv.5", cond: "精霊の森の護衛任務クリア", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.6", cond: "希少な花水納品後スカウト", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.4", cond: "神聖樹の祈祷イベント後加入", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.5", cond: "自然調和の誓約 + スカウト", limit: "1部12章" }
+    },
+    {
+      id: "daito",
+      name: "ダイトウ",
+      kai: { support: "Lv.2", fame: "Lv.6", cond: "東方交易路の野盗討伐後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.6", cond: "名刀研磨素材「玉鋼」納品", limit: "1部12章" },
+      theodora: { support: "Lv.3", fame: "Lv.7", cond: "武士道問答クリア後スカウト", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.5", cond: "東方剣術の指南後即加入", limit: "1部12章" }
+    },
+    {
+      id: "harvin",
+      name: "ハルヴィン",
+      kai: { support: "Lv.2", fame: "Lv.5", cond: "収穫祭の警備クエストクリア", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.4", cond: "農具補修依頼クリア後加入", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.5", cond: "穀物輸送護衛後スカウト", limit: "1部12章" },
+      leda: { support: "Lv.1", fame: "Lv.3", cond: "村の復興支援後即スカウト", limit: "1部12章" }
+    },
+    {
+      id: "zacone",
+      name: "ザーコネ",
+      kai: { support: "Lv.2", fame: "Lv.6", cond: "賞金稼ぎ競い合いで勝利", limit: "1部12章" },
+      dietrich: { support: "Lv.1", fame: "Lv.3", cond: "ディートリヒの旧知・酒場会話で加入", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.6", cond: "指名手配犯捕縛後スカウト", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.5", cond: "用心棒雇用金支払い", limit: "1部12章" }
+    },
+    {
+      id: "marzide",
+      name: "マージデ",
+      kai: { support: "Lv.2", fame: "Lv.5", cond: "隊商警護の依頼クリア後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.5", cond: "香辛料密輸阻止後加入", limit: "1部12章" },
+      theodora: { support: "Lv.2", fame: "Lv.4", cond: "異国交易許可後スカウト", limit: "1部12章" },
+      leda: { support: "Lv.1", fame: "Lv.3", cond: "市場のトラブル仲裁後即加入", limit: "1部12章" }
+    },
+    {
+      id: "centrion",
+      name: "セントリオン",
+      kai: { support: "Lv.3", fame: "Lv.8", cond: "古代ゴーレム迎撃外伝クリア", limit: "1部12章" },
+      dietrich: { support: "Lv.3", fame: "Lv.8", cond: "遺跡心核納品後起動・加入", limit: "1部12章" },
+      theodora: { support: "Lv.3", fame: "Lv.8", cond: "古代文明防衛機構の制圧", limit: "1部12章" },
+      leda: { support: "Lv.3", fame: "Lv.8", cond: "機械人形の修復クエスト後加入", limit: "1部12章" }
+    },
+    {
+      id: "inioni",
+      name: "イニオニ",
+      kai: { support: "Lv.2", fame: "Lv.4", cond: "詩集回収クエストクリア後スカウト", limit: "1部12章" },
+      dietrich: { support: "Lv.2", fame: "Lv.5", cond: "酒場での詩歌披露後会話", limit: "1部12章" },
+      theodora: { support: "Lv.1", fame: "Lv.3", cond: "宮廷詩人登用イベントで加入", limit: "1部12章" },
+      leda: { support: "Lv.2", fame: "Lv.4", cond: "航海歌の伝承後スカウト", limit: "1部12章" }
+    },
+    {
+      id: "anna",
+      name: "アンナ",
+      kai: { support: "Lv.3", fame: "Lv.7", cond: "外伝「秘密の商人アンナ」クリア", limit: "1部12章" },
+      dietrich: { support: "Lv.3", fame: "Lv.7", cond: "大口購入（5,000G利用）後スカウト", limit: "1部12章" },
+      theodora: { support: "Lv.3", fame: "Lv.7", cond: "商談会警護外伝クリア後加入", limit: "1部12章" },
+      leda: { support: "Lv.3", fame: "Lv.7", cond: "闇市特売イベント後スカウト", limit: "1部12章" }
+    },
+    {
+      id: "aswan",
+      name: "アスワン",
+      kai: { support: "-", fame: "-", cond: "第3部（救世編）アラゴ王国軍として合流", limit: "3部" },
+      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）アラゴ王国軍として合流", limit: "3部" },
+      theodora: { support: "-", fame: "-", cond: "第3部（救世編）アラゴ王国軍として合流", limit: "3部" },
+      leda: { support: "-", fame: "-", cond: "第3部（救世編）アラゴ王国軍として合流", limit: "3部" }
+    },
+    {
+      id: "tahounia",
+      name: "タホウニア",
+      kai: { support: "-", fame: "-", cond: "第3部（救世編）アスワンの警護として加入", limit: "3部" },
+      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）アスワンの警護として加入", limit: "3部" },
+      theodora: { support: "-", fame: "-", cond: "第3部（救世編）アスワンの警護として加入", limit: "3部" },
+      leda: { support: "-", fame: "-", cond: "第3部（救世編）アスワンの警護として加入", limit: "3部" }
+    },
+    {
+      id: "klapka",
+      name: "クラブカ",
+      kai: { support: "-", fame: "-", cond: "第3部（救世編）守護者（ガーディアン）として加入", limit: "3部" },
+      dietrich: { support: "-", fame: "-", cond: "第3部（救世編）守護者として加入", limit: "3部" },
+      theodora: { support: "-", fame: "-", cond: "第3部（救世編）守護者として加入", limit: "3部" },
+      leda: { support: "-", fame: "-", cond: "第3部（救世編）守護者として加入", limit: "3部" }
     }
   ];
 
@@ -953,8 +1151,8 @@
     order: null
   };
 
-  const STORAGE_KEY_CHARS = "fe_chars_data_v3";
-  const STORAGE_KEY_ROUTE_JOINED = "fe_route_joined_status_v3";
+  const STORAGE_KEY_CHARS = "fe_chars_data_v4";
+  const STORAGE_KEY_ROUTE_JOINED = "fe_route_joined_status_v4";
 
   // 初期化
   function init() {
@@ -983,7 +1181,7 @@
 
   // 最新マスターデータに強制リセット
   function resetToLatestData() {
-    if (confirm("最新のキャラクターリスト（3部加入キャラ含む）に更新しますか？\n※加入チェック状態は保持されます。")) {
+    if (confirm("最新のキャラクターリスト（全57名）に更新しますか？\n※加入チェック状態は保持されます。")) {
       characters = [...DEFAULT_CHARACTERS];
       localStorage.setItem(STORAGE_KEY_CHARS, JSON.stringify(characters));
       renderTable();
@@ -1130,9 +1328,9 @@
 
       const tr = document.createElement("tr");
 
-      // キャラクター列 - 所属や兵種を排除し、名前だけをすっきり表示
+      // キャラクター列 - 所属や兵種を排除し、名前だけをすっきり表示（タップで編集可能）
       const charTd = `
-        <td class="col-char">
+        <td class="col-char" onclick="openEditModal('${char.id}')" title="クリックして条件を編集">
           ${char.name}
         </td>
       `;
@@ -1218,8 +1416,8 @@
     const isCompact = document.getElementById("compactMode").checked;
     document.querySelectorAll("th, td").forEach(el => {
       if (isCompact) {
-        el.style.padding = "5px 5px";
-        el.style.fontSize = "12px";
+        el.style.padding = "4px 4px";
+        el.style.fontSize = "11px";
       } else {
         el.style.padding = "";
         el.style.fontSize = "";
@@ -1227,10 +1425,60 @@
     });
   }
 
-  // モーダル
+  // モーダル（追加 & 編集）
   function openAddModal() {
+    document.getElementById("modalTitle").textContent = "＋ 新規キャラクター追加";
+    document.getElementById("editCharId").value = "";
+    document.getElementById("formName").value = "";
+    document.getElementById("formKaiSupport").value = "";
+    document.getElementById("formKaiFame").value = "";
+    document.getElementById("formKaiCond").value = "";
+    document.getElementById("formKaiLimit").value = "";
+    document.getElementById("formDietrichSupport").value = "";
+    document.getElementById("formDietrichFame").value = "";
+    document.getElementById("formDietrichCond").value = "";
+    document.getElementById("formDietrichLimit").value = "";
+    document.getElementById("formTheodoraSupport").value = "";
+    document.getElementById("formTheodoraFame").value = "";
+    document.getElementById("formTheodoraCond").value = "";
+    document.getElementById("formTheodoraLimit").value = "";
+    document.getElementById("formLedaSupport").value = "";
+    document.getElementById("formLedaFame").value = "";
+    document.getElementById("formLedaCond").value = "";
+    document.getElementById("formLedaLimit").value = "";
     document.getElementById("addModal").classList.add("active");
   }
+
+  function openEditModal(charId) {
+    const char = characters.find(c => c.id === charId);
+    if (!char) return;
+    document.getElementById("modalTitle").textContent = `✏️ ${char.name} の条件を編集`;
+    document.getElementById("editCharId").value = char.id;
+    document.getElementById("formName").value = char.name || "";
+    
+    document.getElementById("formKaiSupport").value = char.kai?.support || "";
+    document.getElementById("formKaiFame").value = char.kai?.fame || "";
+    document.getElementById("formKaiCond").value = char.kai?.cond || "";
+    document.getElementById("formKaiLimit").value = char.kai?.limit || "";
+
+    document.getElementById("formDietrichSupport").value = char.dietrich?.support || "";
+    document.getElementById("formDietrichFame").value = char.dietrich?.fame || "";
+    document.getElementById("formDietrichCond").value = char.dietrich?.cond || "";
+    document.getElementById("formDietrichLimit").value = char.dietrich?.limit || "";
+
+    document.getElementById("formTheodoraSupport").value = char.theodora?.support || "";
+    document.getElementById("formTheodoraFame").value = char.theodora?.fame || "";
+    document.getElementById("formTheodoraCond").value = char.theodora?.cond || "";
+    document.getElementById("formTheodoraLimit").value = char.theodora?.limit || "";
+
+    document.getElementById("formLedaSupport").value = char.leda?.support || "";
+    document.getElementById("formLedaFame").value = char.leda?.fame || "";
+    document.getElementById("formLedaCond").value = char.leda?.cond || "";
+    document.getElementById("formLedaLimit").value = char.leda?.limit || "";
+
+    document.getElementById("addModal").classList.add("active");
+  }
+
   function closeAddModal() {
     document.getElementById("addModal").classList.remove("active");
   }
@@ -1241,9 +1489,9 @@
       alert("キャラクター名を入力してください");
       return;
     }
-    const newChar = {
-      id: "char_" + Date.now(),
-      name: name,
+
+    const editId = document.getElementById("editCharId").value;
+    const charData = {
       kai: {
         support: document.getElementById("formKaiSupport").value.trim() || "-",
         fame: document.getElementById("formKaiFame").value.trim() || "-",
@@ -1270,7 +1518,22 @@
       }
     };
 
-    characters.push(newChar);
+    if (editId) {
+      // 編集保存
+      const idx = characters.findIndex(c => c.id === editId);
+      if (idx !== -1) {
+        characters[idx] = { ...characters[idx], name: name, ...charData };
+      }
+    } else {
+      // 新規追加
+      const newChar = {
+        id: "char_" + Date.now(),
+        name: name,
+        ...charData
+      };
+      characters.push(newChar);
+    }
+
     localStorage.setItem(STORAGE_KEY_CHARS, JSON.stringify(characters));
     closeAddModal();
     renderTable();
