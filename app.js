@@ -15,8 +15,8 @@ let sortState = {
 let currentFameFilter = "all";
 let currentSupportFilter = "all";
 
-const STORAGE_KEY_CHARS = "fe_chars_data_v5";
-const STORAGE_KEY_ROUTE_JOINED = "fe_route_joined_status_v5";
+const STORAGE_KEY_CHARS = "fe_chars_data_v6";
+const STORAGE_KEY_ROUTE_JOINED = "fe_route_joined_status_v6";
 
 // 初期化
 function init() {
@@ -31,7 +31,17 @@ function init() {
     characters = [...DEFAULT_CHARACTERS];
   }
 
-  const savedJoined = localStorage.getItem(STORAGE_KEY_ROUTE_JOINED);
+  // 以前のバージョンからの加入チェック状態を自動引継ぎ
+  let savedJoined = localStorage.getItem(STORAGE_KEY_ROUTE_JOINED);
+  if (!savedJoined) {
+    savedJoined = localStorage.getItem("fe_route_joined_status_v5") 
+               || localStorage.getItem("fe_route_joined_status_v4")
+               || localStorage.getItem("fe_route_joined_status_v3");
+    if (savedJoined) {
+      localStorage.setItem(STORAGE_KEY_ROUTE_JOINED, savedJoined);
+    }
+  }
+
   if (savedJoined) {
     try {
       routeJoinedStatus = JSON.parse(savedJoined);
@@ -510,3 +520,4 @@ function importData() {
 
 // 実行開始
 init();
+

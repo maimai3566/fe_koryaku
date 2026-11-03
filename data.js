@@ -52,6 +52,14 @@ const DEFAULT_CHARACTERS = [
     leda: { support: "Lv.2", fame: "Lv.4", cond: "闇市イベントで交渉成立", limit: "1部12章" }
   },
   {
+    id: "jasmine",
+    name: "ジャスミン",
+    kai: { support: "Lv.2", fame: "Lv.6", cond: "「パルマの雨」雇用依頼クリア", limit: "1部12章" },
+    dietrich: { support: "Lv.2", fame: "Lv.5", cond: "傭兵代支払い（契約）後加入", limit: "1部12章" },
+    theodora: { support: "Lv.2", fame: "Lv.5", cond: "模擬戦クリア後スカウト", limit: "1部12章" },
+    leda: { support: "Lv.2", fame: "Lv.5", cond: "酒場での交渉成立後加入", limit: "1部12章" }
+  },
+  {
     id: "yokai",
     name: "ヨーカイ",
     kai: { support: "Lv.2", fame: "Lv.3", cond: "質問正解「乾酪→満月の夜→芋」", limit: "1部3章〜" },
@@ -464,3 +472,4 @@ const DEFAULT_CHARACTERS = [
     leda: { support: "-", fame: "-", cond: "第3部（救世編）守護者として加入", limit: "3部" }
   }
 ];
+
