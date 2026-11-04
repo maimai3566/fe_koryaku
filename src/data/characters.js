@@ -1,7 +1,41 @@
 // ========================================================
-// ファイアーエムブレム 万紫千紅 - キャラクターマスターデータ（全58名）
+// ファイアーエムブレム 万紫千紅 - キャラクターマスターデータ（全62名）
 // ========================================================
 export const DEFAULT_CHARACTERS = [
+  // --- 主人公4名 ---
+  {
+    id: "kai",
+    name: "カイ",
+    kai: { support: "主人公", fame: "-", cond: "カイ篇主人公（最初から使用可能）", limit: "最初から" },
+    dietrich: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" },
+    theodora: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" },
+    leda: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" }
+  },
+  {
+    id: "dietrich",
+    name: "ディートリヒ",
+    kai: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" },
+    dietrich: { support: "主人公", fame: "-", cond: "ディートリヒ篇主人公（最初から使用可能）", limit: "最初から" },
+    theodora: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" },
+    leda: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" }
+  },
+  {
+    id: "theodora",
+    name: "セオドラ",
+    kai: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" },
+    dietrich: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" },
+    theodora: { support: "主人公", fame: "-", cond: "セオドラ篇主人公（最初から使用可能）", limit: "最初から" },
+    leda: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" }
+  },
+  {
+    id: "leda",
+    name: "レダ",
+    kai: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" },
+    dietrich: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" },
+    theodora: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" },
+    leda: { support: "主人公", fame: "-", cond: "レダ篇主人公（最初から使用可能）", limit: "最初から" }
+  },
+
   // --- 1部〜2部 主要キャラクター ---
   {
     id: "tiara",

@@ -58,7 +58,14 @@ export default function Home() {
       if (savedChars) {
         const parsed = JSON.parse(savedChars);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          setCharacters(parsed);
+          // 主人公4人（kai, dietrich, theodora, leda）が未登録なら自動補完
+          const existingIds = new Set(parsed.map(c => c.id));
+          const missingHeroes = DEFAULT_CHARACTERS.filter(c => ['kai', 'dietrich', 'theodora', 'leda'].includes(c.id) && !existingIds.has(c.id));
+          if (missingHeroes.length > 0) {
+            setCharacters([...missingHeroes, ...parsed]);
+          } else {
+            setCharacters(parsed);
+          }
         }
       }
 

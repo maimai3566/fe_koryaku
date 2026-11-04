@@ -121,7 +121,11 @@ export default function CharDetailTable({
                     className="p-2 text-center border-r border-slate-800/80 cursor-pointer select-none"
                     title={`タップで${hero.title}の加入状態を切替`}
                   >
-                    {d.support === '初期' ? (
+                    {d.support === '主人公' ? (
+                      <span className="inline-block px-1.5 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                        👑 主人公
+                      </span>
+                    ) : d.support === '初期' ? (
                       <span className="inline-block px-1.5 py-0.5 rounded text-[11px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                         初期
                       </span>
@@ -286,7 +290,11 @@ export default function CharDetailTable({
                         }`}
                         title={`タップで${h.name}の加入状態を切替`}
                       >
-                        {d.support === '初期' ? (
+                        {d.support === '主人公' ? (
+                          <span className="inline-block px-1 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                            👑主人公
+                          </span>
+                        ) : d.support === '初期' ? (
                           <span className="inline-block px-1 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                             初期
                           </span>
