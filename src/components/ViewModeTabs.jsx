@@ -1,11 +1,12 @@
 import React from 'react';
-import { Table, Crown, Heart } from 'lucide-react';
+import { Table, Crown, Heart, Sparkles } from 'lucide-react';
 
 export default function ViewModeTabs({ currentViewMode, setViewMode }) {
   const modes = [
     { key: 'char', label: 'キャラ別 詳細表', icon: Table },
     { key: 'fame', label: '名声別 早見一覧', icon: Crown },
-    { key: 'support', label: '支援別 早見一覧', icon: Heart }
+    { key: 'support', label: '支援別 早見一覧', icon: Heart },
+    { key: 'skills', label: '兵種・スキル一覧', icon: Sparkles }
   ];
 
   return (

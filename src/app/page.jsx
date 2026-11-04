@@ -7,11 +7,15 @@ import RouteTabs from '../components/RouteTabs';
 import CharDetailTable from '../components/CharDetailTable';
 import FameMatrixTable from '../components/FameMatrixTable';
 import SupportMatrixTable from '../components/SupportMatrixTable';
+import ClassSkillTable from '../components/ClassSkillTable';
 import EditModal from '../components/EditModal';
+import SkillEditModal from '../components/SkillEditModal';
 import { DEFAULT_CHARACTERS } from '../data/characters';
+import { INITIAL_SKILL_DATA } from '../data/skills';
 
 const STORAGE_KEY_CHARS = 'fe_next_chars_v1';
 const STORAGE_KEY_JOINED = 'fe_next_joined_v1';
+const STORAGE_KEY_SKILLS = 'fe_skills_data_v1';
 
 export default function Home() {
   // SSR時のハイドレーション不整合を防ぐフラグ
@@ -23,19 +27,26 @@ export default function Home() {
   // 2. 加入トグル状態
   const [routeJoinedStatus, setRouteJoinedStatus] = useState({});
 
-  // 3. UI表示状態
-  const [viewMode, setViewMode] = useState('char'); // 'char' | 'fame' | 'support'
+  // 3. スキルデータ
+  const [skillData, setSkillData] = useState(INITIAL_SKILL_DATA);
+
+  // 4. UI表示状態
+  const [viewMode, setViewMode] = useState('char'); // 'char' | 'fame' | 'support' | 'skills'
   const [currentRoute, setCurrentRoute] = useState('all'); // 'all' | 'kai' | 'dietrich' | 'theodora' | 'leda'
   const [searchQuery, setSearchQuery] = useState('');
   const [unjoinedOnly, setUnjoinedOnly] = useState(false);
 
-  // 4. ソート状態
+  // 5. ソート状態
   const [sortKey, setSortKey] = useState('name');
   const [sortOrder, setSortOrder] = useState(null); // 'asc' | 'desc' | null
 
-  // 5. モーダル状態
+  // 6. モーダル状態
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingChar, setEditingChar] = useState(null);
+
+  // 7. スキル編集モーダル状態
+  const [isSkillModalOpen, setIsSkillModalOpen] = useState(false);
+  const [editingSkillChar, setEditingSkillChar] = useState(null);
 
   // マウント後にlocalStorageから復元
   useEffect(() => {
@@ -57,6 +68,12 @@ export default function Home() {
       if (savedJoined) {
         setRouteJoinedStatus(JSON.parse(savedJoined));
       }
+
+      const savedSkills = localStorage.getItem(STORAGE_KEY_SKILLS);
+      if (savedSkills) {
+        const parsedSkills = JSON.parse(savedSkills);
+        setSkillData({ ...INITIAL_SKILL_DATA, ...parsedSkills });
+      }
     } catch (e) {
       console.error(e);
     }
@@ -74,6 +91,12 @@ export default function Home() {
       localStorage.setItem(STORAGE_KEY_JOINED, JSON.stringify(routeJoinedStatus));
     }
   }, [routeJoinedStatus, isMounted]);
+
+  useEffect(() => {
+    if (isMounted) {
+      localStorage.setItem(STORAGE_KEY_SKILLS, JSON.stringify(skillData));
+    }
+  }, [skillData, isMounted]);
 
   // 加入トグル
   const handleToggleJoined = (charId, routeKey, event) => {
@@ -180,8 +203,9 @@ export default function Home() {
 
   // 初期データリセット
   const handleReset = () => {
-    if (confirm('最新のキャラクターマスターデータ（全58名）に初期化しますか？\n※加入チェック状態は保持されます。')) {
+    if (confirm('最新のキャラクターマスターデータ（全58名）および初期スキルデータに初期化しますか？\n※加入チェック状態は保持されます。')) {
       setCharacters([...DEFAULT_CHARACTERS]);
+      setSkillData(INITIAL_SKILL_DATA);
     }
   };
 
@@ -190,6 +214,7 @@ export default function Home() {
     const data = {
       characters,
       routeJoinedStatus,
+      skillData,
       exportedAt: new Date().toISOString()
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -218,6 +243,9 @@ export default function Home() {
           }
           if (imported.routeJoinedStatus) {
             setRouteJoinedStatus(imported.routeJoinedStatus);
+          }
+          if (imported.skillData) {
+            setSkillData(imported.skillData);
           }
           alert('バックアップから正常に復元しました！');
         } catch (err) {
@@ -263,6 +291,23 @@ export default function Home() {
     setIsModalOpen(true);
   };
 
+  // スキル編集モーダルを開く
+  const handleOpenSkillEditModal = (charId) => {
+    const target = characters.find((c) => c.id === charId);
+    if (target) {
+      setEditingSkillChar(target);
+      setIsSkillModalOpen(true);
+    }
+  };
+
+  // スキルデータ保存
+  const handleSaveSkills = (charId, newSkills) => {
+    setSkillData((prev) => ({
+      ...prev,
+      [charId]: newSkills
+    }));
+  };
+
   return (
     <main className="p-3 sm:p-6 md:p-8 max-w-[1440px] mx-auto font-sans antialiased">
       {/* ヘッダー＆コントロール */}
@@ -279,13 +324,13 @@ export default function Home() {
         onOpenAddModal={handleOpenAddModal}
       />
 
-      {/* 表示モード切替（キャラ別詳細 / 名声別早見 / 支援別早見） */}
+      {/* 表示モード切替（キャラ別詳細 / 名声別早見 / 支援別早見 / 兵種・スキル一覧） */}
       <ViewModeTabs currentViewMode={viewMode} setViewMode={setViewMode} />
 
-      {/* 主人公絞り込みタブ（全モードで利用可能！） */}
+      {/* 主人公絞り込みタブ（加入表モードのとき、または特定ルートのキャラ絞り込みとして利用可能） */}
       <RouteTabs currentRoute={currentRoute} setRoute={setCurrentRoute} />
 
-      {/* メインテーブル表示 */}
+      {/* メインビュー表示 */}
       {viewMode === 'char' && (
         <CharDetailTable
           characters={filteredCharacters}
@@ -318,7 +363,15 @@ export default function Home() {
         />
       )}
 
-      {/* 編集・追加モーダル */}
+      {viewMode === 'skills' && (
+        <ClassSkillTable
+          characters={filteredCharacters}
+          skillData={skillData}
+          onOpenSkillEditModal={handleOpenSkillEditModal}
+        />
+      )}
+
+      {/* キャラクター追加・編集モーダル */}
       <EditModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -326,7 +379,15 @@ export default function Home() {
         onSave={handleSaveCharacter}
         onDelete={handleDeleteCharacter}
       />
+
+      {/* スキル・特性編集モーダル */}
+      <SkillEditModal
+        isOpen={isSkillModalOpen}
+        onClose={() => setIsSkillModalOpen(false)}
+        char={editingSkillChar}
+        initialSkillData={editingSkillChar ? (skillData[editingSkillChar.id] || {}) : {}}
+        onSave={handleSaveSkills}
+      />
     </main>
   );
 }
-
