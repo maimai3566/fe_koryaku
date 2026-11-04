@@ -12,64 +12,83 @@ export const CLASS_TIERS = {
   special: { key: 'special', label: '神将職', icon: '✨' }
 };
 
-// 2. 代表的な兵種リスト
+// 2. 公式・実機 兵種リスト（全51兵種）
 export const CLASS_LIST = [
-  // --- 初級職 (beginner) ---
-  { id: 'commoner', name: '平民・貴族', tier: 'beginner', icon: '🌱' },
-  { id: 'myrmidon', name: '剣士', tier: 'beginner', icon: '🗡️' },
+  // --- ◆初級職 (beginner: 5) ---
+  { id: 'fighter', name: '闘士', tier: 'beginner', icon: '🥊' },
+  { id: 'jaeger', name: '猟兵', tier: 'beginner', icon: '🏹' },
   { id: 'soldier', name: '兵士', tier: 'beginner', icon: '🔱' },
-  { id: 'fighter', name: '戦士', tier: 'beginner', icon: '🪓' },
-  { id: 'monk', name: '修道士', tier: 'beginner', icon: '📖' },
+  { id: 'flying_camel', name: '飛駝兵', tier: 'beginner', icon: '🐪' },
+  { id: 'curse_master', name: '呪い師', tier: 'beginner', icon: '🕯️' },
 
-  // --- 中級職 (intermediate) ---
-  { id: 'mercenary', name: '傭兵', tier: 'intermediate', icon: '⚔️' },
-  { id: 'thief', name: '盗賊', tier: 'intermediate', icon: '🗝️' },
-  { id: 'cavalier', name: 'ソシアルナイト', tier: 'intermediate', icon: '🐎' },
-  { id: 'archer', name: 'アーチャー', tier: 'intermediate', icon: '🏹' },
-  { id: 'mage', name: 'メイジ', tier: 'intermediate', icon: '🔮' },
+  // --- ◆中級職 (intermediate: 12) ---
+  { id: 'myrmidon', name: '剣士', tier: 'intermediate', icon: '🗡️' },
+  { id: 'brigand', name: 'ブリガンド', tier: 'intermediate', icon: '🪓' },
+  { id: 'cestus', name: 'セスタス', tier: 'intermediate', icon: '👊' },
+  { id: 'archer', name: 'アーチャー', tier: 'intermediate', icon: '🎯' },
+  { id: 'rogue', name: 'ローグ', tier: 'intermediate', icon: '🗝️' },
+  { id: 'armored_infantry', name: '重装歩兵', tier: 'intermediate', icon: '🛡️' },
+  { id: 'light_cavalry', name: '軽騎兵', tier: 'intermediate', icon: '🐎' },
+  { id: 'charioteer', name: '戦車兵', tier: 'intermediate', icon: '🏎️' },
+  { id: 'armored_camel', name: '騎甲駝兵', tier: 'intermediate', icon: '🐪' },
+  { id: 'pegasus_rider', name: '天翼兵', tier: 'intermediate', icon: '🪽' },
+  { id: 'shaman', name: 'シャーマン', tier: 'intermediate', icon: '🔮' },
   { id: 'priest', name: 'プリースト', tier: 'intermediate', icon: '✨' },
-  { id: 'pegasus', name: 'ペガサスナイト', tier: 'intermediate', icon: '🪽' },
 
-  // --- 上級職 (advanced) ---
-  { id: 'swordmaster', name: 'ソードマスター', tier: 'advanced', icon: '⚡' },
-  { id: 'hero', name: '勇者', tier: 'advanced', icon: '🎖️' },
-  { id: 'paladin', name: 'パラディン', tier: 'advanced', icon: '🛡️' },
+  // --- ◆上級職 (advanced: 16) ---
+  { id: 'sido', name: 'シドー', tier: 'advanced', icon: '⚡' },
   { id: 'warrior', name: 'ウォーリアー', tier: 'advanced', icon: '🪓' },
   { id: 'sniper', name: 'スナイパー', tier: 'advanced', icon: '🎯' },
-  { id: 'warlock', name: 'ウォーロック', tier: 'advanced', icon: '🔥' },
+  { id: 'forest_knight', name: 'フォレストナイト', tier: 'advanced', icon: '🌲' },
+  { id: 'heavy_armor', name: 'ヘヴィアーマー', tier: 'advanced', icon: '🏰' },
+  { id: 'bardinger', name: 'バーディンガー', tier: 'advanced', icon: '🛡️' },
+  { id: 'vates', name: 'ウァテス', tier: 'advanced', icon: '📜' },
   { id: 'bishop', name: 'ビショップ', tier: 'advanced', icon: '🕊️' },
-  { id: 'wyvern_rider', name: 'ドラゴンナイト', tier: 'advanced', icon: '🐉' },
+  { id: 'war_elephant', name: '戦象兵', tier: 'advanced', icon: '🐘' },
+  { id: 'caladrius', name: 'カラドリオス', tier: 'advanced', icon: '🐦' },
+  { id: 'dragoon', name: 'ドラグーン', tier: 'advanced', icon: '🐉' },
+  { id: 'troubadour', name: 'トルバドール', tier: 'advanced', icon: '🐴' },
+  { id: 'dancer', name: '踊り子', tier: 'advanced', icon: '💃' },
+  { id: 'guardian', name: 'ガーディアン', tier: 'advanced', icon: '🛡️' },
+  { id: 'ranger', name: 'レンジャー', tier: 'advanced', icon: '🧭' },
+  { id: 'cataphract', name: 'カタフラクト', tier: 'advanced', icon: '🐎' },
 
-  // --- 最上級職 (master) ---
-  { id: 'mortal_savant', name: 'エピタフ', tier: 'master', icon: '⚡' },
-  { id: 'bow_knight', name: 'ボウナイト', tier: 'master', icon: '🏇' },
-  { id: 'dark_knight', name: 'ダークナイト', tier: 'master', icon: '🌑' },
-  { id: 'holy_knight', name: 'ホーリーナイト', tier: 'master', icon: '🌟' },
-  { id: 'wyvern_lord', name: 'ドラゴンマスター', tier: 'master', icon: '🐲' },
-  { id: 'falcon_knight', name: 'ファルコンナイト', tier: 'master', icon: '🦅' },
+  // --- ◆最上級職 (master: 10) ---
+  { id: 'battle_master', name: 'バトルマスター', tier: 'master', icon: '⚔️' },
+  { id: 'master_arch', name: 'マスターアーチ', tier: 'master', icon: '🏹' },
+  { id: 'shadow_seeker', name: 'シャドーシーカー', tier: 'master', icon: '👤' },
+  { id: 'holy_lancer', name: 'ホーリーランサー', tier: 'master', icon: '🔱' },
+  { id: 'fortress', name: 'フォートレス', tier: 'master', icon: '🏯' },
+  { id: 'orihaldia', name: 'オリハルディア', tier: 'master', icon: '💎' },
+  { id: 'holy_pegasus', name: '聖天翼兵', tier: 'master', icon: '🪽' },
+  { id: 'dragon_master', name: 'ドラゴンマスター', tier: 'master', icon: '🐲' },
+  { id: 'druid', name: 'ドルイド', tier: 'master', icon: '🌑' },
+  { id: 'wiseman', name: 'ワイズマン', tier: 'master', icon: '🧙' },
 
-  // --- 神将職 (special / 固有職) ---
-  { id: 'sword_highlord', name: '万紫の覇王', tier: 'special', icon: '👑' },
-  { id: 'iron_general', name: '金剛の将軍', tier: 'special', icon: '🛡️' },
-  { id: 'sacred_ruler', name: '聖女の守護者', tier: 'special', icon: '🕊️' },
-  { id: 'tempest_empress', name: '嵐の女帝', tier: 'special', icon: '🌹' }
+  // --- ◆神将職 (special: 8) ---
+  { id: 'the_blade', name: 'ザ・ブレイド', tier: 'special', icon: '⚔️' },
+  { id: 'the_apsaras', name: 'ジ・アプサラス', tier: 'special', icon: '🪽' },
+  { id: 'the_eternal', name: 'ジ・エターナル', tier: 'special', icon: '🌟' },
+  { id: 'the_godhand', name: 'ザ・ゴッドハンド', tier: 'special', icon: '👊' },
+  { id: 'the_calamity', name: 'ザ・カラミティ', tier: 'special', icon: '🔥' },
+  { id: 'the_trident', name: 'ザ・トライデント', tier: 'special', icon: '🔱' },
+  { id: 'the_cavalier', name: 'ザ・キャバリアー', tier: 'special', icon: '🐎' },
+  { id: 'the_avatar', name: 'ジ・アヴァタール', tier: 'special', icon: '👑' }
 ];
 
 // 3. キャラクター固有スキル＆兵種スキル初期サンプルデータ
-// ※今後調査やプレイに応じて順次拡充可能
 export const INITIAL_SKILL_DATA = {
-  // --- 主人公4名 ---
+  // --- 主人公・救世主 ---
   kai: {
     personal: { name: '宿命の迅雷', desc: 'HPが50%以下の敵に攻撃時、技・速さ+4' },
     bloodSign: { name: '天翔の血印', desc: '攻撃時、技%の確率で追撃ダメージ+30%' },
     roots: { name: '風の放浪者', desc: '平地・森での移動コスト-1、回避+10' },
     classes: {
-      commoner: { name: '戦闘の基本', desc: '命中・回避+3' },
+      fighter: { name: '力+2', desc: '力パラメータ+2' },
       myrmidon: { name: '速さ+2', desc: '速さパラメータ+2' },
-      mercenary: { name: '待ち伏せ', desc: 'HP50%以下で攻撃された際、先制攻撃' },
-      swordmaster: { name: '流星', desc: '技%の確率で威力0.3倍の5連撃' },
-      mortal_savant: { name: '明鏡止水', desc: '剣と魔法装備時、与ダメージ+5' },
-      sword_highlord: { name: '万紫千紅の極致', desc: '敵撃破時に再行動可能（1ターン1回）' }
+      sido: { name: '待ち伏せ', desc: 'HP50%以下で攻撃された際、先制攻撃' },
+      battle_master: { name: '流星', desc: '技%の確率で5連続攻撃' },
+      the_blade: { name: '神将刃・迅雷', desc: '敵撃破時に再行動可能（1ターン1回）' }
     }
   },
 
@@ -78,12 +97,11 @@ export const INITIAL_SKILL_DATA = {
     bloodSign: { name: '剛殻の血印', desc: '被ダメージ時、守備%でダメージ半減' },
     roots: { name: '鉱山の猛者', desc: '重装・斧装備時の命中率+15' },
     classes: {
-      commoner: { name: '戦闘の基本', desc: '命中・回避+3' },
       soldier: { name: '守備+2', desc: '守備パラメータ+2' },
-      cavalier: { name: '再移動', desc: '行動後に残りの移動力分だけ移動可能' },
-      paladin: { name: '聖騎士の誇り', desc: '騎乗時、地形ペナルティ軽減' },
-      hero: { name: '太陽', desc: '技%の確率で与ダメージの半分HP回復' },
-      iron_general: { name: '金剛不壊', desc: '追撃を受けず、物理被ダメージ-7' }
+      armored_infantry: { name: '重装防御', desc: '物理被ダメージ-3' },
+      heavy_armor: { name: '不動', desc: '位置移動・ノックバックを無効化' },
+      fortress: { name: '大盾', desc: '技%で物理ダメージを半減' },
+      the_godhand: { name: '金剛神拳', desc: '追撃を受けず、物理被ダメージ-7' }
     }
   },
 
@@ -92,12 +110,11 @@ export const INITIAL_SKILL_DATA = {
     bloodSign: { name: '天光の血印', desc: '回復魔法の効果量+50%、射程+1' },
     roots: { name: 'テルス神殿の血統', desc: 'ターン開始時に周囲の味方の状態異常解除' },
     classes: {
-      commoner: { name: '戦闘の基本', desc: '命中・回避+3' },
-      monk: { name: '魔力+2', desc: '魔力パラメータ+2' },
-      mage: { name: '魔神の一撃', desc: '自分から攻撃した時、魔力+6' },
+      curse_master: { name: '魔力+2', desc: '魔力パラメータ+2' },
       priest: { name: '祈り', desc: '致死ダメージ時、幸運%でHP1で耐える' },
       bishop: { name: '白魔法の達人', desc: '白魔法装備時、回復量+10' },
-      sacred_ruler: { name: '聖女の加護', desc: '致死ダメージを1マップに1度だけ完全無効化' }
+      wiseman: { name: '明鏡止水', desc: '魔法攻撃の射程+1' },
+      the_eternal: { name: '不滅の聖光', desc: '致死ダメージを1マップに1度だけ完全無効化' }
     }
   },
 
@@ -106,24 +123,33 @@ export const INITIAL_SKILL_DATA = {
     bloodSign: { name: '狂嵐の血印', desc: '必殺発動時、敵の守備・魔防を無視' },
     roots: { name: 'ブラガンサの風', desc: '飛行・騎馬ユニットへの特効ダメージ無効' },
     classes: {
-      commoner: { name: '戦闘の基本', desc: '命中・回避+3' },
-      myrmidon: { name: '速さ+2', desc: '速さパラメータ+2' },
-      pegasus: { name: '飛燕の一撃', desc: '自分から攻撃時、攻速+6' },
-      falcon_knight: { name: '回避+20', desc: '常に回避率+20' },
-      dark_knight: { name: '黒魔法の達人', desc: '黒魔法装備時、攻撃力+5' },
-      tempest_empress: { name: '疾風怒濤', desc: '攻撃時、常に先制攻撃＆追撃確定' }
+      jaeger: { name: '技+2', desc: '技パラメータ+2' },
+      pegasus_rider: { name: '飛燕の一撃', desc: '自分から攻撃時、攻速+6' },
+      caladrius: { name: '風の加護', desc: '弓・風魔法特効を無効化' },
+      holy_pegasus: { name: '回避+20', desc: '常に回避率+20' },
+      the_apsaras: { name: '天舞嵐舞', desc: '攻撃時、常に先制攻撃＆追撃確定' }
     }
   },
 
-  // --- 初期主要メンバー サンプル ---
+  savior: {
+    personal: { name: '救世の奇跡', desc: '自軍全ユニットの攻撃・守備+2' },
+    bloodSign: { name: '万紫千紅の血印', desc: '全ステータス+3、HP自動回復' },
+    roots: { name: '時代の継承者', desc: '全武器・魔法を装備可能' },
+    classes: {
+      battle_master: { name: '全技能の達人', desc: '全武器装備時の命中+15' },
+      the_avatar: { name: '創生の極致', desc: '自身と周囲の味方の行動後再移動可能' }
+    }
+  },
+
+  // --- 主要メンバー サンプル ---
   tiara: {
     personal: { name: '参謀の献身', desc: '主人公の隣接時、主人公の命中・会心+15' },
     bloodSign: { name: '蒼炎の血印', desc: '魔法攻撃時、一定確率で相手に火傷付与' },
     roots: { name: '王都の名門', desc: '経験値獲得量+15%' },
     classes: {
-      commoner: { name: '戦闘の基本', desc: '命中・回避+3' },
-      mage: { name: '魔神の一撃', desc: '自分から攻撃時、魔力+6' },
-      warlock: { name: '黒魔法射程+1', desc: '黒魔法の射程が1マス伸びる' }
+      curse_master: { name: '魔力+2', desc: '魔力パラメータ+2' },
+      shaman: { name: '魔神の一撃', desc: '自分から攻撃時、魔力+6' },
+      vates: { name: '予見', desc: '敵の必殺率を0にする' }
     }
   },
 
@@ -132,10 +158,10 @@ export const INITIAL_SKILL_DATA = {
     bloodSign: { name: '鷹目の血印', desc: '射程3以上の弓攻撃時、必殺+20' },
     roots: { name: '猟師の眼力', desc: '隠密ユニットを常に視認可能' },
     classes: {
-      commoner: { name: '戦闘の基本', desc: '命中・回避+3' },
+      jaeger: { name: '技+2', desc: '技パラメータ+2' },
       archer: { name: '命中+20', desc: '常に命中率+20' },
       sniper: { name: 'ハンターボレー', desc: '専用戦技：弓による確定2連撃' },
-      bow_knight: { name: '弓射程+2', desc: '弓の最大射程が2マス伸びる' }
+      master_arch: { name: '弓射程+2', desc: '弓の最大射程が2マス伸びる' }
     }
   },
 
@@ -144,11 +170,10 @@ export const INITIAL_SKILL_DATA = {
     bloodSign: { name: '真紅の血印', desc: '反撃時、必殺率が2倍になる' },
     roots: { name: '旧貴族の矜持', desc: '騎士系クラス時、ステータス上限+2' },
     classes: {
-      commoner: { name: '戦闘の基本', desc: '命中・回避+3' },
       soldier: { name: '守備+2', desc: '守備パラメータ+2' },
-      paladin: { name: '聖騎士の誇り', desc: '騎乗時、地形ペナルティ軽減' },
-      swordmaster: { name: '流星', desc: '技%の確率で5連撃' }
+      light_cavalry: { name: '再移動', desc: '行動後、残り移動力分移動可能' },
+      bardinger: { name: '聖騎士の誇り', desc: '騎乗時、地形ペナルティ軽減' },
+      cataphract: { name: '重装突進', desc: '突撃時に敵の陣形を崩す' }
     }
   }
 };
-

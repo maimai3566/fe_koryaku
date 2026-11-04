@@ -1,8 +1,8 @@
 // ========================================================
-// ファイアーエムブレム 万紫千紅 - キャラクターマスターデータ（全62名）
+// ファイアーエムブレム 万紫千紅 - キャラクターマスターデータ（全63名）
 // ========================================================
 export const DEFAULT_CHARACTERS = [
-  // --- 主人公4名 ---
+  // --- 主人公・救世主 ---
   {
     id: "kai",
     name: "カイ",
@@ -34,6 +34,14 @@ export const DEFAULT_CHARACTERS = [
     dietrich: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" },
     theodora: { support: "-", fame: "-", cond: "第3部（救世編）で合流", limit: "3部" },
     leda: { support: "主人公", fame: "-", cond: "レダ篇主人公（最初から使用可能）", limit: "最初から" }
+  },
+  {
+    id: "savior",
+    name: "救世主",
+    kai: { support: "救世主", fame: "-", cond: "第3部（救世編）主人公として合流", limit: "3部" },
+    dietrich: { support: "救世主", fame: "-", cond: "第3部（救世編）主人公として合流", limit: "3部" },
+    theodora: { support: "救世主", fame: "-", cond: "第3部（救世編）主人公として合流", limit: "3部" },
+    leda: { support: "救世主", fame: "-", cond: "第3部（救世編）主人公として合流", limit: "3部" }
   },
 
   // --- 1部〜2部 主要キャラクター ---
