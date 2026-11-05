@@ -16,7 +16,7 @@ import { INITIAL_SKILL_DATA } from '../data/skills';
 
 const STORAGE_KEY_CHARS = 'fe_next_chars_v1';
 const STORAGE_KEY_JOINED = 'fe_next_joined_v1';
-const STORAGE_KEY_SKILLS = 'fe_skills_data_v3';
+const STORAGE_KEY_SKILLS = 'fe_skills_data_v4';
 
 export default function Home() {
   // SSR時のハイドレーション不整合を防ぐフラグ

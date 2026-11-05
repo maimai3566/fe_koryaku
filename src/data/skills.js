@@ -5,40 +5,143 @@
 
 // 1. スキル一覧テーブルのカラム定義（全15カラム）
 export const SKILL_COLUMNS = [
-  // --- 固有特性 (4) ---
-  { id: 'personal', name: '個人スキル', icon: '🌟', category: 'trait', badgeColor: 'bg-amber-950/30 text-amber-300 border-amber-600/50' },
-  { id: 'bloodSign', name: '血印', icon: '🩸', category: 'trait', badgeColor: 'bg-rose-950/30 text-rose-300 border-rose-600/50' },
-  { id: 'roots', name: 'ルーツ', icon: '📜', category: 'trait', badgeColor: 'bg-sky-950/30 text-sky-300 border-sky-600/50' },
-  { id: 'exclusive', name: 'キャラ専用', icon: '👑', category: 'trait', badgeColor: 'bg-purple-950/30 text-purple-300 border-purple-600/50' },
-
-  // --- 武器技能 (5) ---
-  { id: 'sword', name: '剣', icon: '🗡️', category: 'weapon', badgeColor: 'bg-emerald-950/30 text-emerald-300 border-emerald-600/50' },
-  { id: 'lance', name: '槍', icon: '🔱', category: 'weapon', badgeColor: 'bg-cyan-950/30 text-cyan-300 border-cyan-600/50' },
-  { id: 'axe', name: '斧', icon: '🪓', category: 'weapon', badgeColor: 'bg-orange-950/30 text-orange-300 border-orange-600/50' },
-  { id: 'brawling', name: '籠手', icon: '👊', category: 'weapon', badgeColor: 'bg-amber-950/30 text-amber-300 border-amber-600/50' },
-  { id: 'bow', name: '弓', icon: '🏹', category: 'weapon', badgeColor: 'bg-lime-950/30 text-lime-300 border-lime-600/50' },
-
-  // --- 魔法技能 (2) ---
-  { id: 'white_magic', name: '白魔法', icon: '✨', category: 'magic', badgeColor: 'bg-yellow-950/30 text-yellow-300 border-yellow-600/50' },
-  { id: 'dark_magic', name: '黒魔法', icon: '🌘', category: 'magic', badgeColor: 'bg-violet-950/30 text-violet-300 border-violet-600/50' },
-
-  // --- 兵科技能 (4) ---
-  { id: 'infantry', name: '歩兵', icon: '🚶', category: 'movement', badgeColor: 'bg-teal-950/30 text-teal-300 border-teal-600/50' },
-  { id: 'armor', name: '重装', icon: '🛡️', category: 'movement', badgeColor: 'bg-slate-900 text-slate-300 border-slate-600/50' },
-  { id: 'cavalry', name: '騎兵', icon: '🐎', category: 'movement', badgeColor: 'bg-blue-950/30 text-blue-300 border-blue-600/50' },
-  { id: 'flying', name: '飛行', icon: '🪽', category: 'movement', badgeColor: 'bg-indigo-950/30 text-indigo-300 border-indigo-600/50' }
+  {
+    "id": "personal",
+    "name": "個人スキル",
+    "icon": "🌟",
+    "category": "trait",
+    "badgeColor": "bg-amber-950/30 text-amber-300 border-amber-600/50"
+  },
+  {
+    "id": "bloodSign",
+    "name": "血印",
+    "icon": "🩸",
+    "category": "trait",
+    "badgeColor": "bg-rose-950/30 text-rose-300 border-rose-600/50"
+  },
+  {
+    "id": "roots",
+    "name": "ルーツ",
+    "icon": "📜",
+    "category": "trait",
+    "badgeColor": "bg-sky-950/30 text-sky-300 border-sky-600/50"
+  },
+  {
+    "id": "exclusive",
+    "name": "キャラ専用",
+    "icon": "👑",
+    "category": "trait",
+    "badgeColor": "bg-purple-950/30 text-purple-300 border-purple-600/50"
+  },
+  {
+    "id": "sword",
+    "name": "剣",
+    "icon": "🗡️",
+    "category": "weapon",
+    "badgeColor": "bg-emerald-950/30 text-emerald-300 border-emerald-600/50"
+  },
+  {
+    "id": "lance",
+    "name": "槍",
+    "icon": "🔱",
+    "category": "weapon",
+    "badgeColor": "bg-cyan-950/30 text-cyan-300 border-cyan-600/50"
+  },
+  {
+    "id": "axe",
+    "name": "斧",
+    "icon": "🪓",
+    "category": "weapon",
+    "badgeColor": "bg-orange-950/30 text-orange-300 border-orange-600/50"
+  },
+  {
+    "id": "brawling",
+    "name": "籠手",
+    "icon": "👊",
+    "category": "weapon",
+    "badgeColor": "bg-amber-950/30 text-amber-300 border-amber-600/50"
+  },
+  {
+    "id": "bow",
+    "name": "弓",
+    "icon": "🏹",
+    "category": "weapon",
+    "badgeColor": "bg-lime-950/30 text-lime-300 border-lime-600/50"
+  },
+  {
+    "id": "white_magic",
+    "name": "白魔法",
+    "icon": "✨",
+    "category": "magic",
+    "badgeColor": "bg-yellow-950/30 text-yellow-300 border-yellow-600/50"
+  },
+  {
+    "id": "dark_magic",
+    "name": "黒魔法",
+    "icon": "🌘",
+    "category": "magic",
+    "badgeColor": "bg-violet-950/30 text-violet-300 border-violet-600/50"
+  },
+  {
+    "id": "infantry",
+    "name": "歩兵",
+    "icon": "🚶",
+    "category": "movement",
+    "badgeColor": "bg-teal-950/30 text-teal-300 border-teal-600/50"
+  },
+  {
+    "id": "armor",
+    "name": "重装",
+    "icon": "🛡️",
+    "category": "movement",
+    "badgeColor": "bg-slate-900 text-slate-300 border-slate-600/50"
+  },
+  {
+    "id": "cavalry",
+    "name": "騎兵",
+    "icon": "🐎",
+    "category": "movement",
+    "badgeColor": "bg-blue-950/30 text-blue-300 border-blue-600/50"
+  },
+  {
+    "id": "flying",
+    "name": "飛行",
+    "icon": "🪽",
+    "category": "movement",
+    "badgeColor": "bg-indigo-950/30 text-indigo-300 border-indigo-600/50"
+  }
 ];
 
 // 2. カラム絞り込み用カテゴリフィルター
 export const SKILL_CATEGORIES = {
-  all: { key: 'all', label: 'すべて', icon: '🌐' },
-  trait: { key: 'trait', label: '固有・専用', icon: '✨' },
-  weapon: { key: 'weapon', label: '武器技能', icon: '⚔️' },
-  magic: { key: 'magic', label: '魔法技能', icon: '🔮' },
-  movement: { key: 'movement', label: '兵科技能', icon: '🛡️' }
+  "all": {
+    "key": "all",
+    "label": "すべて",
+    "icon": "🌐"
+  },
+  "trait": {
+    "key": "trait",
+    "label": "固有・専用",
+    "icon": "✨"
+  },
+  "weapon": {
+    "key": "weapon",
+    "label": "武器技能",
+    "icon": "⚔️"
+  },
+  "magic": {
+    "key": "magic",
+    "label": "魔法技能",
+    "icon": "🔮"
+  },
+  "movement": {
+    "key": "movement",
+    "label": "兵科技能",
+    "icon": "🛡️"
+  }
 };
 
-// 3. 全63キャラクターのスキルマスターデータ（Game8攻略準拠）
+// 3. 全63キャラクターのスキルマスターデータ（Game8公式・キャラ専用1人1つ＆技能精査済）
 export const INITIAL_SKILL_DATA = {
   "kai": {
     "personal": {
@@ -57,14 +160,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "冥炎の主",
         "desc": "自分が出撃中、全味方は冥炎の影響を受けず、冥炎にいる全味方が攻撃で受けるダメージを半減する"
-      },
-      {
-        "name": "陽動+",
-        "desc": "隣接する敵の命中-5"
-      },
-      {
-        "name": "攻撃陣形",
-        "desc": "隣接する味方の攻撃力+1"
       }
     ],
     "sword": [],
@@ -80,6 +175,10 @@ export const INITIAL_SKILL_DATA = {
     "white_magic": [],
     "dark_magic": [],
     "infantry": [
+      {
+        "name": "陽動+",
+        "desc": "隣接する敵の命中-5"
+      },
       {
         "name": "白兵の間合い",
         "desc": "【歩兵】隣接する敵の移動力-1"
@@ -107,6 +206,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "騎士の感覚",
         "desc": "戦闘時、敵が槍なら、回避+10"
+      },
+      {
+        "name": "攻撃陣形",
+        "desc": "隣接する味方の攻撃力+1"
       }
     ],
     "flying": [
@@ -137,10 +240,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "獣の衝動",
         "desc": "戦闘後、必殺+2（必殺の一撃が発生した戦闘後、元に戻る）"
-      },
-      {
-        "name": "威嚇+",
-        "desc": "隣接する敵の必殺-10"
       }
     ],
     "sword": [
@@ -182,6 +281,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "重装戦闘術",
         "desc": "【重装】技+5"
+      },
+      {
+        "name": "威嚇+",
+        "desc": "隣接する敵の必殺-10"
       },
       {
         "name": "直前防御",
@@ -230,22 +333,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "直撃",
         "desc": "ブレイズアーツでの攻撃時、30%で発動。与えるダメージ+10"
-      },
-      {
-        "name": "ぶっ壊し",
-        "desc": "障害物を攻撃する時、与えるダメージが3倍になる"
-      },
-      {
-        "name": "牽制+",
-        "desc": "隣接する敵の回避-5"
-      },
-      {
-        "name": "前線計略術",
-        "desc": "攻撃系計略を使用後、攻撃力+5（次の自分のフェイズまで）"
-      },
-      {
-        "name": "攻撃陣形+",
-        "desc": "隣接する味方の攻撃力+2"
       }
     ],
     "sword": [],
@@ -255,15 +342,28 @@ export const INITIAL_SKILL_DATA = {
         "desc": "槍を装備中、命中・回避+10、攻撃力+3"
       }
     ],
-    "axe": [],
+    "axe": [
+      {
+        "name": "ぶっ壊し",
+        "desc": "障害物を攻撃する時、与えるダメージが3倍になる"
+      }
+    ],
     "brawling": [],
     "bow": [],
     "white_magic": [],
     "dark_magic": [],
     "infantry": [
       {
+        "name": "牽制+",
+        "desc": "隣接する敵の回避-5"
+      },
+      {
         "name": "致命避け+",
         "desc": "【歩兵】必避+20"
+      },
+      {
+        "name": "前線計略術",
+        "desc": "攻撃系計略を使用後、攻撃力+5（次の自分のフェイズまで）"
       },
       {
         "name": "歩行移動術",
@@ -285,6 +385,10 @@ export const INITIAL_SKILL_DATA = {
       }
     ],
     "cavalry": [
+      {
+        "name": "攻撃陣形+",
+        "desc": "隣接する味方の攻撃力+2"
+      },
       {
         "name": "騎士の先陣",
         "desc": "【騎兵】先攻での戦闘時、防御力+2"
@@ -322,10 +426,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "即興",
         "desc": "ブレイズアーツを使用後、自分がオーバーブレイズ中なら、さらに攻撃できる"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
       }
     ],
     "sword": [],
@@ -351,6 +451,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "咄嗟の回避",
         "desc": "【歩兵】攻撃された時、3%で発動。回避+100"
+      },
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
       }
     ],
     "armor": [],
@@ -450,17 +554,18 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "誤差修正+",
         "desc": "戦闘時、自分の命中率が75%以上なら、命中+20"
-      },
-      {
-        "name": "対狙撃戦術",
-        "desc": "周囲2マスにいる弓の敵の命中・回避-5"
       }
     ],
     "sword": [],
     "lance": [],
     "axe": [],
     "brawling": [],
-    "bow": [],
+    "bow": [
+      {
+        "name": "対狙撃戦術",
+        "desc": "周囲2マスにいる弓の敵の命中・回避-5"
+      }
+    ],
     "white_magic": [],
     "dark_magic": [],
     "infantry": [
@@ -515,10 +620,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "気分は上々+",
         "desc": "「気分屋」の効果の能力上昇が+20になる"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
       }
     ],
     "sword": [],
@@ -536,6 +637,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "咄嗟の回避",
         "desc": "【歩兵】攻撃された時、3%で発動。回避+100"
+      },
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
       },
       {
         "name": "白兵の間合い+",
@@ -576,20 +681,12 @@ export const INITIAL_SKILL_DATA = {
     },
     "exclusive": [
       {
-        "name": "体格",
-        "desc": "体格+5"
-      },
-      {
-        "name": "威嚇",
-        "desc": "隣接する敵の必殺-5"
+        "name": "槍投げの達人+",
+        "desc": "戦闘時、槍を投げて攻撃するなら、命中+20、攻撃力+4"
       }
     ],
     "sword": [],
     "lance": [
-      {
-        "name": "槍投げの達人+",
-        "desc": "戦闘時、槍を投げて攻撃するなら、命中+20、攻撃力+4"
-      },
       {
         "name": "槍術の深奥",
         "desc": "槍を装備中、命中・回避+10、攻撃力+3"
@@ -616,12 +713,20 @@ export const INITIAL_SKILL_DATA = {
     ],
     "armor": [
       {
+        "name": "体格",
+        "desc": "体格+5"
+      },
+      {
         "name": "ヘビーブレイク",
         "desc": "【重装】攻撃時、（守備÷2）%で発動。与えるダメージが1.5倍になる"
       },
       {
         "name": "防弓術",
         "desc": "【重装】戦闘時、敵が弓なら、防御力+5"
+      },
+      {
+        "name": "威嚇",
+        "desc": "隣接する敵の必殺-5"
       }
     ],
     "cavalry": [
@@ -657,8 +762,8 @@ export const INITIAL_SKILL_DATA = {
     },
     "exclusive": [
       {
-        "name": "対魔法戦術",
-        "desc": "周囲2マスにいる魔法の敵の命中・回避-5"
+        "name": "闇の秘術+",
+        "desc": "「闇呼び」の効果の範囲が周囲3マスになる"
       }
     ],
     "sword": [],
@@ -669,8 +774,8 @@ export const INITIAL_SKILL_DATA = {
     "white_magic": [],
     "dark_magic": [
       {
-        "name": "闇の秘術+",
-        "desc": "「闇呼び」の効果の範囲が周囲3マスになる"
+        "name": "対魔法戦術",
+        "desc": "周囲2マスにいる魔法の敵の命中・回避-5"
       }
     ],
     "infantry": [
@@ -703,18 +808,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "鉄血+",
         "desc": "隣接する敵との戦闘時、攻撃力+3。さらにその攻撃時、30%で発動。攻撃力+3"
-      },
-      {
-        "name": "牽制+",
-        "desc": "隣接する敵の回避-5"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
-      },
-      {
-        "name": "必殺守備",
-        "desc": "必殺の一撃を受けた時、30%で発動。受けるダメージを半減する"
       }
     ],
     "sword": [],
@@ -731,12 +824,20 @@ export const INITIAL_SKILL_DATA = {
     "dark_magic": [],
     "infantry": [
       {
+        "name": "牽制+",
+        "desc": "隣接する敵の回避-5"
+      },
+      {
         "name": "歩行移動術",
         "desc": "【歩兵】移動時、地形の移動コスト-1（1より小さくならない）"
       },
       {
         "name": "咄嗟の回避",
         "desc": "【歩兵】攻撃された時、3%で発動。回避+100"
+      },
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
       },
       {
         "name": "白兵の間合い+",
@@ -751,6 +852,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "重装移動術",
         "desc": "【重装】移動力+1"
+      },
+      {
+        "name": "必殺守備",
+        "desc": "必殺の一撃を受けた時、30%で発動。受けるダメージを半減する"
       }
     ],
     "cavalry": [
@@ -785,10 +890,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "怒涛の反撃+",
         "desc": "後攻での戦闘時、攻撃力+3、必殺+10"
-      },
-      {
-        "name": "追撃防御",
-        "desc": "追撃された時、50%で発動。受けるダメージを半減する"
       }
     ],
     "sword": [],
@@ -808,6 +909,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "重装戦闘術",
         "desc": "【重装】技+5"
+      },
+      {
+        "name": "追撃防御",
+        "desc": "追撃された時、50%で発動。受けるダメージを半減する"
       },
       {
         "name": "重装移動術",
@@ -861,17 +966,18 @@ export const INITIAL_SKILL_DATA = {
     },
     "bloodSign": null,
     "roots": null,
-    "exclusive": [],
+    "exclusive": [
+      {
+        "name": "遠隔治癒+",
+        "desc": "回復魔法の射程+2"
+      }
+    ],
     "sword": [],
     "lance": [],
     "axe": [],
     "brawling": [],
     "bow": [],
     "white_magic": [
-      {
-        "name": "遠隔治癒+",
-        "desc": "回復魔法の射程+2"
-      },
       {
         "name": "白魔術の深奥",
         "desc": "白魔法を装備中、命中・回避+10、攻撃力+3"
@@ -903,14 +1009,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "加速+",
         "desc": "敵を倒した時、速さ+2（+10が最大）（マップ終了まで）"
-      },
-      {
-        "name": "前線計略術",
-        "desc": "攻撃系計略を使用後、攻撃力+5（次の自分のフェイズまで）"
-      },
-      {
-        "name": "陽動+",
-        "desc": "隣接する敵の命中-5"
       }
     ],
     "sword": [],
@@ -926,6 +1024,14 @@ export const INITIAL_SKILL_DATA = {
     "white_magic": [],
     "dark_magic": [],
     "infantry": [
+      {
+        "name": "前線計略術",
+        "desc": "攻撃系計略を使用後、攻撃力+5（次の自分のフェイズまで）"
+      },
+      {
+        "name": "陽動+",
+        "desc": "隣接する敵の命中-5"
+      },
       {
         "name": "咄嗟の回避",
         "desc": "【歩兵】攻撃された時、3%で発動。回避+100"
@@ -1028,14 +1134,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "本気の一発+",
         "desc": "戦技での攻撃時、30%で発動。与えるダメージが1.5倍になる"
-      },
-      {
-        "name": "体格",
-        "desc": "体格+5"
-      },
-      {
-        "name": "威嚇+",
-        "desc": "隣接する敵の必殺-10"
       }
     ],
     "sword": [],
@@ -1061,6 +1159,14 @@ export const INITIAL_SKILL_DATA = {
       }
     ],
     "armor": [
+      {
+        "name": "体格",
+        "desc": "体格+5"
+      },
+      {
+        "name": "威嚇+",
+        "desc": "隣接する敵の必殺-10"
+      },
       {
         "name": "絶対防御+",
         "desc": "【重装】攻撃された時、20%で発動。防御力+10"
@@ -1090,10 +1196,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "なんかいい感じ+",
         "desc": "攻撃時、自分の命中率が100%なら、攻撃力+5"
-      },
-      {
-        "name": "防御陣形",
-        "desc": "隣接する味方の防御力+1"
       }
     ],
     "sword": [],
@@ -1121,7 +1223,12 @@ export const INITIAL_SKILL_DATA = {
         "desc": "【歩兵】攻撃された時、3%で発動。回避+100"
       }
     ],
-    "armor": [],
+    "armor": [
+      {
+        "name": "防御陣形",
+        "desc": "隣接する味方の防御力+1"
+      }
+    ],
     "cavalry": [],
     "flying": []
   },
@@ -1136,10 +1243,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "飛翔+",
         "desc": "自分が歩行不可の地形にいる時、攻速+5"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
       }
     ],
     "sword": [],
@@ -1149,7 +1252,12 @@ export const INITIAL_SKILL_DATA = {
     "bow": [],
     "white_magic": [],
     "dark_magic": [],
-    "infantry": [],
+    "infantry": [
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
+      }
+    ],
     "armor": [],
     "cavalry": [],
     "flying": [
@@ -1174,10 +1282,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "絶好調+",
         "desc": "戦闘時、自分のHPが最大なら、攻撃力+3、回避+10"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
       }
     ],
     "sword": [],
@@ -1187,7 +1291,12 @@ export const INITIAL_SKILL_DATA = {
     "bow": [],
     "white_magic": [],
     "dark_magic": [],
-    "infantry": [],
+    "infantry": [
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
+      }
+    ],
     "armor": [],
     "cavalry": [],
     "flying": [
@@ -1215,14 +1324,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "返礼の一撃+",
         "desc": "後攻での攻撃時、10%で発動。与えるダメージが1.3倍になる"
-      },
-      {
-        "name": "防御陣形",
-        "desc": "隣接する味方の防御力+1"
-      },
-      {
-        "name": "牽制",
-        "desc": "隣接する敵の回避-3"
       }
     ],
     "sword": [],
@@ -1243,6 +1344,10 @@ export const INITIAL_SKILL_DATA = {
         "desc": "【歩兵】隣接する敵の移動力-1"
       },
       {
+        "name": "牽制",
+        "desc": "隣接する敵の回避-3"
+      },
+      {
         "name": "致命避け",
         "desc": "【歩兵】必避+10"
       }
@@ -1255,6 +1360,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "重装移動術",
         "desc": "【重装】移動力+1"
+      },
+      {
+        "name": "防御陣形",
+        "desc": "隣接する味方の防御力+1"
       }
     ],
     "cavalry": [
@@ -1276,10 +1385,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "風任せ+",
         "desc": "戦闘時、「回避+1」「回避+5」「回避+20」「回避+30」のどれかが発動する"
-      },
-      {
-        "name": "陽動+",
-        "desc": "隣接する敵の命中-5"
       }
     ],
     "sword": [],
@@ -1298,6 +1403,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "狙撃回避",
         "desc": "【歩兵】3マス以上離れた敵との戦闘時、回避+10"
+      },
+      {
+        "name": "陽動+",
+        "desc": "隣接する敵の命中-5"
       },
       {
         "name": "身躱し+",
@@ -1320,12 +1429,8 @@ export const INITIAL_SKILL_DATA = {
     },
     "exclusive": [
       {
-        "name": "威嚇+",
-        "desc": "隣接する敵の必殺-10"
-      },
-      {
-        "name": "攻撃陣形",
-        "desc": "隣接する味方の攻撃力+1"
+        "name": "情動のリザイア+",
+        "desc": "リザイアを使う戦闘時、攻撃力+5、必殺+10"
       }
     ],
     "sword": [],
@@ -1333,12 +1438,7 @@ export const INITIAL_SKILL_DATA = {
     "axe": [],
     "brawling": [],
     "bow": [],
-    "white_magic": [
-      {
-        "name": "情動のリザイア+",
-        "desc": "リザイアを使う戦闘時、攻撃力+5、必殺+10"
-      }
-    ],
+    "white_magic": [],
     "dark_magic": [],
     "infantry": [
       {
@@ -1354,9 +1454,18 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "重装戦闘術",
         "desc": "【重装】技+5"
+      },
+      {
+        "name": "威嚇+",
+        "desc": "隣接する敵の必殺-10"
       }
     ],
-    "cavalry": [],
+    "cavalry": [
+      {
+        "name": "攻撃陣形",
+        "desc": "隣接する味方の攻撃力+1"
+      }
+    ],
     "flying": []
   },
   "muu": {
@@ -1373,10 +1482,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "強戦士の血+",
         "desc": "装備する武器の種類によって基本能力が大きく上がる"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
       }
     ],
     "sword": [],
@@ -1403,6 +1508,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "身躱し",
         "desc": "【歩兵】戦闘時、敵が弓・魔法なら、回避+5"
+      },
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
       }
     ],
     "armor": [],
@@ -1423,14 +1532,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "風を味方に+",
         "desc": "戦闘時、自分の攻速が敵より5以上大きければ、攻撃力+3、8以上大きければ、回避+20"
-      },
-      {
-        "name": "威嚇+",
-        "desc": "隣接する敵の必殺-10"
-      },
-      {
-        "name": "陽動+",
-        "desc": "隣接する敵の命中-5"
       }
     ],
     "sword": [],
@@ -1440,8 +1541,17 @@ export const INITIAL_SKILL_DATA = {
     "bow": [],
     "white_magic": [],
     "dark_magic": [],
-    "infantry": [],
+    "infantry": [
+      {
+        "name": "陽動+",
+        "desc": "隣接する敵の命中-5"
+      }
+    ],
     "armor": [
+      {
+        "name": "威嚇+",
+        "desc": "隣接する敵の必殺-10"
+      },
       {
         "name": "直前防御",
         "desc": "攻撃された時、25%で発動。防御力+3"
@@ -1593,10 +1703,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "悪運+",
         "desc": "敵を倒した時、幸運+2（+10が最大）（マップ終了まで）"
-      },
-      {
-        "name": "威嚇",
-        "desc": "隣接する敵の必殺-5"
       }
     ],
     "sword": [],
@@ -1616,7 +1722,12 @@ export const INITIAL_SKILL_DATA = {
         "desc": "【歩兵】必避+10"
       }
     ],
-    "armor": [],
+    "armor": [
+      {
+        "name": "威嚇",
+        "desc": "隣接する敵の必殺-5"
+      }
+    ],
     "cavalry": [],
     "flying": []
   },
@@ -1667,10 +1778,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "牙閃+",
         "desc": "攻撃時、20%で発動。攻撃力+7、命中+100"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
       }
     ],
     "sword": [],
@@ -1680,7 +1787,12 @@ export const INITIAL_SKILL_DATA = {
     "bow": [],
     "white_magic": [],
     "dark_magic": [],
-    "infantry": [],
+    "infantry": [
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
+      }
+    ],
     "armor": [],
     "cavalry": [
       {
@@ -1701,12 +1813,7 @@ export const INITIAL_SKILL_DATA = {
     },
     "bloodSign": null,
     "roots": null,
-    "exclusive": [
-      {
-        "name": "牽制",
-        "desc": "隣接する敵の回避-3"
-      }
-    ],
+    "exclusive": [],
     "sword": [],
     "lance": [],
     "axe": [],
@@ -1714,7 +1821,12 @@ export const INITIAL_SKILL_DATA = {
     "bow": [],
     "white_magic": [],
     "dark_magic": [],
-    "infantry": [],
+    "infantry": [
+      {
+        "name": "牽制",
+        "desc": "隣接する敵の回避-3"
+      }
+    ],
     "armor": [],
     "cavalry": [
       {
@@ -1743,14 +1855,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "先の先",
         "desc": "先攻での戦闘時、25%で発動。敵の反撃より先に追撃できる"
-      },
-      {
-        "name": "陽動+",
-        "desc": "隣接する敵の命中-5"
-      },
-      {
-        "name": "攻撃陣形",
-        "desc": "隣接する味方の攻撃力+1"
       }
     ],
     "sword": [],
@@ -1762,12 +1866,21 @@ export const INITIAL_SKILL_DATA = {
     "dark_magic": [],
     "infantry": [
       {
+        "name": "陽動+",
+        "desc": "隣接する敵の命中-5"
+      },
+      {
         "name": "白兵の間合い",
         "desc": "【歩兵】隣接する敵の移動力-1"
       }
     ],
     "armor": [],
-    "cavalry": [],
+    "cavalry": [
+      {
+        "name": "攻撃陣形",
+        "desc": "隣接する味方の攻撃力+1"
+      }
+    ],
     "flying": []
   },
   "tarimoon": {
@@ -1788,10 +1901,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "勝利の風",
         "desc": "自分と敵の攻撃時、幸運%で発動。自分の攻撃時なら、命中+15。敵の攻撃時なら、回避+15"
-      },
-      {
-        "name": "攻撃陣形",
-        "desc": "隣接する味方の攻撃力+1"
       }
     ],
     "sword": [],
@@ -1803,7 +1912,12 @@ export const INITIAL_SKILL_DATA = {
     "dark_magic": [],
     "infantry": [],
     "armor": [],
-    "cavalry": [],
+    "cavalry": [
+      {
+        "name": "攻撃陣形",
+        "desc": "隣接する味方の攻撃力+1"
+      }
+    ],
     "flying": []
   },
   "anatolia": {
@@ -1817,16 +1931,17 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "連貫円滑+",
         "desc": "自分が攻撃を回避した時、自分のHPを10回復する"
-      },
-      {
-        "name": "経絡拡張",
-        "desc": "敵を倒した時、最大HP+2（+10が最大）（マップ終了まで）"
       }
     ],
     "sword": [],
     "lance": [],
     "axe": [],
-    "brawling": [],
+    "brawling": [
+      {
+        "name": "経絡拡張",
+        "desc": "敵を倒した時、最大HP+2（+10が最大）（マップ終了まで）"
+      }
+    ],
     "bow": [],
     "white_magic": [],
     "dark_magic": [],
@@ -1895,10 +2010,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "好機+",
         "desc": "攻撃時、（幸運÷2）%で発動。与えるダメージが1.5倍になる"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
       }
     ],
     "sword": [],
@@ -1912,6 +2023,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "身躱し",
         "desc": "【歩兵】戦闘時、敵が弓・魔法なら、回避+5"
+      },
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
       }
     ],
     "armor": [],
@@ -1932,18 +2047,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "調魂+",
         "desc": "魔法で味方を回復する時、自分のHPを中回復する"
-      },
-      {
-        "name": "動体予測",
-        "desc": "先攻での戦闘時、魔法の命中+20"
-      },
-      {
-        "name": "自己修復",
-        "desc": "オーバーブレイズ中、自分のフェイズ開始時、自分のHPを大回復する"
-      },
-      {
-        "name": "必殺守備",
-        "desc": "必殺の一撃を受けた時、30%で発動。受けるダメージを半減する"
       }
     ],
     "sword": [],
@@ -1952,14 +2055,28 @@ export const INITIAL_SKILL_DATA = {
     "brawling": [],
     "bow": [],
     "white_magic": [],
-    "dark_magic": [],
+    "dark_magic": [
+      {
+        "name": "動体予測",
+        "desc": "先攻での戦闘時、魔法の命中+20"
+      },
+      {
+        "name": "自己修復",
+        "desc": "オーバーブレイズ中、自分のフェイズ開始時、自分のHPを大回復する"
+      }
+    ],
     "infantry": [
       {
         "name": "白兵の間合い",
         "desc": "【歩兵】隣接する敵の移動力-1"
       }
     ],
-    "armor": [],
+    "armor": [
+      {
+        "name": "必殺守備",
+        "desc": "必殺の一撃を受けた時、30%で発動。受けるダメージを半減する"
+      }
+    ],
     "cavalry": [],
     "flying": []
   },
@@ -1974,10 +2091,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "容赦無し+",
         "desc": "追撃時、命中・必殺+10"
-      },
-      {
-        "name": "牽制",
-        "desc": "隣接する敵の回避-3"
       }
     ],
     "sword": [],
@@ -1988,6 +2101,10 @@ export const INITIAL_SKILL_DATA = {
     "white_magic": [],
     "dark_magic": [],
     "infantry": [
+      {
+        "name": "牽制",
+        "desc": "隣接する敵の回避-3"
+      },
       {
         "name": "身躱し",
         "desc": "【歩兵】戦闘時、敵が弓・魔法なら、回避+5"
@@ -2011,10 +2128,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "精霊の導き+",
         "desc": "周囲2マスにいる味方に「精霊の声」を付与する"
-      },
-      {
-        "name": "威嚇",
-        "desc": "隣接する敵の必殺-5"
       }
     ],
     "sword": [],
@@ -2029,6 +2142,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "重装移動術",
         "desc": "【重装】移動力+1"
+      },
+      {
+        "name": "威嚇",
+        "desc": "隣接する敵の必殺-5"
       }
     ],
     "cavalry": [
@@ -2059,10 +2176,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "注意喚起+",
         "desc": "隣接する味方の速さ+4"
-      },
-      {
-        "name": "防御陣形",
-        "desc": "隣接する味方の防御力+1"
       }
     ],
     "sword": [],
@@ -2073,7 +2186,12 @@ export const INITIAL_SKILL_DATA = {
     "white_magic": [],
     "dark_magic": [],
     "infantry": [],
-    "armor": [],
+    "armor": [
+      {
+        "name": "防御陣形",
+        "desc": "隣接する味方の防御力+1"
+      }
+    ],
     "cavalry": [],
     "flying": []
   },
@@ -2088,10 +2206,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "俺は止まらねぇ+",
         "desc": "「先手必勝」発動後の攻撃時、50%で発動。攻撃力+5"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
       }
     ],
     "sword": [],
@@ -2113,6 +2227,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "身躱し",
         "desc": "【歩兵】戦闘時、敵が弓・魔法なら、回避+5"
+      },
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
       }
     ],
     "armor": [],
@@ -2128,12 +2246,8 @@ export const INITIAL_SKILL_DATA = {
     "roots": null,
     "exclusive": [
       {
-        "name": "攻撃陣形+",
-        "desc": "隣接する味方の攻撃力+2"
-      },
-      {
-        "name": "威嚇",
-        "desc": "隣接する敵の必殺-5"
+        "name": "騎乗突撃+",
+        "desc": "【騎兵】先攻での戦闘時、命中+10、攻撃力+3"
       }
     ],
     "sword": [],
@@ -2152,16 +2266,20 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "重装移動術",
         "desc": "【重装】移動力+1"
+      },
+      {
+        "name": "威嚇",
+        "desc": "隣接する敵の必殺-5"
       }
     ],
     "cavalry": [
       {
-        "name": "騎乗突撃+",
-        "desc": "【騎兵】先攻での戦闘時、命中+10、攻撃力+3"
-      },
-      {
         "name": "騎兵移動術",
         "desc": "【騎兵】移動時、地形の移動コスト-1（1より小さくならない）"
+      },
+      {
+        "name": "攻撃陣形+",
+        "desc": "隣接する味方の攻撃力+2"
       },
       {
         "name": "対騎兵戦術",
@@ -2196,8 +2314,8 @@ export const INITIAL_SKILL_DATA = {
     "roots": null,
     "exclusive": [
       {
-        "name": "防御陣形",
-        "desc": "隣接する味方の防御力+1"
+        "name": "疾駆+",
+        "desc": "【騎兵】移動時、地形の移動コスト-2（1より小さくならない）"
       }
     ],
     "sword": [],
@@ -2216,13 +2334,13 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "重装移動術",
         "desc": "【重装】移動力+1"
+      },
+      {
+        "name": "防御陣形",
+        "desc": "隣接する味方の防御力+1"
       }
     ],
     "cavalry": [
-      {
-        "name": "疾駆+",
-        "desc": "【騎兵】移動時、地形の移動コスト-2（1より小さくならない）"
-      },
       {
         "name": "対騎兵戦術",
         "desc": "周囲2マスにいる騎兵の敵の命中・回避-5"
@@ -2284,12 +2402,7 @@ export const INITIAL_SKILL_DATA = {
     },
     "bloodSign": null,
     "roots": null,
-    "exclusive": [
-      {
-        "name": "攻撃陣形",
-        "desc": "隣接する味方の攻撃力+1"
-      }
-    ],
+    "exclusive": [],
     "sword": [],
     "lance": [],
     "axe": [],
@@ -2312,6 +2425,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "騎士の感覚",
         "desc": "戦闘時、敵が槍なら、回避+10"
+      },
+      {
+        "name": "攻撃陣形",
+        "desc": "隣接する味方の攻撃力+1"
       }
     ],
     "flying": []
@@ -2327,10 +2444,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "ゾーン+",
         "desc": "「集中」発動時、20%で発動。回避+10（次の自分のフェイズまで）"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
       }
     ],
     "sword": [],
@@ -2348,6 +2461,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "身躱し",
         "desc": "【歩兵】戦闘時、敵が弓・魔法なら、回避+5"
+      },
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
       }
     ],
     "armor": [],
@@ -2398,10 +2515,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "正義の執行+",
         "desc": "「天秤の天冠」の発動時、攻撃力+7"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
       }
     ],
     "sword": [],
@@ -2411,7 +2524,12 @@ export const INITIAL_SKILL_DATA = {
     "bow": [],
     "white_magic": [],
     "dark_magic": [],
-    "infantry": [],
+    "infantry": [
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
+      }
+    ],
     "armor": [],
     "cavalry": [
       {
@@ -2479,10 +2597,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "抑えつけ+",
         "desc": "隣接する敵の移動力-5"
-      },
-      {
-        "name": "必殺守備",
-        "desc": "必殺の一撃を受けた時、30%で発動。受けるダメージを半減する"
       }
     ],
     "sword": [],
@@ -2497,6 +2611,10 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "絶対防御+",
         "desc": "【重装】攻撃された時、20%で発動。防御力+10"
+      },
+      {
+        "name": "必殺守備",
+        "desc": "必殺の一撃を受けた時、30%で発動。受けるダメージを半減する"
       }
     ],
     "cavalry": [],
@@ -2581,10 +2699,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "足止め+",
         "desc": "先攻での戦闘後、敵の速さ-3（1回戦闘すると元に戻る）"
-      },
-      {
-        "name": "陽動",
-        "desc": "隣接する敵の命中-3"
       }
     ],
     "sword": [],
@@ -2595,6 +2709,10 @@ export const INITIAL_SKILL_DATA = {
     "white_magic": [],
     "dark_magic": [],
     "infantry": [
+      {
+        "name": "陽動",
+        "desc": "隣接する敵の命中-3"
+      },
       {
         "name": "射撃安定",
         "desc": "【歩兵】弓・魔法を装備中、命中+5"
@@ -2624,10 +2742,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "卑劣+",
         "desc": "戦闘時、敵の残りHPが半分以下なら、命中+20、攻撃力+3"
-      },
-      {
-        "name": "威嚇",
-        "desc": "隣接する敵の必殺-5"
       }
     ],
     "sword": [],
@@ -2643,7 +2757,12 @@ export const INITIAL_SKILL_DATA = {
         "desc": "【歩兵】隣接する敵の移動力-1"
       }
     ],
-    "armor": [],
+    "armor": [
+      {
+        "name": "威嚇",
+        "desc": "隣接する敵の必殺-5"
+      }
+    ],
     "cavalry": [],
     "flying": []
   },
@@ -2658,10 +2777,6 @@ export const INITIAL_SKILL_DATA = {
       {
         "name": "恐れ知らず+",
         "desc": "先攻での戦闘時、攻撃力+6、回避-30"
-      },
-      {
-        "name": "威嚇",
-        "desc": "隣接する敵の必殺-5"
       }
     ],
     "sword": [],
@@ -2677,7 +2792,12 @@ export const INITIAL_SKILL_DATA = {
         "desc": "【歩兵】隣接する敵の移動力-1"
       }
     ],
-    "armor": [],
+    "armor": [
+      {
+        "name": "威嚇",
+        "desc": "隣接する敵の必殺-5"
+      }
+    ],
     "cavalry": [],
     "flying": []
   },
@@ -2710,20 +2830,15 @@ export const INITIAL_SKILL_DATA = {
     "roots": null,
     "exclusive": [
       {
-        "name": "攻撃陣形",
-        "desc": "隣接する味方の攻撃力+1"
+        "name": "ぶち抜き+",
+        "desc": "弓の戦技での攻撃時、攻撃力+4、必殺+10"
       }
     ],
     "sword": [],
     "lance": [],
     "axe": [],
     "brawling": [],
-    "bow": [
-      {
-        "name": "ぶち抜き+",
-        "desc": "弓の戦技での攻撃時、攻撃力+4、必殺+10"
-      }
-    ],
+    "bow": [],
     "white_magic": [],
     "dark_magic": [],
     "infantry": [
@@ -2733,7 +2848,12 @@ export const INITIAL_SKILL_DATA = {
       }
     ],
     "armor": [],
-    "cavalry": [],
+    "cavalry": [
+      {
+        "name": "攻撃陣形",
+        "desc": "隣接する味方の攻撃力+1"
+      }
+    ],
     "flying": []
   },
   "anna": {
@@ -2812,12 +2932,7 @@ export const INITIAL_SKILL_DATA = {
     },
     "bloodSign": null,
     "roots": null,
-    "exclusive": [
-      {
-        "name": "必殺守備",
-        "desc": "必殺の一撃を受けた時、30%で発動。受けるダメージを半減する"
-      }
-    ],
+    "exclusive": [],
     "sword": [],
     "lance": [],
     "axe": [],
@@ -2826,7 +2941,12 @@ export const INITIAL_SKILL_DATA = {
     "white_magic": [],
     "dark_magic": [],
     "infantry": [],
-    "armor": [],
+    "armor": [
+      {
+        "name": "必殺守備",
+        "desc": "必殺の一撃を受けた時、30%で発動。受けるダメージを半減する"
+      }
+    ],
     "cavalry": [],
     "flying": []
   }
@@ -2834,79 +2954,347 @@ export const INITIAL_SKILL_DATA = {
 
 // 4. 兵種ランク（Tier）の定義
 export const CLASS_TIERS = {
-  all: { key: 'all', label: 'すべて', icon: '🌐' },
-  beginner: { key: 'beginner', label: '初級職', icon: '🔰' },
-  intermediate: { key: 'intermediate', label: '中級職', icon: '⚔️' },
-  advanced: { key: 'advanced', label: '上級職', icon: '🛡️' },
-  master: { key: 'master', label: '最上級職', icon: '👑' },
-  special: { key: 'special', label: '神将職', icon: '✨' }
+  "all": {
+    "key": "all",
+    "label": "すべて",
+    "icon": "🌐"
+  },
+  "beginner": {
+    "key": "beginner",
+    "label": "初級職",
+    "icon": "🔰"
+  },
+  "intermediate": {
+    "key": "intermediate",
+    "label": "中級職",
+    "icon": "⚔️"
+  },
+  "advanced": {
+    "key": "advanced",
+    "label": "上級職",
+    "icon": "🛡️"
+  },
+  "master": {
+    "key": "master",
+    "label": "最上級職",
+    "icon": "👑"
+  },
+  "special": {
+    "key": "special",
+    "label": "神将職",
+    "icon": "✨"
+  }
 };
-
 
 // 5. 公式・実機 兵種リスト（全51兵種）
 export const CLASS_LIST = [
-  // --- ◆初級職 (beginner: 5) ---
-  { id: 'fighter', name: '闘士', tier: 'beginner', icon: '🥊' },
-  { id: 'jaeger', name: '猟兵', tier: 'beginner', icon: '🏹' },
-  { id: 'soldier', name: '兵士', tier: 'beginner', icon: '🔱' },
-  { id: 'flying_camel', name: '飛駝兵', tier: 'beginner', icon: '🐪' },
-  { id: 'curse_master', name: '呪い師', tier: 'beginner', icon: '🕯️' },
-
-  // --- ◆中級職 (intermediate: 12) ---
-  { id: 'myrmidon', name: '剣士', tier: 'intermediate', icon: '🗡️' },
-  { id: 'brigand', name: 'ブリガンド', tier: 'intermediate', icon: '🪓' },
-  { id: 'cestus', name: 'セスタス', tier: 'intermediate', icon: '👊' },
-  { id: 'archer', name: 'アーチャー', tier: 'intermediate', icon: '🎯' },
-  { id: 'rogue', name: 'ローグ', tier: 'intermediate', icon: '🗝️' },
-  { id: 'armored_infantry', name: '重装歩兵', tier: 'intermediate', icon: '🛡️' },
-  { id: 'light_cavalry', name: '軽騎兵', tier: 'intermediate', icon: '🐎' },
-  { id: 'charioteer', name: '戦車兵', tier: 'intermediate', icon: '🏎️' },
-  { id: 'armored_camel', name: '騎甲駝兵', tier: 'intermediate', icon: '🐪' },
-  { id: 'pegasus_rider', name: '天翼兵', tier: 'intermediate', icon: '🪽' },
-  { id: 'shaman', name: 'シャーマン', tier: 'intermediate', icon: '🔮' },
-  { id: 'priest', name: 'プリースト', tier: 'intermediate', icon: '✨' },
-
-  // --- ◆上級職 (advanced: 16) ---
-  { id: 'sido', name: 'シドー', tier: 'advanced', icon: '⚡' },
-  { id: 'warrior', name: 'ウォーリアー', tier: 'advanced', icon: '🪓' },
-  { id: 'sniper', name: 'スナイパー', tier: 'advanced', icon: '🎯' },
-  { id: 'forest_knight', name: 'フォレストナイト', tier: 'advanced', icon: '🏹' },
-  { id: 'heavy_armor', name: 'ヘヴィアーマー', tier: 'advanced', icon: '🛡️' },
-  { id: 'bardinger', name: 'バーディンガー', tier: 'advanced', icon: '🏇' },
-  { id: 'vates', name: 'ウァテス', tier: 'advanced', icon: '📖' },
-  { id: 'bishop', name: 'ビショップ', tier: 'advanced', icon: '⛪' },
-  { id: 'war_elephant', name: '戦象兵', tier: 'advanced', icon: '🐘' },
-  { id: 'caladrius', name: 'カラドリオス', tier: 'advanced', icon: '🪽' },
-  { id: 'dragoon', name: 'ドラグーン', tier: 'advanced', icon: '🐉' },
-  { id: 'troubadour', name: 'トルバドール', tier: 'advanced', icon: '🦄' },
-  { id: 'dancer', name: '踊り子', tier: 'advanced', icon: '💃' },
-  { id: 'guardian', name: 'ガーディアン', tier: 'advanced', icon: '🛡️' },
-  { id: 'ranger', name: 'レンジャー', tier: 'advanced', icon: '🧭' },
-  { id: 'cataphract', name: 'カタフラクト', tier: 'advanced', icon: '🏰' },
-
-  // --- ◆最上級職 (master: 10) ---
-  { id: 'battle_master', name: 'バトルマスター', tier: 'master', icon: '⚔️' },
-  { id: 'master_arch', name: 'マスターアーチ', tier: 'master', icon: '🏹' },
-  { id: 'shadow_seeker', name: 'シャドーシーカー', tier: 'master', icon: '👤' },
-  { id: 'holy_lancer', name: 'ホーリーランサー', tier: 'master', icon: '🔱' },
-  { id: 'fortress', name: 'フォートレス', tier: 'master', icon: '🏰' },
-  { id: 'orichaldia', name: 'オリハルディア', tier: 'master', icon: '🛡️' },
-  { id: 'holy_pegasus', name: '聖天翼兵', tier: 'master', icon: '🪽' },
-  { id: 'dragon_master', name: 'ドラゴンマスター', tier: 'master', icon: '🐉' },
-  { id: 'druid', name: 'ドルイド', tier: 'master', icon: '🌘' },
-  { id: 'wiseman', name: 'ワイズマン', tier: 'master', icon: '📜' },
-
-  // --- ◆神将職 (special: 8) ---
-  { id: 'the_blade', name: 'ザ・ブレイド', tier: 'special', icon: '⚔️' },
-  { id: 'the_apsaras', name: 'ジ・アプサラス', tier: 'special', icon: '💃' },
-  { id: 'the_eternal', name: 'ジ・エターナル', tier: 'special', icon: '🪓' },
-  { id: 'the_godhand', name: 'ザ・ゴッドハンド', tier: 'special', icon: '👊' },
-  { id: 'the_calamity', name: 'ザ・カラミティ', tier: 'special', icon: '🗝️' },
-  { id: 'the_trident', name: 'ザ・トライデント', tier: 'special', icon: '🔱' },
-  { id: 'the_cavalier', name: 'ザ・キャバリアー', tier: 'special', icon: '🐎' },
-  { id: 'the_avatar', name: 'ジ・アヴァタール', tier: 'special', icon: '🔮' }
+  {
+    "id": "fighter",
+    "name": "闘士",
+    "tier": "beginner",
+    "icon": "🥊"
+  },
+  {
+    "id": "jaeger",
+    "name": "猟兵",
+    "tier": "beginner",
+    "icon": "🏹"
+  },
+  {
+    "id": "soldier",
+    "name": "兵士",
+    "tier": "beginner",
+    "icon": "🔱"
+  },
+  {
+    "id": "flying_camel",
+    "name": "飛駝兵",
+    "tier": "beginner",
+    "icon": "🐪"
+  },
+  {
+    "id": "curse_master",
+    "name": "呪い師",
+    "tier": "beginner",
+    "icon": "🕯️"
+  },
+  {
+    "id": "myrmidon",
+    "name": "剣士",
+    "tier": "intermediate",
+    "icon": "🗡️"
+  },
+  {
+    "id": "brigand",
+    "name": "ブリガンド",
+    "tier": "intermediate",
+    "icon": "🪓"
+  },
+  {
+    "id": "cestus",
+    "name": "セスタス",
+    "tier": "intermediate",
+    "icon": "👊"
+  },
+  {
+    "id": "archer",
+    "name": "アーチャー",
+    "tier": "intermediate",
+    "icon": "🎯"
+  },
+  {
+    "id": "rogue",
+    "name": "ローグ",
+    "tier": "intermediate",
+    "icon": "🗝️"
+  },
+  {
+    "id": "armored_infantry",
+    "name": "重装歩兵",
+    "tier": "intermediate",
+    "icon": "🛡️"
+  },
+  {
+    "id": "light_cavalry",
+    "name": "軽騎兵",
+    "tier": "intermediate",
+    "icon": "🐎"
+  },
+  {
+    "id": "charioteer",
+    "name": "戦車兵",
+    "tier": "intermediate",
+    "icon": "🏎️"
+  },
+  {
+    "id": "armored_camel",
+    "name": "騎甲駝兵",
+    "tier": "intermediate",
+    "icon": "🐪"
+  },
+  {
+    "id": "pegasus_rider",
+    "name": "天翼兵",
+    "tier": "intermediate",
+    "icon": "🪽"
+  },
+  {
+    "id": "shaman",
+    "name": "シャーマン",
+    "tier": "intermediate",
+    "icon": "🔮"
+  },
+  {
+    "id": "priest",
+    "name": "プリースト",
+    "tier": "intermediate",
+    "icon": "✨"
+  },
+  {
+    "id": "sido",
+    "name": "シドー",
+    "tier": "advanced",
+    "icon": "⚡"
+  },
+  {
+    "id": "warrior",
+    "name": "ウォーリアー",
+    "tier": "advanced",
+    "icon": "🪓"
+  },
+  {
+    "id": "sniper",
+    "name": "スナイパー",
+    "tier": "advanced",
+    "icon": "🎯"
+  },
+  {
+    "id": "forest_knight",
+    "name": "フォレストナイト",
+    "tier": "advanced",
+    "icon": "🏹"
+  },
+  {
+    "id": "heavy_armor",
+    "name": "ヘヴィアーマー",
+    "tier": "advanced",
+    "icon": "🛡️"
+  },
+  {
+    "id": "bardinger",
+    "name": "バーディンガー",
+    "tier": "advanced",
+    "icon": "🏇"
+  },
+  {
+    "id": "vates",
+    "name": "ウァテス",
+    "tier": "advanced",
+    "icon": "📖"
+  },
+  {
+    "id": "bishop",
+    "name": "ビショップ",
+    "tier": "advanced",
+    "icon": "⛪"
+  },
+  {
+    "id": "war_elephant",
+    "name": "戦象兵",
+    "tier": "advanced",
+    "icon": "🐘"
+  },
+  {
+    "id": "caladrius",
+    "name": "カラドリオス",
+    "tier": "advanced",
+    "icon": "🪽"
+  },
+  {
+    "id": "dragoon",
+    "name": "ドラグーン",
+    "tier": "advanced",
+    "icon": "🐉"
+  },
+  {
+    "id": "troubadour",
+    "name": "トルバドール",
+    "tier": "advanced",
+    "icon": "🦄"
+  },
+  {
+    "id": "dancer",
+    "name": "踊り子",
+    "tier": "advanced",
+    "icon": "💃"
+  },
+  {
+    "id": "guardian",
+    "name": "ガーディアン",
+    "tier": "advanced",
+    "icon": "🛡️"
+  },
+  {
+    "id": "ranger",
+    "name": "レンジャー",
+    "tier": "advanced",
+    "icon": "🧭"
+  },
+  {
+    "id": "cataphract",
+    "name": "カタフラクト",
+    "tier": "advanced",
+    "icon": "🏰"
+  },
+  {
+    "id": "battle_master",
+    "name": "バトルマスター",
+    "tier": "master",
+    "icon": "⚔️"
+  },
+  {
+    "id": "master_arch",
+    "name": "マスターアーチ",
+    "tier": "master",
+    "icon": "🏹"
+  },
+  {
+    "id": "shadow_seeker",
+    "name": "シャドーシーカー",
+    "tier": "master",
+    "icon": "👤"
+  },
+  {
+    "id": "holy_lancer",
+    "name": "ホーリーランサー",
+    "tier": "master",
+    "icon": "🔱"
+  },
+  {
+    "id": "fortress",
+    "name": "フォートレス",
+    "tier": "master",
+    "icon": "🏰"
+  },
+  {
+    "id": "orichaldia",
+    "name": "オリハルディア",
+    "tier": "master",
+    "icon": "🛡️"
+  },
+  {
+    "id": "holy_pegasus",
+    "name": "聖天翼兵",
+    "tier": "master",
+    "icon": "🪽"
+  },
+  {
+    "id": "dragon_master",
+    "name": "ドラゴンマスター",
+    "tier": "master",
+    "icon": "🐉"
+  },
+  {
+    "id": "druid",
+    "name": "ドルイド",
+    "tier": "master",
+    "icon": "🌘"
+  },
+  {
+    "id": "wiseman",
+    "name": "ワイズマン",
+    "tier": "master",
+    "icon": "📜"
+  },
+  {
+    "id": "the_blade",
+    "name": "ザ・ブレイド",
+    "tier": "special",
+    "icon": "⚔️"
+  },
+  {
+    "id": "the_apsaras",
+    "name": "ジ・アプサラス",
+    "tier": "special",
+    "icon": "💃"
+  },
+  {
+    "id": "the_eternal",
+    "name": "ジ・エターナル",
+    "tier": "special",
+    "icon": "🪓"
+  },
+  {
+    "id": "the_godhand",
+    "name": "ザ・ゴッドハンド",
+    "tier": "special",
+    "icon": "👊"
+  },
+  {
+    "id": "the_calamity",
+    "name": "ザ・カラミティ",
+    "tier": "special",
+    "icon": "🗝️"
+  },
+  {
+    "id": "the_trident",
+    "name": "ザ・トライデント",
+    "tier": "special",
+    "icon": "🔱"
+  },
+  {
+    "id": "the_cavalier",
+    "name": "ザ・キャバリアー",
+    "tier": "special",
+    "icon": "🐎"
+  },
+  {
+    "id": "the_avatar",
+    "name": "ジ・アヴァタール",
+    "tier": "special",
+    "icon": "🔮"
+  }
 ];
-
 
 // 6. 全51兵種マスタースキル・兵種スキル詳細辞書（Game8攻略準拠）
 export const CLASS_SKILLS_DATA = {
@@ -3319,4 +3707,3 @@ export const CLASS_SKILLS_DATA = {
     "skillsText": "兵種\n\n 全魔術極限  黒魔法・白魔法の回数が3倍になる  \n 魔法命中+10  魔法を装備中、命中+10  \n 魔法回復+20  魔法で味方を回復する時、回復量+20  \n\n\n\n\nマスター\n\n 神法  魔力+10"
   }
 };
-
