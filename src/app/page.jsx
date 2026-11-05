@@ -7,7 +7,8 @@ import RouteTabs from '../components/RouteTabs';
 import CharDetailTable from '../components/CharDetailTable';
 import FameMatrixTable from '../components/FameMatrixTable';
 import SupportMatrixTable from '../components/SupportMatrixTable';
-import ClassSkillTable from '../components/ClassSkillTable';
+import CharacterSkillTable from '../components/CharacterSkillTable';
+import ClassTable from '../components/ClassTable';
 import EditModal from '../components/EditModal';
 import SkillEditModal from '../components/SkillEditModal';
 import { DEFAULT_CHARACTERS } from '../data/characters';
@@ -15,7 +16,7 @@ import { INITIAL_SKILL_DATA } from '../data/skills';
 
 const STORAGE_KEY_CHARS = 'fe_next_chars_v1';
 const STORAGE_KEY_JOINED = 'fe_next_joined_v1';
-const STORAGE_KEY_SKILLS = 'fe_skills_data_v2';
+const STORAGE_KEY_SKILLS = 'fe_skills_data_v3';
 
 export default function Home() {
   // SSR時のハイドレーション不整合を防ぐフラグ
@@ -371,11 +372,15 @@ export default function Home() {
       )}
 
       {viewMode === 'skills' && (
-        <ClassSkillTable
+        <CharacterSkillTable
           characters={filteredCharacters}
           skillData={skillData}
           onOpenSkillEditModal={handleOpenSkillEditModal}
         />
+      )}
+
+      {viewMode === 'classes' && (
+        <ClassTable />
       )}
 
       {/* キャラクター追加・編集モーダル */}
