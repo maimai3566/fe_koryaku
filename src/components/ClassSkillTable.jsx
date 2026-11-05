@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { Filter, Search, Sparkles, Shield, Award, Edit3, HelpCircle } from 'lucide-react';
-import { CLASS_TIERS, CLASS_LIST } from '../data/skills';
+import { Filter, Search, Sparkles, Shield, Award, Edit3, HelpCircle, CheckCircle2 } from 'lucide-react';
+import { CLASS_TIERS, CLASS_LIST, CLASS_SKILLS_DATA } from '../data/skills';
 import { HERO_CONFIGS } from '../data/characters';
 
 export default function ClassSkillTable({
@@ -205,20 +205,39 @@ export default function ClassSkillTable({
 
                   {/* 各兵種スキル */}
                   {displayedClasses.map((cls) => {
-                    const skill = classesObj[cls.id];
+                    const customSkill = classesObj[cls.id];
+                    const clsInfo = CLASS_SKILLS_DATA[cls.id] || {};
+
                     return (
                       <td
                         key={cls.id}
                         onClick={() => onOpenSkillEditModal(char.id)}
                         className="p-2 border-r border-slate-800/80 align-top cursor-pointer hover:bg-slate-800/60 transition"
                       >
-                        {skill ? (
-                          <div className="p-1 rounded bg-slate-850/80 border border-slate-700/60">
-                            <div className="font-semibold text-slate-200 text-[11px] mb-0.5 flex items-center gap-1">
+                        {customSkill ? (
+                          <div className="p-1.5 rounded bg-amber-950/40 border border-amber-600/60 shadow-sm">
+                            <div className="font-semibold text-amber-300 text-[11px] mb-0.5 flex items-center gap-1">
                               <Sparkles className="w-2.5 h-2.5 text-amber-400 shrink-0" />
-                              <span className="truncate">{skill.name}</span>
+                              <span className="truncate">{customSkill.name}</span>
                             </div>
-                            <div className="text-[10px] text-slate-400 leading-snug">{skill.desc}</div>
+                            <div className="text-[10px] text-amber-200/80 leading-snug">{customSkill.desc}</div>
+                          </div>
+                        ) : clsInfo.masterSkill || clsInfo.classSkills ? (
+                          <div className="space-y-1">
+                            {clsInfo.masterSkill && (
+                              <div className="p-1 rounded bg-slate-850/80 border border-slate-700/60">
+                                <div className="text-[9px] text-amber-400 font-bold tracking-tight">★マスター</div>
+                                <div className="text-[10px] text-slate-200 font-medium leading-snug">{clsInfo.masterSkill}</div>
+                              </div>
+                            )}
+                            {clsInfo.classSkills && (
+                              <div className="p-1 rounded bg-slate-900/60 border border-slate-800/80">
+                                <div className="text-[9px] text-sky-400 font-bold tracking-tight">🛡️兵種効果</div>
+                                <div className="text-[10px] text-slate-400 leading-snug line-clamp-2" title={clsInfo.classSkills}>
+                                  {clsInfo.classSkills}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         ) : (
                           <span className="text-slate-700 text-[11px] block text-center">-</span>

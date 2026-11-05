@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, Sparkles } from 'lucide-react';
-import { CLASS_LIST } from '../data/skills';
+import { X, Save, Sparkles, Info } from 'lucide-react';
+import { CLASS_LIST, CLASS_SKILLS_DATA } from '../data/skills';
 
 export default function SkillEditModal({
   isOpen,
@@ -151,6 +151,8 @@ export default function SkillEditModal({
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {CLASS_LIST.map((cls) => {
                 const s = formData.classes[cls.id] || { name: '', desc: '' };
+                const defaultInfo = CLASS_SKILLS_DATA[cls.id] || {};
+
                 return (
                   <div key={cls.id} className="p-2.5 rounded-lg border border-slate-800 bg-slate-950/50 space-y-1.5">
                     <div className="font-semibold text-slate-300 text-xs flex items-center justify-between">
@@ -159,18 +161,26 @@ export default function SkillEditModal({
                         <span>{cls.name}</span>
                       </span>
                     </div>
+
+                    {/* 標準スキル情報 */}
+                    {defaultInfo.masterSkill && (
+                      <div className="text-[10px] text-amber-400/90 bg-amber-950/20 px-1.5 py-0.5 rounded border border-amber-900/40">
+                        <span className="font-bold">★マスター: </span>{defaultInfo.masterSkill}
+                      </div>
+                    )}
+
                     <input
                       type="text"
                       value={s.name}
                       onChange={(e) => handleClassSkillChange(cls.id, 'name', e.target.value)}
-                      placeholder="習得スキル名"
+                      placeholder={defaultInfo.masterSkill ? `カスタムスキル名（空欄時はマスター表示）` : "習得スキル名"}
                       className="w-full px-2 py-1 text-xs bg-slate-900 border border-slate-700 rounded text-slate-200"
                     />
                     <input
                       type="text"
                       value={s.desc}
                       onChange={(e) => handleClassSkillChange(cls.id, 'desc', e.target.value)}
-                      placeholder="効果説明"
+                      placeholder="効果説明（空欄時は標準効果表示）"
                       className="w-full px-2 py-1 text-[11px] bg-slate-900 border border-slate-800 rounded text-slate-400"
                     />
                   </div>
