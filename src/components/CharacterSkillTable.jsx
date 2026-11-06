@@ -25,8 +25,8 @@ export default function CharacterSkillTable({
       const data = skillData[char.id] || {};
       const texts = [char.name];
 
-      // 単一項目（personal, bloodSign, roots）
-      ['personal', 'bloodSign', 'roots'].forEach((k) => {
+      // 単一項目（personal, bloodSign）
+      ['personal', 'bloodSign'].forEach((k) => {
         if (data[k]) {
           texts.push(data[k].name || '', data[k].desc || '');
         }
@@ -151,8 +151,8 @@ export default function CharacterSkillTable({
                   {displayedColumns.map((col) => {
                     const cellVal = charData[col.id];
 
-                    // 単一アイテム（personal, bloodSign, roots）
-                    if (['personal', 'bloodSign', 'roots'].includes(col.id)) {
+                    // 単一アイテム（personal, bloodSign）
+                    if (['personal', 'bloodSign'].includes(col.id)) {
                       const item = cellVal;
                       return (
                         <td

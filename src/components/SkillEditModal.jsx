@@ -12,7 +12,6 @@ export default function SkillEditModal({
   const [formData, setFormData] = useState({
     personal: { name: '', desc: '' },
     bloodSign: { name: '', desc: '' },
-    roots: { name: '', desc: '' },
     exclusive: [],
     sword: [],
     lance: [],
@@ -32,7 +31,6 @@ export default function SkillEditModal({
       setFormData({
         personal: initialSkillData.personal || { name: '', desc: '' },
         bloodSign: initialSkillData.bloodSign || { name: '', desc: '' },
-        roots: initialSkillData.roots || { name: '', desc: '' },
         exclusive: initialSkillData.exclusive ? [...initialSkillData.exclusive] : [],
         sword: initialSkillData.sword ? [...initialSkillData.sword] : [],
         lance: initialSkillData.lance ? [...initialSkillData.lance] : [],
@@ -51,7 +49,7 @@ export default function SkillEditModal({
 
   if (!isOpen || !char) return null;
 
-  // 単一特性（personal, bloodSign, roots）の更新
+  // 単一特性（personal, bloodSign）の更新
   const handleTraitChange = (field, subField, val) => {
     setFormData((prev) => ({
       ...prev,
@@ -103,7 +101,7 @@ export default function SkillEditModal({
     onClose();
   };
 
-  const listColumns = SKILL_COLUMNS.filter((c) => !['personal', 'bloodSign', 'roots'].includes(c.id));
+  const listColumns = SKILL_COLUMNS.filter((c) => !['personal', 'bloodSign'].includes(c.id));
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
@@ -114,7 +112,7 @@ export default function SkillEditModal({
             <h2 className="text-base sm:text-lg font-bold text-slate-100 flex items-center gap-2">
               <span>⚔️ {char.name} のスキル・特性編集</span>
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">個人スキル、血印、ルーツ、キャラ専用、技能スキルの編集・追加</p>
+            <p className="text-xs text-slate-400 mt-0.5">個人スキル、血印、キャラ専用、技能スキルの編集・追加</p>
           </div>
           <button
             onClick={onClose}
@@ -126,10 +124,10 @@ export default function SkillEditModal({
 
         {/* フォーム内容 */}
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
-          {/* 固有特性 3項目 */}
+          {/* 固有特性 2項目 */}
           <div className="space-y-4 bg-slate-950/40 p-3 sm:p-4 rounded-xl border border-slate-800">
             <div className="font-bold text-slate-300 text-xs uppercase tracking-wider flex items-center gap-2">
-              <span>🌟 固有特性（個人・血印・ルーツ）</span>
+              <span>🌟 固有特性（個人・血印）</span>
             </div>
 
             {/* 個人スキル */}
@@ -167,25 +165,6 @@ export default function SkillEditModal({
                 onChange={(e) => handleTraitChange('bloodSign', 'desc', e.target.value)}
                 placeholder="血印効果"
                 className="px-2.5 py-1 text-xs bg-slate-900 border border-slate-700 rounded text-slate-200 focus:outline-none focus:border-rose-500"
-              />
-            </div>
-
-            {/* ルーツ */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
-              <label className="text-xs font-bold text-sky-300">ルーツ</label>
-              <input
-                type="text"
-                value={formData.roots?.name || ''}
-                onChange={(e) => handleTraitChange('roots', 'name', e.target.value)}
-                placeholder="ルーツ名（空欄時はなし）"
-                className="px-2.5 py-1 text-xs bg-slate-900 border border-slate-700 rounded text-slate-200 focus:outline-none focus:border-sky-500"
-              />
-              <input
-                type="text"
-                value={formData.roots?.desc || ''}
-                onChange={(e) => handleTraitChange('roots', 'desc', e.target.value)}
-                placeholder="ルーツ効果"
-                className="px-2.5 py-1 text-xs bg-slate-900 border border-slate-700 rounded text-slate-200 focus:outline-none focus:border-sky-500"
               />
             </div>
           </div>

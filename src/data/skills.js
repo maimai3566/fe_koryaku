@@ -3,7 +3,7 @@
 // （Game8 攻略準拠: https://game8.jp/fe-banshisenko/818786）
 // ========================================================
 
-// 1. スキル一覧テーブルのカラム定義（全15カラム）
+// 1. スキル一覧テーブルのカラム定義（全14カラム：ルーツ除外）
 export const SKILL_COLUMNS = [
   {
     "id": "personal",
@@ -18,13 +18,6 @@ export const SKILL_COLUMNS = [
     "icon": "🩸",
     "category": "trait",
     "badgeColor": "bg-rose-950/30 text-rose-300 border-rose-600/50"
-  },
-  {
-    "id": "roots",
-    "name": "ルーツ",
-    "icon": "📜",
-    "category": "trait",
-    "badgeColor": "bg-sky-950/30 text-sky-300 border-sky-600/50"
   },
   {
     "id": "exclusive",
@@ -141,7 +134,7 @@ export const SKILL_CATEGORIES = {
   }
 };
 
-// 3. 全63キャラクターのスキルマスターデータ（Game8公式・キャラ専用1人1つ＆技能精査済）
+// 3. 全63キャラクターのスキルマスターデータ（ルーツ除外済）
 export const INITIAL_SKILL_DATA = {
   "kai": {
     "personal": {
@@ -151,10 +144,6 @@ export const INITIAL_SKILL_DATA = {
     "bloodSign": {
       "name": "魂魄の天冠",
       "desc": "攻撃時、25%で発動、攻撃力+3"
-    },
-    "roots": {
-      "name": "赤い宝石",
-      "desc": "魔力+3。カイに受け継がれた秘宝"
     },
     "exclusive": [
       {
@@ -231,10 +220,6 @@ export const INITIAL_SKILL_DATA = {
     "bloodSign": {
       "name": "永遠の天冠",
       "desc": "攻撃時、10%で発動、自分のHPを中回復する"
-    },
-    "roots": {
-      "name": "漆黒のグウェン",
-      "desc": "技+5。名門の重厚なる太刀"
     },
     "exclusive": [
       {
@@ -320,10 +305,6 @@ export const INITIAL_SKILL_DATA = {
     "bloodSign": {
       "name": "魂魄の天冠",
       "desc": "攻撃時、25%で発動、攻撃力+3"
-    },
-    "roots": {
-      "name": "テルス神殿の血統",
-      "desc": "魔防+5。神聖なる加護"
     },
     "exclusive": [
       {
@@ -418,10 +399,6 @@ export const INITIAL_SKILL_DATA = {
       "name": "大地の天冠",
       "desc": "攻撃時、3%で発動、攻撃力+7"
     },
-    "roots": {
-      "name": "地弦・黒曜",
-      "desc": "魔防+5。ブラガンサに伝わる弦"
-    },
     "exclusive": [
       {
         "name": "即興",
@@ -480,10 +457,6 @@ export const INITIAL_SKILL_DATA = {
       "name": "預言者の天冠",
       "desc": "攻撃時、5%で発動、命中+100"
     },
-    "roots": {
-      "name": "船長の心核",
-      "desc": "技+10。大いなる意志の核"
-    },
     "exclusive": [
       {
         "name": "烈日の加護",
@@ -508,10 +481,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "味方に使用可能な戦技の射程+1"
     },
     "bloodSign": null,
-    "roots": {
-      "name": "軍師の徽章",
-      "desc": "指揮・戦技射程補正"
-    },
     "exclusive": [
       {
         "name": "軍師の炯眼+",
@@ -546,10 +515,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "弓の戦技を使う時、射程+1"
     },
     "bloodSign": null,
-    "roots": {
-      "name": "狩人の心得",
-      "desc": "技+3。野生の勘"
-    },
     "exclusive": [
       {
         "name": "誤差修正+",
@@ -615,7 +580,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘時、命中・回避・必殺のどれかが+10"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "気分は上々+",
@@ -674,10 +638,6 @@ export const INITIAL_SKILL_DATA = {
     "bloodSign": {
       "name": "勇気の天冠",
       "desc": "攻撃時、3%で発動、与えるダメージが1.5倍になる"
-    },
-    "roots": {
-      "name": "怪力無双の証",
-      "desc": "力+5。鋼の筋肉"
     },
     "exclusive": [
       {
@@ -756,10 +716,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "隣接する敵の必避-5"
     },
     "bloodSign": null,
-    "roots": {
-      "name": "常闇の外套",
-      "desc": "魔力+3。闇夜に溶け込む術"
-    },
     "exclusive": [
       {
         "name": "闇の秘術+",
@@ -803,7 +759,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "隣接する敵との戦闘時、命中+10"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "鉄血+",
@@ -885,7 +840,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "後攻での戦闘時、命中+20"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "怒涛の反撃+",
@@ -931,7 +885,6 @@ export const INITIAL_SKILL_DATA = {
       "name": "魂魄の天冠",
       "desc": "攻撃時、25%で発動、攻撃力+3"
     },
-    "roots": null,
     "exclusive": [
       {
         "name": "活力結界+",
@@ -965,7 +918,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "魔法で味方を回復する時、回復量+10"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "遠隔治癒+",
@@ -1004,7 +956,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "先攻での戦闘時、回避+15"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "加速+",
@@ -1086,7 +1037,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "隣接する味方の技+3"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "補足説明+",
@@ -1129,7 +1079,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦技での攻撃時、攻撃力+3"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "本気の一発+",
@@ -1191,7 +1140,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘時、敵が反撃できないなら、命中+10"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "なんかいい感じ+",
@@ -1238,7 +1186,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "隣接する味方1人につき、自分の命中・回避+5"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "飛翔+",
@@ -1277,7 +1224,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘時、自分のHPが半分以上なら、回避+10"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "絶好調+",
@@ -1316,10 +1262,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "攻撃された時、受けるダメージを90%に抑える"
     },
     "bloodSign": null,
-    "roots": {
-      "name": "堅壁の盾",
-      "desc": "守備+5。絶対防御の意志"
-    },
     "exclusive": [
       {
         "name": "返礼の一撃+",
@@ -1380,7 +1322,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘後、自分のHPを5回復する"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "風任せ+",
@@ -1423,10 +1364,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "魔法を装備中、必殺+10"
     },
     "bloodSign": null,
-    "roots": {
-      "name": "魔道神童の閃き",
-      "desc": "魔力+4。天賦の才"
-    },
     "exclusive": [
       {
         "name": "情動のリザイア+",
@@ -1474,10 +1411,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "レベルアップした時、基本能力が成長しやすい"
     },
     "bloodSign": null,
-    "roots": {
-      "name": "原初の息吹",
-      "desc": "全成長率+5%。神秘なる成長"
-    },
     "exclusive": [
       {
         "name": "強戦士の血+",
@@ -1524,10 +1457,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘時、自分の攻速が敵より3以上大きければ、命中+20"
     },
     "bloodSign": null,
-    "roots": {
-      "name": "迅雷の足袋",
-      "desc": "速さ+4。電光石火の身のこなし"
-    },
     "exclusive": [
       {
         "name": "風を味方に+",
@@ -1592,7 +1521,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘時、自分の攻撃が敵に有効・特効なら、攻撃力+3"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "秘奥+",
@@ -1617,7 +1545,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘時、敵が状態異常なら、攻撃力+3、必殺+10"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "威迫+",
@@ -1658,10 +1585,6 @@ export const INITIAL_SKILL_DATA = {
       "name": "再生の天冠",
       "desc": "攻撃時、20%で発動、自分のHPを小回復する"
     },
-    "roots": {
-      "name": "再生の護符",
-      "desc": "HP+5。自己再生の力"
-    },
     "exclusive": [
       {
         "name": "信仰の賜物+",
@@ -1695,10 +1618,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "自分のHPが2以上で、HPが0になるようなダメージを受けた時、幸運%で発動、HPが1残る"
     },
     "bloodSign": null,
-    "roots": {
-      "name": "悪運のコイン",
-      "desc": "幸運+7。幾度もの修羅場を越えた証"
-    },
     "exclusive": [
       {
         "name": "悪運+",
@@ -1737,10 +1656,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "周囲2マスにいる味方の戦闘時、その味方の（魅力÷2）%で発動、その味方の必避+10"
     },
     "bloodSign": null,
-    "roots": {
-      "name": "熱血の魂",
-      "desc": "力+4。燃え盛る闘志"
-    },
     "exclusive": [
       {
         "name": "追加演出+",
@@ -1770,10 +1685,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "隣接する味方の守備+3"
     },
     "bloodSign": null,
-    "roots": {
-      "name": "大工の槌",
-      "desc": "守備+4。堅牢な体躯"
-    },
     "exclusive": [
       {
         "name": "牙閃+",
@@ -1812,7 +1723,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "後攻での戦闘時、攻速+3 回避+10"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [],
     "sword": [],
     "lance": [],
@@ -1846,7 +1756,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘時、5%で発動。攻速に関係なく追撃する。"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "後の先",
@@ -1892,7 +1801,6 @@ export const INITIAL_SKILL_DATA = {
       "name": "魂魄の天冠",
       "desc": "攻撃時、25%で発動、攻撃力+3"
     },
-    "roots": null,
     "exclusive": [
       {
         "name": "熟練の砲手",
@@ -1926,7 +1834,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "回避+3"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "連貫円滑+",
@@ -1965,7 +1872,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "魔法を装備中、命中+10"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [],
     "sword": [],
     "lance": [],
@@ -1985,7 +1891,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "籠手を装備中、命中+10"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [],
     "sword": [],
     "lance": [],
@@ -2005,7 +1910,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "自分を含め、周囲2マスにいる味方は道具袋を使用できる"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "好機+",
@@ -2042,7 +1946,6 @@ export const INITIAL_SKILL_DATA = {
       "name": "魂魄の天冠",
       "desc": "攻撃時、25%で発動、攻撃力+3"
     },
-    "roots": null,
     "exclusive": [
       {
         "name": "調魂+",
@@ -2086,7 +1989,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "隣接する味方の戦闘時、5%で発動、その味方は追撃されなくなる"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "容赦無し+",
@@ -2123,7 +2025,6 @@ export const INITIAL_SKILL_DATA = {
       "name": "孤高の天冠",
       "desc": "攻撃時、10%で発動、命中+30"
     },
-    "roots": null,
     "exclusive": [
       {
         "name": "精霊の導き+",
@@ -2171,7 +2072,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "「引き寄せ」を使用後、補助魔法を使用できる"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "注意喚起+",
@@ -2201,7 +2101,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "先攻での戦闘時、50%で発動、攻撃力+3"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "俺は止まらねぇ+",
@@ -2243,7 +2142,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "【騎兵】先攻での戦闘時、防御力+3、必避+30"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "騎乗突撃+",
@@ -2311,7 +2209,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "【騎兵】敵のいるマスを通過して移動できる（自分が大型ユニットなら無効）"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "疾駆+",
@@ -2367,7 +2264,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "【騎兵】自分が「戦車兵」なら、命中+20"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "戦車乗り+",
@@ -2401,7 +2297,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "先行での戦闘時、攻速+3 命中+10"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [],
     "sword": [],
     "lance": [],
@@ -2439,7 +2334,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘後、回避+3（次の自分のフェイズまで）"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "ゾーン+",
@@ -2477,7 +2371,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "敵フェイズ中の戦闘時、敵がダメージを受けているなら、30%で発動、自分が先攻になる"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "王の威光+",
@@ -2510,7 +2403,6 @@ export const INITIAL_SKILL_DATA = {
       "name": "天秤の天冠",
       "desc": "攻撃時、3%で発動、反撃されなくなる"
     },
-    "roots": null,
     "exclusive": [
       {
         "name": "正義の執行+",
@@ -2554,7 +2446,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "「入れ替え」を使用後、守備+3（次の自分のフェイズまで）"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "瞬刃+",
@@ -2592,7 +2483,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "騎兵、飛行の兵種になれない、体格+5"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "抑えつけ+",
@@ -2626,7 +2516,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "先攻での戦闘時、攻速+3"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "見切り+",
@@ -2664,7 +2553,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘時、自分も敵も追撃できないなら、自分の攻撃力+5"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "全力+",
@@ -2694,7 +2582,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘後、命中+2（+30が最大）（マップ終了まで）"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "足止め+",
@@ -2737,7 +2624,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "斧を装備中、命中+10"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "卑劣+",
@@ -2772,7 +2658,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "斧を装備中、力+3"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "恐れ知らず+",
@@ -2807,7 +2692,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "敵のフェイズ中、1度目の戦闘だけ攻撃で受けるダメージを半減する"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [],
     "sword": [],
     "lance": [],
@@ -2827,7 +2711,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "弓を装備中、力+3"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [
       {
         "name": "ぶち抜き+",
@@ -2865,10 +2748,6 @@ export const INITIAL_SKILL_DATA = {
       "name": "無明の天冠",
       "desc": "攻撃時、3%で発動。攻撃力+5、命中+30"
     },
-    "roots": {
-      "name": "商人の天秤",
-      "desc": "幸運+10。商売繁盛の極意"
-    },
     "exclusive": [],
     "sword": [],
     "lance": [],
@@ -2891,7 +2770,6 @@ export const INITIAL_SKILL_DATA = {
       "name": "大地の天冠",
       "desc": "攻撃時、3%で発動、攻撃力+7"
     },
-    "roots": null,
     "exclusive": [],
     "sword": [],
     "lance": [],
@@ -2911,7 +2789,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "籠手の戦技を使う戦闘時、15%で発動。攻速に関係なく追撃する。"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [],
     "sword": [],
     "lance": [],
@@ -2931,7 +2808,6 @@ export const INITIAL_SKILL_DATA = {
       "desc": "戦闘後、守備％で発動。守備+1（+10が最大）（マップ終了まで）"
     },
     "bloodSign": null,
-    "roots": null,
     "exclusive": [],
     "sword": [],
     "lance": [],
